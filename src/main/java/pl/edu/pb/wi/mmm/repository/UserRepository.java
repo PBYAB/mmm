@@ -11,13 +11,9 @@ import pl.edu.pb.wi.mmm.entity.User;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByEmail(String email);
-
-    Optional<User> findByLogin(String login);
-
     boolean existsByEmail(String email);
 
-    boolean existsByLogin(String login);
+    Optional<User> findByEmail(String email);
 
     @NonNull
     @EntityGraph(attributePaths = "roles", type = EntityGraph.EntityGraphType.FETCH)

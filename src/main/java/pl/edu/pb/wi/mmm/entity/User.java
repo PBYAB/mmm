@@ -8,10 +8,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "app_user")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -19,19 +20,16 @@ import java.util.Set;
 @Builder
 public class User implements UserDetails {
 
-    @Column(name = "user_id")
+    @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "first_name")
+    private String firstName;
 
-    @Column(name = "surname")
-    private String surname;
-
-    @Column(name = "login")
-    private String login;
+    @Column(name = "last_name")
+    private String lastName;
 
     @Column(name = "email")
     private String email;
@@ -39,12 +37,15 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "active")
+    @Column(name = "enabled")
     private Boolean enabled;
+
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "users_roles",
+            name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
@@ -53,7 +54,7 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRole().toString()))
+                .map(role -> new SimpleGrantedAuthority(role.getName().toString()))
                 .toList();
     }
 

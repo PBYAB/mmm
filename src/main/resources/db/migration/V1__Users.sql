@@ -1,23 +1,38 @@
-CREATE TABLE Users
+CREATE TABLE app_user
 (
-    user_id  SERIAL PRIMARY KEY,
-    name     VARCHAR(20)         NOT NULL,
-    surname  VARCHAR(50)         NOT NULL,
-    email    VARCHAR(128) UNIQUE NOT NULL,
-    password VARCHAR(255)        NOT NULL,
-    enabled  BOOLEAN             NOT NULL
+    id         SERIAL PRIMARY KEY,
+    first_name VARCHAR(20)         NOT NULL,
+    last_name  VARCHAR(50)         NOT NULL,
+    email      VARCHAR(128) UNIQUE NOT NULL,
+    password   VARCHAR(255)        NOT NULL,
+    enabled    BOOLEAN             NOT NULL
 );
 
-CREATE TABLE Roles
+CREATE TABLE role
 (
-    role_id SERIAL PRIMARY KEY,
-    role    VARCHAR(64) UNIQUE NOT NULL
+    id   SERIAL PRIMARY KEY,
+    name VARCHAR(64) UNIQUE NOT NULL
 );
 
-CREATE TABLE UsersRoles
+INSERT INTO role (name)
+VALUES ('ADMIN'),
+       ('USER'),
+       ('LIMITED_USER');
+
+CREATE TABLE user_role
 (
-    user_id BIGINT REFERENCES Users (user_id),
-    role_id BIGINT REFERENCES Roles (role_id),
+    user_id BIGINT REFERENCES app_user (id),
+    role_id BIGINT REFERENCES role (id),
 
     PRIMARY KEY (user_id, role_id)
+);
+
+CREATE TABLE auth_token
+(
+    id         SERIAL PRIMARY KEY,
+    token      VARCHAR(4096) UNIQUE             NOT NULL,
+    token_type VARCHAR(255)                     NOT NULL,
+    revoked    BOOLEAN                          NOT NULL,
+    expired    BOOLEAN                          NOT NULL,
+    user_id    BIGINT REFERENCES app_user (id) NOT NULL
 );

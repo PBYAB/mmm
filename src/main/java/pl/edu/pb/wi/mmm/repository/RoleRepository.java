@@ -6,5 +6,5 @@ import pl.edu.pb.wi.mmm.entity.Role;
 
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
-    Role findByRole(String role);
+    Role findByName(pl.edu.pb.wi.mmm.enumeration.Role role);
 }
