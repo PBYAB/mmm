@@ -47,7 +47,7 @@ public class AuthenticationService {
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .roles(Set.of(roleRepository.findByName(Role.USER)))
+                .roles(Set.of(roleRepository.findByName(Role.ROLE_USER)))
                 .enabled(true)
                 .build();
 

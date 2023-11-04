@@ -7,12 +7,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.pb.wi.mmm.dto.UserDto;
 import pl.edu.pb.wi.mmm.dto.mapper.UserMapper;
 import pl.edu.pb.wi.mmm.entity.User;
-import pl.edu.pb.wi.mmm.repository.RoleRepository;
 import pl.edu.pb.wi.mmm.repository.UserRepository;
 
 @Service
@@ -29,9 +27,9 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("User with email: [%s] not found".formatted(email)));
     }
 
-    public User findById(Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User with ID: [%s] not found".formatted(userId)));
+    public User findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User with ID: [%s] not found".formatted(id)));
     }
 
     public Page<UserDto> getUsers(Pageable pageable) {
