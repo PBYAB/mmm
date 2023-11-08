@@ -1,14 +1,15 @@
 CREATE TABLE ingredient
 (
     id   SERIAL PRIMARY KEY,
-    name VARCHAR(64) UNIQUE NOT NULL,
+    name TEXT UNIQUE NOT NULL,
     quantity INT NOT NULL,
-    vegan BOOLEAN NOT NULL,
-    vegetarian BOOLEAN NOT NULL
+    vegan BOOLEAN,
+    vegetarian BOOLEAN,
+    from_palm_oil BOOLEAN
 );
 
 CREATE TABLE product_ingredient
 (
-    ingredinet_id   BIGINT REFERENCES ingredient (id),
+    ingredient_id   BIGINT REFERENCES ingredient (id),
     product_id BIGINT REFERENCES product (id)
 );
