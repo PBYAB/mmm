@@ -1,5 +1,6 @@
 package pl.edu.pb.wi.mmm.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,24 +18,28 @@ public class Nutriment {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "energyKcalPer100g")
+    @Column(name = "energy_kcal_per_100g")
     private Double energyKcalPer100g;
 
-    @Column(name = "fatPer100g")
-    private Double FatPer100g;
+    @Column(name = "fat_per_100g")
+    private Double fatPer100g;
 
-    @Column(name = "fiberPer100g")
+    @Column(name = "fiber_per_100g")
     private Double fiberPer100g;
 
-    @Column(name = "proteinPer100g")
-    private Double proteinPer100g;
+    @Column(name = "proteins_per_100g")
+    private Double proteinsPer100g;
 
-    @Column(name = "saltPer100g")
+    @Column(name = "salt_per_100g")
     private Double saltPer100g;
 
-    @Column(name = "sugarPer100g")
-    private Double sugarPer100g;
+    @Column(name = "sugars_per_100g")
+    private Double sugarsPer100g;
 
-    @Column(name = "sodiumPer100g")
+    @Column(name = "sodium_per_100g")
     private Double sodiumPer100g;
+
+    @OneToOne(mappedBy = "nutriment")
+    @JsonIgnore
+    private Product product;
 }

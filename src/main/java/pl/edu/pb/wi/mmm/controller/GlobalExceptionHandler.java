@@ -1,5 +1,6 @@
 package pl.edu.pb.wi.mmm.controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,6 +20,14 @@ public class GlobalExceptionHandler {
     public String handleDuplicateUserException(EmailAlreadyExists e) {
         return e.getMessage();
     }
+
+
+//    @ExceptionHandler(EntityNotFoundException.class)
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
+//    @ResponseBody
+//    public String notFOund(EntityNotFoundException e) {
+//        return e.getMessage();
+//    }
 
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

@@ -1,6 +1,7 @@
 package pl.edu.pb.wi.mmm.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,20 +12,25 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-public class ProductIngredientAnalasys {
+public class ProductIngredientAnalysis {
 
     @Id
-    @ManyToOne
-    @JoinColumn(name = "product_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToOne(mappedBy = "ingredientAnalysis")
+    @JsonIgnore
     private Product product;
 
     @Column(name = "vegan")
     private Boolean vegan;
+
+    @Column(name = "ingredients_description")
+    private String ingredientsDescription;
 
     @Column(name = "vegetarian")
     private Boolean vegetarian;
 
     @Column(name = "from_palm_oil")
     private Boolean fromPalmOil;
-
 }

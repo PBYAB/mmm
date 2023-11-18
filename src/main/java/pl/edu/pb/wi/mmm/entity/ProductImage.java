@@ -1,4 +1,5 @@
 package pl.edu.pb.wi.mmm.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import pl.edu.pb.wi.mmm.enumeration.PhotoSize;
@@ -20,12 +21,12 @@ public class ProductImage {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonIgnore
     private Product product;
 
-
     @Column(name = "size")
-    private Enum<PhotoSize> size;
+    private PhotoSize size;
 
     @Column(name = "content")
-    private Enum<ProductPhotoContent> content;
+    private ProductPhotoContent content;
 }

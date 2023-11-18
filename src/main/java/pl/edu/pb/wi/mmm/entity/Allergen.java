@@ -1,6 +1,9 @@
 package pl.edu.pb.wi.mmm.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "allergen")
@@ -10,6 +13,7 @@ import lombok.*;
 @Setter
 @Builder
 public class Allergen {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -18,4 +22,7 @@ public class Allergen {
     @Column(name = "name")
     private String name;
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "allergens")
+    private Set<Product> product;
 }

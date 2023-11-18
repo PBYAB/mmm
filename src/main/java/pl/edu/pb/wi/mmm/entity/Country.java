@@ -9,32 +9,24 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "ingredient")
+@Table(name = "country")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
-public class Ingredient {
+public class Country {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
+    @NotNull
     @Column(name = "name")
     private String name;
 
-    @Column(name = "vegan")
-    private Boolean vegan;
-
-    @Column(name = "vegetarian")
-    private Boolean vegetarian;
-
-    @Column(name = "from_palm_oil")
-    private Boolean fromPalmOil;
-
-    @ManyToMany(mappedBy = "ingredients")
+    @ManyToMany(mappedBy = "countries")
     @JsonIgnore
-    private Set<Product> products;
+    private Set<Product> product;
 }

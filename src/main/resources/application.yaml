@@ -13,7 +13,21 @@ spring:
     show-sql: true
   mvc:
     log-request-details: true
+  data:
+    mongodb:
+      host: localhost
+      database: 'pz'
+      port: 27017
+      username: michal
+      password: michal2115
+      authentication-database: admin
+
 logging:
   level:
-    org.springframework.security: DEBUG
-
+    org:
+      springframework:
+        security: DEBUG
+        data:
+          mongodb:
+            core:
+              MongoTemplate: DEBUG

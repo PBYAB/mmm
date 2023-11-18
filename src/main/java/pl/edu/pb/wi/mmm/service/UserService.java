@@ -3,6 +3,8 @@ package pl.edu.pb.wi.mmm.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,7 +16,8 @@ import pl.edu.pb.wi.mmm.repository.RoleRepository;
 import pl.edu.pb.wi.mmm.repository.UserRepository;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
