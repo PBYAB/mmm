@@ -1,4 +1,4 @@
-CREATE TABLE product_ingredient
+CREATE TABLE ingredient
 (
     id            SERIAL PRIMARY KEY,
     name          TEXT UNIQUE NOT NULL,
@@ -8,10 +8,10 @@ CREATE TABLE product_ingredient
     from_palm_oil BOOLEAN
 );
 
-CREATE TABLE product_ingredient_product
+CREATE TABLE product_ingredient
 (
     id            SERIAL PRIMARY KEY,
-    ingredient_id BIGINT REFERENCES product_ingredient (id),
+    ingredient_id BIGINT REFERENCES ingredient (id),
     product_id    BIGINT REFERENCES product (id)
 );
 
