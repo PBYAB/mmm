@@ -54,10 +54,21 @@ public class MigrationProductService {
     private final ProductIngredientAnalysisRepository productIngredientAnalysisRepository;
 
     private Set<Country> countriesCache = new HashSet<>();
+    private Set<Allergen> allergensCache = new HashSet<>();
+    private Set<Ingredient> ingredientsCache = new HashSet<>();
+    private Set<Category> categoriesCache = new HashSet<>();
+    private Set<Brand> brandsCache = new HashSet<>();
 
-    @Transactional
     public pl.edu.pb.wi.mmm.entity.Product findById(String id) {
         var found = productRepository.findByBarcode(id);
+
+        countriesCache = new HashSet<>(countryRepository.findAll());
+        allergensCache = new HashSet<>(allergenRepository.findAll());
+        ingredientsCache = new HashSet<>(ingredientRepository.findAll());
+        categoriesCache = new HashSet<>(productCategoryRepository.findAll());
+        brandsCache = new HashSet<>(brandRepository.findAll());
+
+        var a = 1;
 
         return found.orElseGet(() -> mongoMigrationProductRepository.findById(id)
                 .map(this::map)
@@ -66,6 +77,12 @@ public class MigrationProductService {
     }
 
     public Long migrateDataInBatches(int batchSize, int pagesToMigrate) {
+        countriesCache = new HashSet<>(countryRepository.findAll());
+        allergensCache = new HashSet<>(allergenRepository.findAll());
+        ingredientsCache = new HashSet<>(ingredientRepository.findAll());
+        categoriesCache = new HashSet<>(productCategoryRepository.findAll());
+        brandsCache = new HashSet<>(brandRepository.findAll());
+
         var currentSqlProductsSize = productRepository.count();
         long migrated = 0L;
         int pageNumber = (int) (currentSqlProductsSize / batchSize);
@@ -90,9 +107,10 @@ public class MigrationProductService {
 
 
     private pl.edu.pb.wi.mmm.entity.Product map(Product p) {
-        if (productRepository.findByBarcode(p.getCode()).isPresent()) {
+        if (productRepository.existsByBarcode(p.getCode())) {
             return null;
         }
+
         var brands = saveBrands(p);
 
         var countries = saveCountries(p);
@@ -176,27 +194,29 @@ public class MigrationProductService {
         Set<String> ingredientTags = mongoingredients.stream()
                 .map(pl.edu.pb.wi.mmm.entity.migration.Ingredient::getTagName).collect(Collectors.toSet());
 
+        Set<String> normalizedIngredientName = ingredientTags.stream()
+                .map(tag -> tag.split(":")[1].trim())
+                .map(countryName -> {
+                    String[] parts = countryName.split("-");
+                    if (parts.length > 1) {
+                        return Arrays.stream(parts)
+                                .map(part -> part.substring(0, 1).toUpperCase(Locale.ROOT) + part.substring(1))
+                                .collect(Collectors.joining(" "));
+                    }
+                    return countryName.substring(0, 1).toUpperCase(Locale.ROOT) + countryName.substring(1);
+                })
+                .collect(Collectors.toSet());
 
-        Set<Ingredient> categories = ingredientRepository.findAllByNameIn(
-                ingredientTags.stream()
-                        .map(tag -> tag.split(":")[1].trim())
-                        .map(countryName -> {
-                            String[] parts = countryName.split("-");
-                            if (parts.length > 1) {
-                                return Arrays.stream(parts)
-                                        .map(part -> part.substring(0, 1).toUpperCase(Locale.ROOT) + part.substring(1))
-                                        .collect(Collectors.joining(" "));
-                            }
-                            return countryName.substring(0, 1).toUpperCase(Locale.ROOT) + countryName.substring(1);
-                        })
-                        .collect(Collectors.toSet())
-        );
 
-        Set<String> existingIngredientNames = categories.stream()
+        Set<Ingredient> foundInCache = ingredientsCache.stream()
+                .filter(ingredient -> normalizedIngredientName.contains(ingredient.getName()))
+                .collect(Collectors.toSet());
+
+        Set<String> existingIngredientNames = foundInCache.stream()
                 .map(Ingredient::getName)
                 .collect(Collectors.toSet());
 
-        Set<Ingredient> newCategories = mongoingredients.stream()
+        Set<Ingredient> newItems = mongoingredients.stream()
                 .filter(whatever -> {
                     String[] parts = whatever.getTagName().split(":")[1].split("-");
                     String normalizedName = parts.length > 1 ?
@@ -230,11 +250,12 @@ public class MigrationProductService {
                 })
                 .collect(Collectors.toSet());
 
-        ingredientRepository.saveAll(newCategories);
+        var saved = ingredientRepository.saveAll(newItems);
 
-        categories.addAll(newCategories);
+        foundInCache.addAll(saved);
+        ingredientsCache.addAll(saved);
 
-        return categories;
+        return foundInCache;
     }
 
     private Boolean mapToBoolean(String value) {
@@ -248,31 +269,38 @@ public class MigrationProductService {
     public Set<Allergen> saveAllergens(Product product) {
         Set<String> allergenNames = product.getAllergensTags().stream()
                 .map(tag -> tag.split(":")[1])
+                .map(tag -> tag.replaceAll("-", " "))
+                .map(tag -> tag.substring(0, 1).toUpperCase() + tag.substring(1))
                 .collect(Collectors.toSet());
 
-        Set<Allergen> existingAllergens = allergenRepository.findAllByNameIn(allergenNames);
-        Set<String> existingAllergenNames = existingAllergens.stream().map(Allergen::getName).collect(Collectors.toSet());
+        Set<Allergen> foundInCache = allergensCache.stream()
+                .filter(category -> allergenNames.contains(category.getName()))
+                .collect(Collectors.toSet());
+
+        Set<String> existingAllergenNames = foundInCache
+                .stream()
+                .map(Allergen::getName)
+                .collect(Collectors.toSet());
 
         Set<Allergen> newAllergens = allergenNames.stream()
                 .filter(allergenName -> !existingAllergenNames.contains(allergenName))
                 .map(allergenName -> Allergen.builder().name(allergenName).build())
                 .collect(Collectors.toSet());
 
-        Set<Allergen> savedNewAllergens = new HashSet<>(allergenRepository.saveAll(newAllergens));
+        var saved = allergenRepository.saveAll(newAllergens);
 
-        Set<Allergen> allAllergens = new HashSet<>(existingAllergens);
-        allAllergens.addAll(savedNewAllergens);
+        foundInCache.addAll(saved);
+        allergensCache.addAll(saved);
 
-        return allAllergens;
+
+        return foundInCache;
     }
 
 
     public Set<Category> saveCategories(Product product) {
         Set<String> categoryTags = Optional.ofNullable(product.getCategoriesTags()).orElseGet(Set::of);
 
-
-        Set<Category> categories = productCategoryRepository.findAllByNameIn(
-                categoryTags.stream()
+        Set<String> normalizedNames = categoryTags.stream()
                         .map(tag -> tag.split(":")[1].trim())
                         .map(countryName -> {
                             String[] parts = countryName.split("-");
@@ -283,12 +311,13 @@ public class MigrationProductService {
                             }
                             return countryName.substring(0, 1).toUpperCase(Locale.ROOT) + countryName.substring(1);
                         })
-                        .collect(Collectors.toSet())
-        );
+                        .collect(Collectors.toSet());
 
-        Set<String> existingCategoryNames = categories.stream()
-                .map(Category::getName)
+        Set<Category> foundInCache = categoriesCache.stream()
+                .filter(category -> normalizedNames.contains(category.getName()))
                 .collect(Collectors.toSet());
+
+        var inCacheNames = foundInCache.stream().map(Category::getName).collect(Collectors.toSet());
 
         Set<Category> newCategories = categoryTags.stream()
                 .map(tag -> tag.split(":")[1].trim())
@@ -301,23 +330,23 @@ public class MigrationProductService {
                     }
                     return countryName.substring(0, 1).toUpperCase(Locale.ROOT) + countryName.substring(1);
                 })
-                .filter(categoryName -> !existingCategoryNames.contains(categoryName))
+                .filter(categoryName -> !inCacheNames.contains(categoryName))
                 .map(categoryName -> Category.builder().name(categoryName).build())
                 .collect(Collectors.toSet());
 
-        productCategoryRepository.saveAll(newCategories);
+        var saved = productCategoryRepository.saveAll(newCategories);
 
-        categories.addAll(newCategories);
+        foundInCache.addAll(saved);
+        categoriesCache.addAll(saved);
 
-        return categories;
+        return foundInCache;
     }
 
 
     private Set<Country> saveCountries(Product product) {
         Set<String> countryTags = Optional.ofNullable(product.getCountries_tags()).orElseGet(Set::of);
 
-        Set<Country> countries = countryRepository.findAllByNameIn(
-                countryTags.stream()
+               var normalizedCountriesNames = countryTags.stream()
                         .map(tag -> tag.split(":")[1].trim())
                         .map(countryName -> {
                             String[] parts = countryName.split("-");
@@ -328,12 +357,14 @@ public class MigrationProductService {
                             }
                             return countryName.substring(0, 1).toUpperCase(Locale.ROOT) + countryName.substring(1);
                         })
-                        .collect(Collectors.toSet())
-        );
+                        .collect(Collectors.toSet());
 
-        Set<String> existingCountryNames = countries.stream()
-                .map(Country::getName)
+        Set<Country> foundInCache = countriesCache.stream()
+                .filter(country -> normalizedCountriesNames.contains(country.getName()))
                 .collect(Collectors.toSet());
+
+
+        Set<String> foundInCacheNames = foundInCache.stream().map(Country::getName).collect(Collectors.toSet());
 
         Set<Country> newCountries = countryTags.stream()
                 .map(tag -> tag.split(":")[1].trim())
@@ -346,15 +377,15 @@ public class MigrationProductService {
                     }
                     return countryName.substring(0, 1).toUpperCase(Locale.ROOT) + countryName.substring(1);
                 })
-                .filter(countryName -> !existingCountryNames.contains(countryName))
+                .filter(countryName -> !foundInCacheNames.contains(countryName))
                 .map(countryName -> Country.builder().name(countryName).build())
                 .collect(Collectors.toSet());
 
-        countryRepository.saveAll(newCountries);
+        var saved = countryRepository.saveAll(newCountries);
+        foundInCache.addAll(saved);
+        countriesCache.addAll(saved);
 
-        countries.addAll(newCountries);
-
-        return countries;
+        return foundInCache;
     }
 
     public Set<Brand> saveBrands(Product product) {
@@ -373,33 +404,32 @@ public class MigrationProductService {
                 })
                 .collect(Collectors.toSet());
 
-        Set<Brand> brands = brandRepository.findAllByNameIn(
-             normalizedBransNames
-        );
+        Set<Brand> foundInCache = brandsCache.stream()
+                .filter(ingredient -> normalizedBransNames.contains(ingredient.getName()))
+                .collect(Collectors.toSet());
 
-        Set<String> existingBrandNames = brands.stream()
+        Set<String> existingBrandNames = foundInCache.stream()
                 .map(Brand::getName)
                 .collect(Collectors.toSet());
 
-        Set<Brand> newCountries = brandTags.stream()
-                .map(countryName -> {
-                    String[] parts = countryName.split("-");
+        Set<Brand> newItems = brandTags.stream()
+                .map(name -> {
+                    String[] parts = name.split("-");
                     if (parts.length > 1) {
                         return Arrays.stream(parts)
                                 .map(part -> part.substring(0, 1).toUpperCase(Locale.ROOT) + part.substring(1))
                                 .collect(Collectors.joining(" "));
                     }
-                    return countryName.substring(0, 1).toUpperCase(Locale.ROOT) + countryName.substring(1);
+                    return name.substring(0, 1).toUpperCase(Locale.ROOT) + name.substring(1);
                 })
                 .filter(name -> !existingBrandNames.contains(name))
                 .map(name -> Brand.builder().name(name).build())
                 .collect(Collectors.toSet());
 
-        brandRepository.saveAll(newCountries);
+       var saved = brandRepository.saveAll(newItems);
+        brandsCache.addAll(saved);
+        foundInCache.addAll(newItems);
 
-
-        brands.addAll(newCountries);
-
-        return brands;
+        return foundInCache;
     }
 }
