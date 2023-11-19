@@ -78,11 +78,11 @@ public class Product {
 
     @ManyToMany
     @JoinTable(
-            name = "product_ingredient",
+            name = "product_ingredient_product",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
-    private Set<Ingredient> ingredients;
+    private Set<ProductIngredient> ingredients;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ingredient_analysis_id", referencedColumnName = "id")
