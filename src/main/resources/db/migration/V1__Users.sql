@@ -30,9 +30,9 @@ CREATE TABLE user_role
 CREATE TABLE auth_token
 (
     id         SERIAL PRIMARY KEY,
-    token      VARCHAR(4096) UNIQUE             NOT NULL,
-    token_type VARCHAR(255)                     NOT NULL,
-    revoked    BOOLEAN                          NOT NULL,
-    expired    BOOLEAN                          NOT NULL,
+    token      VARCHAR(4096) UNIQUE            NOT NULL,
+    token_type VARCHAR(255)                    NOT NULL,
+    revoked    BOOLEAN                         NOT NULL,
+    expired    BOOLEAN                         NOT NULL,
     user_id    BIGINT REFERENCES app_user (id) NOT NULL
 );

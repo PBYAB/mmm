@@ -8,7 +8,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -41,7 +40,7 @@ public class User implements UserDetails {
     private Boolean enabled;
 
     @OneToMany(mappedBy = "user")
-    private List<Token> tokens;
+    private Set<Token> tokens;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -50,13 +49,6 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName().toString()))
-                .toList();
-    }
 
     @Override
     public String getUsername() {
@@ -81,6 +73,13 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName().toString()))
+                .toList();
     }
 
 }
