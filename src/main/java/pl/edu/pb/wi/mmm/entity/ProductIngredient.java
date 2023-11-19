@@ -2,20 +2,19 @@ package pl.edu.pb.wi.mmm.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.Set;
 
 
 @Entity
-@Table(name = "ingredient")
+@Table(name = "product_ingredient")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
-public class Ingredient {
+public class ProductIngredient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +33,7 @@ public class Ingredient {
     @Column(name = "from_palm_oil")
     private Boolean fromPalmOil;
 
-    @ManyToMany(mappedBy = "ingredients")
+    @ManyToMany(mappedBy = "productIngredients")
     @JsonIgnore
     private Set<Product> products;
 }
