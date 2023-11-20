@@ -10,9 +10,10 @@ CREATE TABLE product_ingredient
 
 CREATE TABLE product_ingredient_product
 (
-    id            SERIAL PRIMARY KEY,
     ingredient_id BIGINT REFERENCES product_ingredient (id),
-    product_id    BIGINT REFERENCES product (id)
+    product_id    BIGINT REFERENCES product (id),
+
+    PRIMARY KEY (ingredient_id, product_id)
 );
 
 CREATE TABLE country
@@ -23,7 +24,8 @@ CREATE TABLE country
 
 CREATE TABLE product_country
 (
-    id         SERIAL PRIMARY KEY,
     country_id BIGINT REFERENCES country (id),
-    product_id BIGINT REFERENCES product (id)
+    product_id BIGINT REFERENCES product (id),
+
+    PRIMARY KEY (country_id, product_id)
 );

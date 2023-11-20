@@ -22,21 +22,13 @@ CREATE TABLE product_ingredient_analysis
 CREATE TABLE product
 (
     id                     SERIAL PRIMARY KEY,
-    barcode                TEXT        NOT NULL,
+    barcode                TEXT NOT NULL,
     name                   TEXT,
     quantity               TEXT,
     nutri_score            INT,
     nova_group             INT,
     ingredient_analysis_id BIGINT REFERENCES product_ingredient_analysis (id),
     nutriment_id           BIGINT REFERENCES nutriment (id)
-);
-
-CREATE TABLE product_image
-(
-    id         SERIAL PRIMARY KEY,
-    product_id BIGINT REFERENCES product (id) NOT NULL,
-    size       TEXT,
-    content    TEXT
 );
 
 
@@ -60,21 +52,24 @@ CREATE TABLE brand
 
 CREATE TABLE product_allergen
 (
-    id          SERIAL PRIMARY KEY,
     product_id  BIGINT REFERENCES product (id),
-    allergen_id BIGINT REFERENCES allergen (id)
+    allergen_id BIGINT REFERENCES allergen (id),
+
+    PRIMARY KEY (product_id, allergen_id)
 );
 
 CREATE TABLE product_brand
 (
-    id         SERIAL PRIMARY KEY,
     product_id BIGINT REFERENCES product (id),
-    brand_id   BIGINT REFERENCES category (id)
+    brand_id   BIGINT REFERENCES category (id),
+
+    PRIMARY KEY (product_id, brand_id)
 );
 
 CREATE TABLE product_category
 (
-    id          SERIAL PRIMARY KEY,
     product_id  BIGINT REFERENCES product (id),
-    category_id BIGINT REFERENCES category (id)
+    category_id BIGINT REFERENCES category (id),
+
+    PRIMARY KEY (product_id, category_id)
 );

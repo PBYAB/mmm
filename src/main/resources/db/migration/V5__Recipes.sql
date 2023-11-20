@@ -1,12 +1,10 @@
 CREATE TABLE recipe
 (
-    id   SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    instructions TEXT,
-    servings NUMERIC,
+    id                      SERIAL PRIMARY KEY,
+    name                    TEXT NOT NULL,
+    instructions            TEXT,
+    servings                NUMERIC,
     energy_kcal_per_serving NUMERIC
-    --images
-
 );
 
 CREATE TABLE ingredient
@@ -17,12 +15,11 @@ CREATE TABLE ingredient
 
 CREATE TABLE recipe_ingredient
 (
-    id   SERIAL PRIMARY KEY,
-    recipe_id BIGINT REFERENCES recipe (id) NOT NULL,
+    id            SERIAL PRIMARY KEY,
+    recipe_id     BIGINT REFERENCES recipe (id)     NOT NULL,
     ingredient_id BIGINT REFERENCES ingredient (id) NOT NULL,
-    quantity NUMERIC,
-    unit TEXT
-
+    quantity      NUMERIC,
+    unit          TEXT
 );
 
 
