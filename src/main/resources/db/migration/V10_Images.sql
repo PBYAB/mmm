@@ -1,4 +1,4 @@
-CREATE TABLE product_image
+/*CREATE TABLE product_image
 (
     product_id BIGINT REFERENCES product (id),
     file_id    BIGINT REFERENCES file (id),
@@ -12,4 +12,4 @@ CREATE TABLE recipe_image
     file_id   BIGINT REFERENCES file (id),
 
     PRIMARY KEY (recipe_id, file_id)
-);
+);*/

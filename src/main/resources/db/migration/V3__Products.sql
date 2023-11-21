@@ -61,7 +61,7 @@ CREATE TABLE product_allergen
 CREATE TABLE product_brand
 (
     product_id BIGINT REFERENCES product (id),
-    brand_id   BIGINT REFERENCES category (id),
+    brand_id   BIGINT REFERENCES brand (id),
 
     PRIMARY KEY (product_id, brand_id)
 );
