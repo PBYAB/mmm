@@ -24,5 +24,5 @@ public class Allergen {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "allergens")
-    private Set<Product> product;
+    private Set<Product> products;
 }

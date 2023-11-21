@@ -28,5 +28,5 @@ public class Category {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "categories")
-    private Set<Product> product;
+    private Set<Product> products;
 }

@@ -2,7 +2,6 @@ CREATE TABLE product_ingredient
 (
     id            SERIAL PRIMARY KEY,
     name          TEXT UNIQUE NOT NULL,
-    quantity      INT,
     vegan         BOOLEAN,
     vegetarian    BOOLEAN,
     from_palm_oil BOOLEAN
