@@ -50,6 +50,15 @@ public class User implements UserDetails {
     )
     private Set<Role> roles;
 
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_favourite_recipe",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "recipe_id")
+    )
+    private Set<Recipe> favouriteRecipes;
+
     @Override
     public String getUsername() {
         return email;

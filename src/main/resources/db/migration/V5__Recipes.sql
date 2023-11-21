@@ -3,7 +3,7 @@ CREATE TABLE recipe
     id                      SERIAL PRIMARY KEY,
     name                    TEXT NOT NULL,
     instructions            TEXT,
-    servings                NUMERIC,
+    servings                INT,
     energy_kcal_per_serving NUMERIC
 );
 

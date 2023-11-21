@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "role")
 @AllArgsConstructor
@@ -22,4 +24,7 @@ public class Role {
     @Enumerated(EnumType.STRING)
     @Column(name = "name")
     private pl.edu.pb.wi.mmm.enumeration.Role name;
+
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
 }
