@@ -1,8 +1,10 @@
 package pl.edu.pb.wi.mmm.controller;
 
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,46 +12,44 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
-import pl.edu.pb.wi.mmm.dto.ArticleDTO;
-import pl.edu.pb.wi.mmm.dto.CreateArticleRequest;
-import pl.edu.pb.wi.mmm.dto.mapper.ArticleMapper;
-import pl.edu.pb.wi.mmm.entity.Article;
-import pl.edu.pb.wi.mmm.service.ArticleService;
+import pl.edu.pb.wi.mmm.dto.CreateRecipeRequest;
+import pl.edu.pb.wi.mmm.entity.Recipe;
+import pl.edu.pb.wi.mmm.service.RecipeService;
 
 import java.net.URI;
 
-@Tag(name = "Article", description = "Article APIs")
+@Tag(name = "Recipe", description = "Recipe APIs")
 @RestController
-@RequestMapping(ArticleController.API_ARTICLES)
+@RequestMapping(RecipeController.API_RECIPES)
 @RequiredArgsConstructor
-public class ArticleController {
+public class RecipeController {
 
-    public static final String API_ARTICLES = "/api/v1/knowledgeBase/articles";
+    public static final String API_RECIPES = "/api/v1/recipes";
 
-    public static final String ARTICLE = "/{id}";
-
-    private final ArticleService articleService;
-
-    private final ArticleMapper articleMapper;
+    private final RecipeService recipeService;
 
     private final ValidationHandler validationHandler;
 
-    @PostMapping()
-    @Operation(summary = "Create a new article")
+
+    @PostMapping
+    @Operation(summary = "Create a new recipe")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201",
-                    description = "Article created successfully"
+                    description = "Recipe created successfully",
+                    content = {
+                            @Content(
+                                    schema = @Schema(implementation = Recipe.class)
+                            )
+                    }
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -57,65 +57,59 @@ public class ArticleController {
             ),
             @ApiResponse(
                     responseCode = "403",
-                    description = "Forbidden - Access denied"
+                    description = "Forbidden - User is not allowed to create a recipe"
             )
     })
-    public ResponseEntity<?> createArticle(
-            @Valid @RequestBody CreateArticleRequest form,
+    public ResponseEntity<?> createRecipe(
+            @RequestBody @Valid CreateRecipeRequest createRecipeRequest,
             BindingResult bindingResult
     ) {
         validationHandler.validateAndHandleErrors(bindingResult);
-
-        var saved = articleService.save(form);
-
+        Recipe recipe = recipeService.createRecipe(createRecipeRequest);
         return ResponseEntity
-                .created(URI.create(API_ARTICLES + "/%s".formatted(saved.getId())))
-                .build();
+                .created(URI.create(API_RECIPES + "/" + recipe.getId()))
+                .body(recipe);
     }
 
     @GetMapping
-    @Operation(summary = "List all categories with pagination")
+    @Operation(summary = "Get a list of all recipes")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
                     description = "OK",
                     content = {
                             @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Page.class)
+                                    schema = @Schema(implementation = Recipe.class)
                             )
-                    })
+                    }
+            )
     })
-    public Page<ArticleDTO> listCategories(
+    public ResponseEntity<Page<Recipe>> getRecipes(
             Pageable pageable
     ) {
-        return articleService.findAll(pageable)
-                .map(articleMapper::map);
+        return ResponseEntity.ok(recipeService.findAll(pageable));
     }
 
-    @GetMapping(ARTICLE)
-    @Operation(summary = "Find an article by ID")
+    @GetMapping("/{id}")
+    @Operation(summary = "Get a single recipe")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
                     description = "OK",
                     content = {
                             @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ArticleDTO.class)
+                                    schema = @Schema(implementation = Recipe.class)
                             )
                     }
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Not Found - Article with the specified ID not found"
+                    description = "Not Found - Recipe with given ID does not exist"
             )
     })
-    public ResponseEntity<ArticleDTO> findArticleById(
+    public ResponseEntity<Recipe> getRecipe(
             @PathVariable Long id
     ) {
-        Article article = articleService.findById(id);
-
-        return ResponseEntity.ok(articleMapper.map(article));
+        return ResponseEntity.ok(recipeService.findById(id));
     }
 }

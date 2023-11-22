@@ -1,4 +1,4 @@
-package pl.edu.pb.wi.mmm.controller;
+package pl.edu.pb.wi.mmm.controller.handlers;
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;

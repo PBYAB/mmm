@@ -1,5 +1,6 @@
 package pl.edu.pb.wi.mmm.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -46,6 +47,7 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe")
     private Set<RecipeIngredient> recipeIngredients;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "favouriteRecipes")
     private Set<User> users;
 }

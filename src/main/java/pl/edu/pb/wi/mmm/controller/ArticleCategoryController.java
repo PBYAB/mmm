@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
 import pl.edu.pb.wi.mmm.dto.ArticleCategoryDTO;
 import pl.edu.pb.wi.mmm.dto.CreateArticleCategoryRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.ArticleCategoryMapper;
@@ -28,7 +29,7 @@ import pl.edu.pb.wi.mmm.service.ArticleCategoryService;
 
 import java.net.URI;
 
-@Tag(name = "knowledgeBase")
+@Tag(name = "Article", description = "Article Category APIs")
 @RestController
 @RequestMapping(ArticleCategoryController.API_CATEGORIES)
 @RequiredArgsConstructor
@@ -101,7 +102,8 @@ public class ArticleCategoryController {
                     description = "OK",
                     content = {
                             @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ArticleCategoryDTO.class)
                             )
                     }
             ),
