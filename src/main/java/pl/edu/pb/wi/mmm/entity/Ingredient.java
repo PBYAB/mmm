@@ -36,3 +36,4 @@ public class Ingredient {
     @OneToMany(mappedBy = "ingredient")
     private Set<RecipeIngredient> recipeIngredients;
 }
+

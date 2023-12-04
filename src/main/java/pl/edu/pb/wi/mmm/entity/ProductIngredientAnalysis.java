@@ -34,3 +34,5 @@ public class ProductIngredientAnalysis {
     @Column(name = "from_palm_oil")
     private Boolean fromPalmOil;
 }
+
+

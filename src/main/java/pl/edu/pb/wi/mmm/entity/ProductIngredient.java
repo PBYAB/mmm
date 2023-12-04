@@ -37,3 +37,5 @@ public class ProductIngredient {
     @JsonIgnore
     private Set<Product> products;
 }
+
+

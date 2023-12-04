@@ -51,3 +51,5 @@ public class Recipe {
     @ManyToMany(mappedBy = "favouriteRecipes")
     private Set<User> users;
 }
+
+

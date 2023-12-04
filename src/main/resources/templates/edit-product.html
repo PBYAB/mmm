@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Product</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{navbar.html :: navbar}"></div>
+    <h1>Edit Product</h1>
+    <hr>
+    <form method="post" th:action="@{/statuses/{id}(id=${statusId})}" th:object="${status}">
+        <input type="hidden" name="_method" value="put">
+        <div class="form-group">
+            <label for="summaryInput">Barcode:</label>
+            <input type="text" id="barcodeInput" name="barcode" class="form-control" th:field="*{name}">
+            <div th:if="${#fields.hasErrors('summary')}" th:errors="*{summary}" class="alert alert-danger"></div>
+        </div>
+        <div class="form-group">
+            <label for="nameInput">Name:</label>
+            <input type="text" id="nameInput" name="name" class="form-control" th:field="*{name}">
+        </div>
+        <div class="form-group">
+            <label for="quantityInput">Quantity:</label>
+            <input type="text" id="quantityInput" name="quantity" class="form-control" th:field="*{quantity}">
+        </div>
+        
+        <div class="form-group">
+            <label for="nutriScoreSelect">Nutri Score:</label>
+            <select id="nutriScoreSelect" name="nutriScore" class="form-control" th:field="*{nutri_score}">
+                <option value="a">A</option>
+                <option value="b">B</option>
+                <option value="c">C</option>
+                <option value="d">D</option>
+                <option value="e">E</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="novaGroupInput">Nova Group:</label>
+            <select type="number" id="novaGroupInput" name="novaGroup" class="form-control" th:field="*{nova_group}">
+                <option value="a">1</option>
+                <option value="b">2</option>
+                <option value="c">3</option>
+                <option value="d">4</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="ingredientsDescriptionInput">Ingredients Description:</label>
+            <textarea id="ingredientsDescriptionInput" name="ingredientsDescription" class="form-control" th:text="*{ingredient_analysis.ingredients_description}"></textarea>
+        </div>
+        <br>
+        <div class="form-group">
+            <label for="veganCheckbox">Vegan:</label>
+            <input type="checkbox" id="veganCheckbox" name="vegan" class="form-check-input" th:checked="*{ingredient_analysis.vegan}">
+        </div>
+        
+        <div class="form-group">
+            <label for="vegetarianCheckbox">Vegetarian:</label>
+            <input type="checkbox" id="vegetarianCheckbox" name="vegetarian" class="form-check-input" th:checked="*{ingredient_analysis.vegetarian}">
+        </div>
+        
+        <div class="form-group">
+            <label for="fromPalmOilCheckbox">From Palm Oil:</label>
+            <input type="checkbox" id="fromPalmOilCheckbox" name="fromPalmOil" class="form-check-input" th:checked="*{ingredient_analysis.from_palm_oil}">
+        </div>
+        <br>
+        <div class="form-group">
+            <label for="energyInput">Energy (kcal per 100g):</label>
+            <input type="number" id="energyInput" name="energy" class="form-control" th:field="*{nutriment.energy_kcal_per_100g}" required min="1">
+        </div>
+        <div class="form-group">
+            <label for="fatInput">Fat (g/100g):</label>
+            <input type="number" id="fatInput" name="fatPer100g" class="form-control" th:field="*{nutriment.fat_per_100g}"required min="0.01">
+        </div>
+        
+        <div class="form-group">
+            <label for="fiberInput">Fiber (g/100g):</label>
+            <input type="number" id="fiberInput" name="fiberPer100g" class="form-control" th:field="*{nutriment.fiber_per_100g}"required min="0.01">
+        </div>
+        
+        <div class="form-group">
+            <label for="proteinsInput">Proteins (g/100g):</label>
+            <input type="number" id="proteinsInput" name="proteinsPer100g" class="form-control" th:field="*{nutriment.proteins_per_100g}"required min="0.01">
+        </div>
+        
+        <div class="form-group">
+            <label for="saltInput">Salt (g/100g):</label>
+            <input type="number" id="saltInput" name="saltPer100g" class="form-control" th:field="*{nutriment.salt_per_100g}"required min="0.01">
+        </div>
+        
+        <div class="form-group">
+            <label for="sugarsInput">Sugars (g/100g):</label>
+            <input type="number" id="sugarsInput" name="sugarsPer100g" class="form-control" th:field="*{nutriment.sugars_per_100g}"required min="0.01">
+        </div>
+        
+        <div class="form-group">
+            <label for="sodiumInput">Sodium (g/100g):</label>
+            <input type="number" id="sodiumInput" name="sodiumPer100g" class="form-control" th:field="*{nutriment.sodium_per_100g}"required min="0.01">
+        </div>
+    
+        
+        <div class="form-group">
+            <label for="allergens">Allergens:</label><br>
+            <select name="allergensInput" id="allergens" multiple multiselect-hide-x="true">
+                <option value="1">gluten</option>
+                <option value="2">milk</option>
+                <option value="3">nuts</option>
+                <option value="4">eggs</option>
+                <option value="5">soy</option>
+              </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="categoryInput">Categories:</label>
+            <select  id="categoryInput" name="categories" class="form-control" th:field="*{categories}">
+                <option value="1">Category 1</option>
+                <option value="2">Category 2</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="brandInput">Brands:</label>
+            <select  id="brandInput" name="brands" class="form-control" th:field="*{brands}" multiple>
+                <option value="1">Brand 1</option>
+                <option value="2">Brand 2</option>
+            </select>
+        </div>
+        
+        <br>
+        <button type="submit" class="btn btn-primary" style="color: #ffffff; background-color: #0a0aff;">
+            Save
+        </button>
+    </form>
+</div>
+</body>
+</html>

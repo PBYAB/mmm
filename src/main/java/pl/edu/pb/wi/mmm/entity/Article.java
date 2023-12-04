@@ -50,3 +50,4 @@ public class Article {
     @Enumerated(EnumType.STRING)
     private ArticleStatus status;
 }
+

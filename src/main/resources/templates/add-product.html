@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Add Task</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+  <div th:insert="~{navbar.html :: navbar}"></div>
+  <h2>Add product</h2>
+  <hr>
+  <form method="post" th:action="@{/tasks}" th:object="${taskForm}">
+    <div class="form-group">
+      <label for="barcodeInput">Barcode:</label>
+      <input type="text" id="barcodeInput" name="barcode" class="form-control" th:field="*{barcode}">
+      <div th:if="${#fields.hasErrors('barcode')}" th:errors="*{barcode}" class="alert alert-danger"></div>
+    </div>
+    <div class="form-group">
+      <label for="nameInput">Name:</label>
+      <input type="text" id="summaryInput" name="name" class="form-control" th:field="*{name}">
+      <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="alert alert-danger"></div>
+    </div>
+    <div class="form-group">
+      <label for="quantityInput">Quantity:</label>
+      <input type="text" id="quantityInput" name="quantity" class="form-control" th:field="*{quantity}">
+      <div th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" class="alert alert-danger"></div>
+    </div>
+    <div class="form-group">
+      <label for="nutriScoreSelect">Nutri Score:</label>
+      <select id="nutriScoreSelect" name="nutriScore" class="form-control" th:field="{nutri_score}">
+        <option value="a">A</option>
+        <option value="b">B</option>
+        <option value="c">C</option>
+        <option value="d">D</option>
+        <option value="e">E</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="novaGroupInput">Nova Group:</label>
+      <select type="number" id="novaGroupInput" name="novaGroup" class="form-control" th:field="{nova_group}">
+        <option value="a">1</option>
+        <option value="b">2</option>
+        <option value="c">3</option>
+        <option value="d">4</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="vegan">Vegan:</label>
+      <input type="checkbox" id="vegan" name="vegan" th:checked="${ingredientAnalysis.vegan}">
+    </div>
+
+    <div class="form-group">
+      <label for="vegetarian">Vegetarian:</label>
+      <input type="checkbox" id="vegetarian" name="vegetarian" th:checked="${ingredientAnalysis.vegetarian}">
+    </div>
+
+    <div class="form-group">
+      <label for="from_palm_oil">From Palm Oil:</label>
+      <input type="checkbox" id="from_palm_oil" name="from_palm_oil" th:checked="${ingredientAnalysis.fromPalmOil}">
+    </div>
+
+
+    <div class="form-group">
+      <label for="energy">Energy (kcal/100g):</label><br>
+      <input type="number" id="energy" name="energy_kcal_per_100g" required min = 0.01><br>
+    </div>
+
+    <div class="form-group">
+      <label for="fat">Fat (g/100g):</label><br>
+      <input type="number" id="fat" name="fat_per_100g" required min = 0.01><br>
+    </div>
+
+    <div class="form-group">
+      <label for="fiber">Fiber (g/100g):</label><br>
+      <input type="number" id="fiber" name="fiber_per_100g" required min = 0.01><br>
+    </div>
+
+    <div class="form-group">
+      <label for="proteins">Proteins (g/100g):</label><br>
+      <input type="number" id="proteins" name="proteins_per_100g" required min = 0.01><br>
+    </div>
+
+    <div class="form-group">
+      <label for="salt">Salt (g/100g):</label><br>
+      <input type="number" id="salt" name="salt_per_100g" required min = 0.01><br>
+    </div>
+
+    <div class="form-group">
+      <label for="sugars">Sugars (g/100g):</label><br>
+      <input type="number" id="sugars" name="sugars_per_100g" required min = 0.01><br>
+    </div>
+
+    <div class="form-group">
+      <label for="sodium">Sodium (mg/100g):</label><br>
+      <input type="number" id="sodium" name="sodium_per_100g" required min = 0.01><br>
+    </div>
+
+    <div class="form-group">
+      <label for="allergens">Allergens:</label><br>
+      <select name="allergensInput" id="allergens" multiple multiselect-hide-x="true">
+        <option value="1">gluten</option>
+        <option value="2">milk</option>
+        <option value="3">nuts</option>
+        <option value="4">eggs</option>
+        <option value="5">soy</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="brandInput">Brand:</label>
+      <select class="form-control" th:field="*{category}" required>
+        <option value="">Brand</option>
+        <option th:each="ctg : ${categories}" th:value="${ctg.id}" th:text="${ctg.name}">category</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="categoryInput">Category:</label>
+      <select class="form-control" th:field="*{category}" required>
+        <option value="">Category</option>
+        <option th:each="ctg : ${categories}" th:value="${ctg.id}" th:text="${ctg.name}">category</option>
+      </select>
+    </div>
+    <br>
+    <br><br>
+    <button type="submit" class="btn btn-primary" style="color: #ffffff; background-color: #0a0aff;">
+      Add
+    </button>
+  </form>
+</div>
+
+<script src="multiselect-dropdown.js" ></script>
+</body>
+</html>

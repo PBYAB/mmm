@@ -29,3 +29,4 @@ public class Brand {
     @ManyToMany(mappedBy = "brands")
     private Set<Product> products;
 }
+

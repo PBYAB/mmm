@@ -26,3 +26,5 @@ public class Allergen {
     @ManyToMany(mappedBy = "allergens")
     private Set<Product> products;
 }
+
+
