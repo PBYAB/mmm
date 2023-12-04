@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Recipes</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}"/>
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{navbar.html :: navbar}"></div>
+    <h1 th:text="|Categories|"></h1>
+    <a sec:authorize-url="/categories/add" th:href="@{/categories/add}" class="btn btn-success" style="color: #ffffff; background-color: #146126;">
+        Add Category
+    </a>
+    <ol class="list-group">
+        <li th:each="category : ${page}" class="list-group-item">
+            <h5 class="card-title" th:text="|name: ${category.name} |"></h5>
+            <span th:text="|Name: ${category.description} |"></span>
+            <br>
+            <span th:text="|Servings: ${category.description} |"></span>
+            <br>
+
+        </li>
+    </ol>
+    <div th:if="${page.totalPages > 1}">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${page.number == 0} ? 'disabled'">
+                    <a class="page-link" th:href="@{/categories(page=0, size=${page.size})}" tabindex="-1" aria-disabled="true">Previous</a>
+                </li>
+                <li th:each="pageNumber : ${#numbers.sequence(0, page.totalPages - 1)}"
+                    class="page-item"
+                    th:classappend="${page.number == pageNumber} ? 'active'">
+                    <a class="page-link" th:href="@{/categories(pageNumber=${pageNumber}, pageSize=${page.size})}" th:text="${pageNumber + 1}"></a>
+                </li>
+                <li class="page-item" th:classappend="${page.number == page.totalPages - 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{/categories(pageNumber=${page.totalPages - 1}, pageSize=${page.size})}">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+</body>
+</html>
