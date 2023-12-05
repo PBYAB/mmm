@@ -32,6 +32,7 @@ CREATE TABLE product
 );
 
 
+
 CREATE TABLE allergen
 (
     id   SERIAL PRIMARY KEY,
