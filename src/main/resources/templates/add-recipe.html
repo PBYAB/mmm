@@ -19,9 +19,9 @@
 <body>
 <div class="container">
     <div th:insert="~{navbar.html :: navbar}"></div>
-    <h1>Add Task</h1>
+    <h1>Add Recipe</h1>
     <hr>
-    <h2>Task Details</h2>
+    <h2>Recipe Details</h2>
     <form method="post" th:action="@{/tasks}" th:object="${taskForm}">
         <div class="form-group">
             <label for="nameInput">Summary:</label>

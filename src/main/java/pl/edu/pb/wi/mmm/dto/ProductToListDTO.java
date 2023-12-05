@@ -1,12 +1,10 @@
 package pl.edu.pb.wi.mmm.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import lombok.With;
+import lombok.*;
 
 @Data
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Builder
 @With
 public class ProductToListDTO {

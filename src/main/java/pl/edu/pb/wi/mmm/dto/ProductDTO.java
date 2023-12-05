@@ -9,7 +9,7 @@ import lombok.*;
 import java.util.Set;
 
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Builder
 @With
 public class ProductDTO {

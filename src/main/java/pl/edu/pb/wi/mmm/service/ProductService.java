@@ -3,8 +3,11 @@ package pl.edu.pb.wi.mmm.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.edu.pb.wi.mmm.entity.Product;
+import pl.edu.pb.wi.mmm.entity.User;
 import pl.edu.pb.wi.mmm.repository.ProductRepository;
 
 @Service
@@ -24,5 +27,7 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-
+    public Page<Product> findAll(User owner, Pageable pageable) {
+        return productRepository.findAllByOwner(owner, pageable);
+    }
 }

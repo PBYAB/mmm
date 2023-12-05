@@ -1,13 +1,11 @@
 package pl.edu.pb.wi.mmm.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import lombok.With;
+import lombok.*;
 
 @Data
 @RequiredArgsConstructor
 @Builder
+@AllArgsConstructor
 @With
 public class RecipeToListDTO {
 
