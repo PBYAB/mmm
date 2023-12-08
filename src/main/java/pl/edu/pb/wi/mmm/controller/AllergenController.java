@@ -15,41 +15,34 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
-import pl.edu.pb.wi.mmm.dto.BrandDTO;
-import pl.edu.pb.wi.mmm.dto.CreateBrandRequest;
-import pl.edu.pb.wi.mmm.dto.mapper.BrandMapper;
-import pl.edu.pb.wi.mmm.entity.Brand;
-import pl.edu.pb.wi.mmm.service.BrandService;
+import pl.edu.pb.wi.mmm.dto.AllergenDTO;
+import pl.edu.pb.wi.mmm.dto.mapper.AllergenMapper;
+import pl.edu.pb.wi.mmm.entity.Allergen;
+import pl.edu.pb.wi.mmm.service.AllergenService;
 
 import java.net.URI;
 
-@Tag(name = "Brand", description = "Brand APIs")
+@Tag(name = "Allergen", description = "Allergen APIs")
 @RestController
-@RequestMapping(BrandController.API_BRANDS)
+@RequestMapping(AllergenController.API_ALLERGENS)
 @RequiredArgsConstructor
-public class BrandController {
+public class AllergenController {
 
-    public static final String API_BRANDS = "/api/v1/brands";
+    public static final String API_ALLERGENS = "/api/v1/allergens";
+    public static final String ALLERGEN = "/{id}";
 
-    private final BrandService brandService;
+    private final AllergenService allergenService;
+
+    private final AllergenMapper allergenMapper;
 
     private final ValidationHandler validationHandler;
 
-    private final BrandMapper brandMapper;
-
-
     @PostMapping
-    @Operation(summary = "Create a new brand")
+    @Operation(summary = "Create a new allergen")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201",
-                    description = "Brand created successfully",
-                    content = {
-                            @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Brand.class)
-                            )
-                    }
+                    description = "Allergen created successfully"
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -60,20 +53,22 @@ public class BrandController {
                     description = "Forbidden - Access denied"
             )
     })
-    public ResponseEntity<?> createBrand(
-            @Valid @org.springframework.web.bind.annotation.RequestBody CreateBrandRequest form,
+    public ResponseEntity<?> createAllergen(
+            @Valid @RequestBody AllergenDTO form,
             BindingResult bindingResult
     ) {
         validationHandler.validateAndHandleErrors(bindingResult);
-        Brand created = brandService.createBrand(form);
+
+        var saved = allergenService.save(form);
+
         return ResponseEntity
-                .created(URI.create(API_BRANDS + "/" + created.getId()))
+                .created(URI.create(API_ALLERGENS + "/%s".formatted(saved.getId())))
                 .build();
     }
 
 
     @GetMapping
-    @Operation(summary = "Get all brands")
+    @Operation(summary = "List all allergens with pagination")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -83,17 +78,17 @@ public class BrandController {
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = Page.class)
                             )
-                    }
-            )
+                    })
     })
-    public ResponseEntity<?> getAllBrands(
+    public ResponseEntity<?> listAllergens(
             Pageable pageable
     ) {
-        return ResponseEntity.ok(brandService.findAll(pageable).map(brandMapper::map));
+        return ResponseEntity.ok(allergenService.findAll(pageable).map(allergenMapper::map));
     }
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Get brand by ID")
+
+    @GetMapping(ALLERGEN)
+    @Operation(summary = "Find a allergen by ID")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -101,62 +96,64 @@ public class BrandController {
                     content = {
                             @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Brand.class)
+                                    schema = @Schema(implementation = Allergen.class)
                             )
                     }
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Not found"
+                    description = "Not Found - Allergen with the specified ID not found"
             )
     })
-    public ResponseEntity<BrandDTO> getBrandById(
-           @PathVariable Long id
+    public ResponseEntity<AllergenDTO> findAllergenById(
+            @PathVariable Long id
     ) {
-        Brand brand = brandService.findById(id);
+        Allergen allergen = allergenService.findById(id);
 
-        return ResponseEntity.ok(brandMapper.map(brand));
+        return ResponseEntity.ok(allergenMapper.map(allergen));
     }
 
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Delete brand by ID")
+    @DeleteMapping(ALLERGEN)
+    @Operation(summary = "Delete allergen by ID")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "204",
-                    description = "No content - successfully deleted"
+                    description = "No Content - Allergen deleted successfully"
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Not found"
+                    description = "Not Found - Allergen with the specified ID not found"
             )
     })
-    public ResponseEntity<?> deleteBrandById(
-           @PathVariable Long id
+    public ResponseEntity<?> deleteAllergenById(
+            @PathVariable Long id
     ) {
-        brandService.deleteBrandById(id);
+        allergenService.deleteById(id);
 
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}")
-    @Operation(summary = "Update brand by ID")
+    @PutMapping(ALLERGEN)
+    @Operation(summary = "Update allergen by ID")
     @ApiResponses(value = {
             @ApiResponse(
-                    responseCode = "200",
-                    description = "OK"
+                    responseCode = "204",
+                    description = "No Content - Allergen updated successfully"
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Not found"
+                    description = "Not Found - Allergen with the specified ID not found"
             )
     })
-    public ResponseEntity<?> updateBrandById(
+    public ResponseEntity<?> updateAllergenById(
             @PathVariable Long id,
-            @Valid @org.springframework.web.bind.annotation.RequestBody CreateBrandRequest form,
+            @Valid @RequestBody AllergenDTO form,
             BindingResult bindingResult
     ) {
         validationHandler.validateAndHandleErrors(bindingResult);
-        brandService.updateBrandById(id, form);
+
+        allergenService.updateById(id, form);
+
         return ResponseEntity.ok().build();
     }
 }

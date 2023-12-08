@@ -6,6 +6,7 @@ import lombok.*;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @With
 public class ProductIngredientAnalysisDTO {

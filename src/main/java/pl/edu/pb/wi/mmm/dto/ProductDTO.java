@@ -12,6 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @With
+@NoArgsConstructor
 public class ProductDTO {
 
     private Long id;
@@ -32,7 +33,7 @@ public class ProductDTO {
     private Integer novaGroup;
 
     @NotNull(message = "Categories is required")
-    private Set<CategoryDTO> categories;
+    private Set<ProductCategoryDTO> categories;
 
     @NotNull(message = "Brand is required")
     private Set<BrandDTO> brands;
@@ -40,7 +41,6 @@ public class ProductDTO {
     @NotNull(message = "Allergens is required")
     private Set<AllergenDTO> allergens;
 
-    @NotNull(message = "Ingredients is required")
     private Set<ProductIngredientDTO> ingredients;
 
     @NotNull(message = "IngredientAnalysis is required")

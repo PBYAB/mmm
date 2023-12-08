@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CreateCountryRequest {
 
+    private Long id;
+
     @NotBlank(message = "Name is required")
     private String name;
 }

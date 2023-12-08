@@ -1,5 +1,6 @@
 package pl.edu.pb.wi.mmm.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,8 @@ import pl.edu.pb.wi.mmm.dto.CreateCountryRequest;
 import pl.edu.pb.wi.mmm.entity.Country;
 import pl.edu.pb.wi.mmm.repository.CountryRepository;
 
+import java.util.List;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -16,6 +19,7 @@ public class CountryService {
 
     private final CountryRepository countryRepository;
 
+    @Transactional
     public Country createCountry(CreateCountryRequest form) {
         var country = Country.builder()
                 .name(form.getName())
@@ -38,13 +42,21 @@ public class CountryService {
         return countryRepository.findAll(pageable);
     }
 
+    @Transactional
     public void updateCountry(Long id, CreateCountryRequest form) {
         var country = findById(id);
         country.setName(form.getName());
     }
 
+    @Transactional
     public void deleteCountry(Long id) {
         var country = findById(id);
         countryRepository.delete(country);
     }
+
+    public List<Country> findAll() {
+        return countryRepository.findAll();
+    }
 }
+
+

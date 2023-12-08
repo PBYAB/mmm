@@ -14,6 +14,8 @@ import pl.edu.pb.wi.mmm.enumeration.ArticleStatus;
 @With
 public class CreateArticleRequest {
 
+    private Long id;
+
     private Long categoryId;
 
     private String title;

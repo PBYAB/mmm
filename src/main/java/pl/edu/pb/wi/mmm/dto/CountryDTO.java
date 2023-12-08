@@ -1,19 +1,17 @@
 package pl.edu.pb.wi.mmm.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import lombok.With;
+import lombok.*;
 
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @With
 public class CountryDTO {
 
-    private final Long id;
+    private Long id;
 
     @NotBlank(message = "Name is required")
-    private final String name;
+    private String name;
 }

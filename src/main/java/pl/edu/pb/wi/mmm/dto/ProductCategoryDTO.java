@@ -1,5 +1,6 @@
 package pl.edu.pb.wi.mmm.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Data
@@ -7,9 +8,10 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @With
-public class ArticleCategoryDTO {
+public class ProductCategoryDTO {
 
     private Long id;
 
+    @NotBlank(message = "Name is required")
     private String name;
 }

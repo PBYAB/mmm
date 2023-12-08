@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
 import pl.edu.pb.wi.mmm.dto.CreateRecipeRequest;
+import pl.edu.pb.wi.mmm.dto.RecipeDTO;
+import pl.edu.pb.wi.mmm.dto.mapper.RecipeMapper;
 import pl.edu.pb.wi.mmm.entity.Recipe;
 import pl.edu.pb.wi.mmm.service.RecipeService;
 
@@ -37,6 +39,8 @@ public class RecipeController {
     private final RecipeService recipeService;
 
     private final ValidationHandler validationHandler;
+
+    private final RecipeMapper recipeMapper;
 
 
     @PostMapping
@@ -107,9 +111,11 @@ public class RecipeController {
                     description = "Not Found - Recipe with given ID does not exist"
             )
     })
-    public ResponseEntity<Recipe> getRecipe(
+    public ResponseEntity<RecipeDTO> getRecipe(
             @PathVariable Long id
     ) {
-        return ResponseEntity.ok(recipeService.findById(id));
+        var recipe = recipeService.findById(id);
+
+        return ResponseEntity.ok(recipeMapper.map(recipe));
     }
 }

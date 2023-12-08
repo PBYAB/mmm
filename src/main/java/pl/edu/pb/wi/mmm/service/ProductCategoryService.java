@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import pl.edu.pb.wi.mmm.entity.Category;
 import pl.edu.pb.wi.mmm.repository.ProductCategoryRepository;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -29,5 +31,9 @@ public class ProductCategoryService {
         return productCategoryRepository.findByName(name)
                 .orElseThrow(() ->
                         new EntityNotFoundException("Category with name: [%s] not found".formatted(name)));
+    }
+
+    public List<Category> findAll() {
+        return productCategoryRepository.findAll();
     }
 }

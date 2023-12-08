@@ -3,7 +3,6 @@ package pl.edu.pb.wi.mmm.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,7 +20,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
+import pl.edu.pb.wi.mmm.dto.CountryDTO;
 import pl.edu.pb.wi.mmm.dto.CreateCountryRequest;
+import pl.edu.pb.wi.mmm.dto.mapper.CountryMapper;
 import pl.edu.pb.wi.mmm.entity.Country;
 import pl.edu.pb.wi.mmm.service.CountryService;
 
@@ -39,6 +40,9 @@ public class CountryController {
 
     private final ValidationHandler validationHandler;
 
+    private final CountryMapper countryMapper;
+
+
     @GetMapping
     @Operation(summary = "Get a list of all countries")
     @ApiResponses(value = {
@@ -52,11 +56,37 @@ public class CountryController {
                     }
             )
     })
-    public ResponseEntity<Page<Country>> getCountries(
+    public ResponseEntity<Page<CountryDTO>> getCountries(
             Pageable pageable
     ) {
-        return ResponseEntity.ok(countryService.findAll(pageable));
+        return ResponseEntity.ok(countryService.findAll(pageable).map(countryMapper::map));
     }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Get a country by ID")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK",
+                    content = {
+                            @Content(
+                                    schema = @Schema(implementation = Country.class)
+                            )
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Country not found"
+            )
+    })
+    public ResponseEntity<CountryDTO> getCountry(
+            @PathVariable Long id
+    ) {
+        var country = countryService.findById(id);
+
+        return ResponseEntity.ok(countryMapper.map(country));
+    }
+
 
     @PostMapping
     @Operation(summary = "Create a new country")
@@ -80,7 +110,7 @@ public class CountryController {
             )
     })
     public ResponseEntity<Country> createCountry(
-            @Valid @RequestBody CreateCountryRequest country,
+            @Valid @org.springframework.web.bind.annotation.RequestBody CreateCountryRequest country,
             BindingResult bindingResult
     ) {
         validationHandler.validateAndHandleErrors(bindingResult);
@@ -89,6 +119,7 @@ public class CountryController {
                 .created(URI.create(API_COUNTRIES + "/" + createdCountry.getId()))
                 .build();
     }
+
 
     @PutMapping("/{id}")
     @Operation(summary = "Update an existing country")
@@ -112,7 +143,7 @@ public class CountryController {
     })
     public ResponseEntity<?> updateCountry(
             @PathVariable Long id,
-            @Valid @RequestBody CreateCountryRequest form,
+            @Valid @org.springframework.web.bind.annotation.RequestBody CreateCountryRequest form,
             BindingResult bindingResult
     ) {
         validationHandler.validateAndHandleErrors(bindingResult);

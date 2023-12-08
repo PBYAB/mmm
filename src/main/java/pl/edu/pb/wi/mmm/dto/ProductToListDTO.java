@@ -13,9 +13,11 @@ public class ProductToListDTO {
 
     private String name;
 
+    private String barcode;
+
     private Integer nutriScore;
 
-    private String quantity;
-
     private Integer novaGroup;
+
+    private String quantity;
 }

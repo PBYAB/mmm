@@ -14,6 +14,8 @@ import java.util.Collection;
 @Builder
 public class CreateRecipeRequest {
 
+    private Long id;
+
     @NotBlank(message = "Name is required")
     private String name;
 
