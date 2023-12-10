@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
 import pl.edu.pb.wi.mmm.dto.CountryDTO;
-import pl.edu.pb.wi.mmm.dto.CreateCountryRequest;
+import pl.edu.pb.wi.mmm.dto.create.CreateCountryRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.CountryMapper;
 import pl.edu.pb.wi.mmm.entity.Country;
 import pl.edu.pb.wi.mmm.service.CountryService;

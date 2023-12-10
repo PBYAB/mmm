@@ -70,8 +70,8 @@ insert into recipe_ingredient (recipe_id, ingredient_id, quantity, unit) values 
 insert into recipe_ingredient (recipe_id, ingredient_id, quantity, unit) values (4, 4, 1, 'L');
 insert into recipe_ingredient (recipe_id, ingredient_id, quantity, unit) values (5, 5, 1, 'kg');
 
-insert into product (name, barcode, quantity, nutri_score, nova_group) values ('Water', '1234567890123', 1, 1, 1);
-insert into product (name, barcode, quantity, nutri_score, nova_group) values ('Sugar', '1234567890124', 1, 2, 2);
-insert into product (name, barcode, quantity, nutri_score, nova_group) values ('Salt', '1234567890125', 1, 3, 3);
-insert into product (name, barcode, quantity, nutri_score, nova_group) values ('Pepper', '1234567890126', 1, 4, 4);
-insert into product (name, barcode, quantity, nutri_score, nova_group) values ('Flour', '1234567890127', 1, 5, 5);
+insert into product (name, barcode, quantity, nutri_score, nova_group, ingredient_analysis_id, nutriment_id) values ('Water', '1234567890123', 1, 1, 1, 1, 1);
+insert into product (name, barcode, quantity, nutri_score, nova_group, ingredient_analysis_id, nutriment_id) values ('Sugar', '1234567890124', 1, 2, 2, 2, 2);
+insert into product (name, barcode, quantity, nutri_score, nova_group, ingredient_analysis_id, nutriment_id) values ('Salt', '1234567890125', 1, 3, 3, 3, 3);
+insert into product (name, barcode, quantity, nutri_score, nova_group, ingredient_analysis_id, nutriment_id) values ('Pepper', '1234567890126', 1, 4, 4, 4, 4);
+insert into product (name, barcode, quantity, nutri_score, nova_group, ingredient_analysis_id, nutriment_id) values ('Flour', '1234567890127', 1, 5, 5, 5, 5);

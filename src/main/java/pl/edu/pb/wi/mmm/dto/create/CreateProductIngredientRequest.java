@@ -1,4 +1,4 @@
-package pl.edu.pb.wi.mmm.dto;
+package pl.edu.pb.wi.mmm.dto.create;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -9,22 +9,17 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @With
-public class ProductIngredientAnalysisDTO {
+public class CreateProductIngredientRequest {
 
-    private Long id;
-
-//    @NotNull(message = "Product is required")
-//    private ProductDTO product;
+    @NotEmpty(message = "Name is required")
+    private String name;
 
     @NotNull(message = "Vegan is required")
     private Boolean vegan;
 
-    @NotEmpty(message = "Ingredients description is required")
-    private String ingredientsDescription;
-
     @NotNull(message = "Vegetarian is required")
     private Boolean vegetarian;
 
-    @NotNull(message = "From palm oil is required")
+    @NotNull(message = "From Palm Oil is required")
     private Boolean fromPalmOil;
 }

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
-import pl.edu.pb.wi.mmm.dto.CreateRecipeRequest;
+import pl.edu.pb.wi.mmm.dto.create.CreateRecipeRequest;
 import pl.edu.pb.wi.mmm.dto.RecipeDTO;
 import pl.edu.pb.wi.mmm.dto.mapper.RecipeMapper;
 import pl.edu.pb.wi.mmm.entity.Recipe;

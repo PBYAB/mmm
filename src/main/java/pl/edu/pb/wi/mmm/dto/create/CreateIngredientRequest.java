@@ -1,4 +1,5 @@
-package pl.edu.pb.wi.mmm.dto;
+package pl.edu.pb.wi.mmm.dto.create;
+
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -8,9 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @With
-public class CreateBrandRequest {
-
-    private Long id;
+public class CreateIngredientRequest {
 
     @NotBlank(message = "Name is required")
     private String name;

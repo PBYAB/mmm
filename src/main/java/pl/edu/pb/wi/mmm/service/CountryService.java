@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import pl.edu.pb.wi.mmm.dto.CreateCountryRequest;
+import pl.edu.pb.wi.mmm.dto.create.CreateCountryRequest;
 import pl.edu.pb.wi.mmm.entity.Country;
 import pl.edu.pb.wi.mmm.repository.CountryRepository;
 

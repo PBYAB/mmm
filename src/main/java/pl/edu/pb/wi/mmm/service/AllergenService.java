@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import pl.edu.pb.wi.mmm.dto.AllergenDTO;
+import pl.edu.pb.wi.mmm.dto.create.CreateAllergenRequest;
 import pl.edu.pb.wi.mmm.entity.Allergen;
 import pl.edu.pb.wi.mmm.repository.AllergenRepository;
 
@@ -28,7 +28,7 @@ public class AllergenService {
     }
 
     @Transactional
-    public Allergen save(AllergenDTO form) {
+    public Allergen save(CreateAllergenRequest form) {
         allergenRepository.findByName(form.getName()).ifPresent(found -> {
             throw new RuntimeException("Allergen with name: [%s] already exists".formatted(found.getName()));
         });
@@ -51,7 +51,7 @@ public class AllergenService {
     }
 
     @Transactional
-    public void updateById(Long id, AllergenDTO form) {
+    public void updateById(Long id, CreateAllergenRequest form) {
         var allergen = findById(id);
         allergen.setName(form.getName());
     }

@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
 import pl.edu.pb.wi.mmm.dto.AllergenDTO;
+import pl.edu.pb.wi.mmm.dto.create.CreateAllergenRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.AllergenMapper;
 import pl.edu.pb.wi.mmm.entity.Allergen;
 import pl.edu.pb.wi.mmm.service.AllergenService;
@@ -54,7 +55,7 @@ public class AllergenController {
             )
     })
     public ResponseEntity<?> createAllergen(
-            @Valid @RequestBody AllergenDTO form,
+            @Valid @RequestBody CreateAllergenRequest form,
             BindingResult bindingResult
     ) {
         validationHandler.validateAndHandleErrors(bindingResult);
@@ -147,7 +148,7 @@ public class AllergenController {
     })
     public ResponseEntity<?> updateAllergenById(
             @PathVariable Long id,
-            @Valid @RequestBody AllergenDTO form,
+            @Valid @RequestBody CreateAllergenRequest form,
             BindingResult bindingResult
     ) {
         validationHandler.validateAndHandleErrors(bindingResult);

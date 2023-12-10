@@ -1,4 +1,4 @@
-package pl.edu.pb.wi.mmm.dto;
+package pl.edu.pb.wi.mmm.dto.create;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,8 +13,6 @@ import pl.edu.pb.wi.mmm.enumeration.ArticleStatus;
 @Builder
 @With
 public class CreateArticleRequest {
-
-    private Long id;
 
     private Long categoryId;
 

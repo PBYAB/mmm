@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.edu.pb.wi.mmm.dto.CreateArticleCategoryRequest;
+import pl.edu.pb.wi.mmm.dto.create.CreateArticleCategoryRequest;
 import pl.edu.pb.wi.mmm.entity.ArticleCategory;
 import pl.edu.pb.wi.mmm.repository.ArticleCategoryRepository;
 

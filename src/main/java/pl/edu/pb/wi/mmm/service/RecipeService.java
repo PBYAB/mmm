@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import pl.edu.pb.wi.mmm.dto.CreateRecipeRequest;
+import pl.edu.pb.wi.mmm.dto.create.CreateRecipeRequest;
 import pl.edu.pb.wi.mmm.entity.Ingredient;
 import pl.edu.pb.wi.mmm.entity.Recipe;
 import pl.edu.pb.wi.mmm.entity.RecipeIngredient;

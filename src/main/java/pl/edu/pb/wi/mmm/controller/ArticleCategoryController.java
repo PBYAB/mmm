@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
 import pl.edu.pb.wi.mmm.dto.ArticleCategoryDTO;
-import pl.edu.pb.wi.mmm.dto.CreateArticleCategoryRequest;
+import pl.edu.pb.wi.mmm.dto.create.CreateArticleCategoryRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.ArticleCategoryMapper;
 import pl.edu.pb.wi.mmm.entity.ArticleCategory;
 import pl.edu.pb.wi.mmm.service.ArticleCategoryService;

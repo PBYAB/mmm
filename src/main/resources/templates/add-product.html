@@ -9,124 +9,152 @@
         rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
         crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 <body>
 <div class="container">
-  <div th:insert="~{navbar.html :: navbar}"></div>
   <h2>Add product</h2>
   <hr>
-  <form method="post" th:action="@{/tasks}" th:object="${taskForm}">
+  <form method="post" th:action="@{/products}" th:object="${productForm}">
     <div class="form-group">
       <label for="barcodeInput">Barcode:</label>
-      <input type="text" id="barcodeInput" name="barcode" class="form-control" th:field="*{barcode}">
+      <input type="text" id="barcodeInput" name="barcode" class="form-control" th:field="*{barcode}" required>
       <div th:if="${#fields.hasErrors('barcode')}" th:errors="*{barcode}" class="alert alert-danger"></div>
     </div>
     <div class="form-group">
       <label for="nameInput">Name:</label>
-      <input type="text" id="summaryInput" name="name" class="form-control" th:field="*{name}">
+      <input type="text" id="nameInput" name="name" class="form-control" th:field="*{name}" required>
       <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="alert alert-danger"></div>
     </div>
     <div class="form-group">
       <label for="quantityInput">Quantity:</label>
-      <input type="text" id="quantityInput" name="quantity" class="form-control" th:field="*{quantity}">
+      <input type="text" id="quantityInput" name="quantity" class="form-control" th:field="*{quantity}" required>
       <div th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" class="alert alert-danger"></div>
     </div>
     <div class="form-group">
       <label for="nutriScoreSelect">Nutri Score:</label>
-      <select id="nutriScoreSelect" name="nutriScore" class="form-control" th:field="{nutri_score}">
-        <option value="a">A</option>
-        <option value="b">B</option>
-        <option value="c">C</option>
-        <option value="d">D</option>
-        <option value="e">E</option>
+      <select id="nutriScoreSelect" name="nutriScore" class="form-control" th:field="*{nutriScore}" required>
+        <option value="1">A</option>
+        <option value="2">B</option>
+        <option value="3">C</option>
+        <option value="4">D</option>
+        <option value="5">E</option>
+        <div th:if="${#fields.hasErrors('nutriScore')}" th:errors="*{nutriScore}" class="alert alert-danger"></div>
       </select>
     </div>
 
     <div class="form-group">
       <label for="novaGroupInput">Nova Group:</label>
-      <select type="number" id="novaGroupInput" name="novaGroup" class="form-control" th:field="{nova_group}">
-        <option value="a">1</option>
-        <option value="b">2</option>
-        <option value="c">3</option>
-        <option value="d">4</option>
+      <select type="number" id="novaGroupInput" name="novaGroup" class="form-control" th:field="*{novaGroup}" required>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <div th:if="${#fields.hasErrors('novaGroup')}" th:errors="*{novaGroup}" class="alert alert-danger"></div>
+
       </select>
     </div>
 
     <div class="form-group">
+      <label for="description">Description:</label>
+      <input type="text" id="description" name="quantity" class="form-control" th:field="*{ingredientAnalysis.ingredientsDescription}" required>
+      <div th:if="${#fields.hasErrors('ingredientAnalysis.ingredientsDescription')}" th:errors="*{ingredientAnalysis.ingredientsDescription}" class="alert alert-danger"></div>
+    </div>
+
+    <div class="form-group">
       <label for="vegan">Vegan:</label>
-      <input type="checkbox" id="vegan" name="vegan" th:checked="${ingredientAnalysis.vegan}">
+      <input type="checkbox" id="vegan" name="vegan" class="form-check-input"  th:field="*{ingredientAnalysis.vegan}">
+      <div th:if="${#fields.hasErrors('ingredientAnalysis.vegan')}" th:errors="*{ingredientAnalysis.vegan}" class="alert alert-danger"></div>
     </div>
 
     <div class="form-group">
       <label for="vegetarian">Vegetarian:</label>
-      <input type="checkbox" id="vegetarian" name="vegetarian" th:checked="${ingredientAnalysis.vegetarian}">
+      <input type="checkbox" id="vegetarian" name="vegetarian" class="form-check-input"  th:field="*{ingredientAnalysis.vegetarian}">
+      <div th:if="${#fields.hasErrors('ingredientAnalysis.vegetarian')}" th:errors="*{ingredientAnalysis.vegetarian}" class="alert alert-danger"></div>
     </div>
+
 
     <div class="form-group">
       <label for="from_palm_oil">From Palm Oil:</label>
-      <input type="checkbox" id="from_palm_oil" name="from_palm_oil" th:checked="${ingredientAnalysis.fromPalmOil}">
+      <input type="checkbox" id="from_palm_oil" name="from_palm_oil" class="form-check-input"  th:field="*{ingredientAnalysis.fromPalmOil}">
+      <div th:if="${#fields.hasErrors('ingredientAnalysis.fromPalmOil')}" th:errors="*{ingredientAnalysis.fromPalmOil}" class="alert alert-danger"></div>
     </div>
 
 
     <div class="form-group">
       <label for="energy">Energy (kcal/100g):</label><br>
-      <input type="number" id="energy" name="energy_kcal_per_100g" required min = 0.01><br>
+      <input type="number" id="energy" name="energy_kcal_per_100g" class="form-control" required min = 1 th:field="*{nutriment.energyKcalPer100g}"><br>
+      <div th:if="${#fields.hasErrors('nutriment.energyKcalPer100g')}" th:errors="*{nutriment.energyKcalPer100g}" class="alert alert-danger"></div>
     </div>
 
     <div class="form-group">
       <label for="fat">Fat (g/100g):</label><br>
-      <input type="number" id="fat" name="fat_per_100g" required min = 0.01><br>
+      <input type="number" id="fat" name="fat_per_100g" class="form-control" required min = 1 th:field="*{nutriment.fatPer100g}"><br>
+      <div th:if="${#fields.hasErrors('nutriment.fatPer100g')}" th:errors="*{nutriment.fatPer100g}" class="alert alert-danger"></div>
+
     </div>
 
     <div class="form-group">
       <label for="fiber">Fiber (g/100g):</label><br>
-      <input type="number" id="fiber" name="fiber_per_100g" required min = 0.01><br>
+      <input type="number" id="fiber" name="fiber_per_100g" class="form-control" required min = 1  th:field="*{nutriment.fiberPer100g}"><br>
+      <div th:if="${#fields.hasErrors('nutriment.fiberPer100g')}" th:errors="*{nutriment.fiberPer100g}" class="alert alert-danger"></div>
     </div>
 
     <div class="form-group">
       <label for="proteins">Proteins (g/100g):</label><br>
-      <input type="number" id="proteins" name="proteins_per_100g" required min = 0.01><br>
+      <input type="number" id="proteins" name="proteins_per_100g" class="form-control" required min = 1 th:field="*{nutriment.proteinsPer100g}"><br>
+      <div th:if="${#fields.hasErrors('nutriment.proteinsPer100g')}" th:errors="*{nutriment.proteinsPer100g}" class="alert alert-danger"></div>
     </div>
 
     <div class="form-group">
       <label for="salt">Salt (g/100g):</label><br>
-      <input type="number" id="salt" name="salt_per_100g" required min = 0.01><br>
+      <input type="number" id="salt" name="salt_per_100g" class="form-control" required min = 1  th:field="*{nutriment.saltPer100g}"><br>
+      <div th:if="${#fields.hasErrors('nutriment.saltPer100g')}" th:errors="*{nutriment.saltPer100g}" class="alert alert-danger"></div>
     </div>
 
     <div class="form-group">
       <label for="sugars">Sugars (g/100g):</label><br>
-      <input type="number" id="sugars" name="sugars_per_100g" required min = 0.01><br>
+      <input type="number" id="sugars" name="sugars_per_100g" class="form-control" required min = 1 th:field="*{nutriment.sugarsPer100g}"><br>
+      <div th:if="${#fields.hasErrors('nutriment.sugarsPer100g')}" th:errors="*{nutriment.sugarsPer100g}" class="alert alert-danger"></div>
     </div>
 
     <div class="form-group">
       <label for="sodium">Sodium (mg/100g):</label><br>
-      <input type="number" id="sodium" name="sodium_per_100g" required min = 0.01><br>
+      <input type="number" id="sodium" name="sodium_per_100g" class="form-control" required min = 1 th:field="*{nutriment.sodiumPer100g}"><br>
+      <div th:if="${#fields.hasErrors('nutriment.sodiumPer100g')}" th:errors="*{nutriment.sodiumPer100g}" class="alert alert-danger"></div>
     </div>
 
     <div class="form-group">
-      <label for="allergens">Allergens:</label><br>
-      <select name="allergensInput" id="allergens" multiple multiselect-hide-x="true">
-        <option value="1">gluten</option>
-        <option value="2">milk</option>
-        <option value="3">nuts</option>
-        <option value="4">eggs</option>
-        <option value="5">soy</option>
+      <label id="allergensInput">Allergens:</label><br>
+      <select class="form-control select2" th:field="*{allergens}" multiple="multiple">
+        <option th:each="al : ${allergens}" th:value="${al.id}" th:text="${al.name}">Allergens</option>
+      </select>
+      <div th:if="${#fields.hasErrors('allergens')}" th:errors="*{allergens}" class="alert alert-danger"></div>
+    </div>
+    <div class="form-group">
+      <label id="brandInput">Brand:</label>
+      <select class="form-control select2" th:field="*{brands}" multiple="multiple">
+        <option th:each="br : ${brands}" th:value="${br.id}" th:text="${br.name}">Brands</option>
+        <div th:if="${#fields.hasErrors('brands')}" th:errors="*{brands}" class="alert alert-danger"></div>
       </select>
     </div>
     <div class="form-group">
-      <label for="brandInput">Brand:</label>
-      <select class="form-control" th:field="*{category}" required>
-        <option value="">Brand</option>
-        <option th:each="ctg : ${categories}" th:value="${ctg.id}" th:text="${ctg.name}">category</option>
+      <label id="categoryInput">Category:</label>
+      <select class="form-control select2" th:field="*{categories}" multiple="multiple">
+        <option th:each="ctg : ${categories}" th:value="${ctg.id}" th:text="${ctg.name}">Categories</option>
+        <div th:if="${#fields.hasErrors('categories')}" th:errors="*{categories}" class="alert alert-danger"></div>
       </select>
     </div>
     <div class="form-group">
-      <label for="categoryInput">Category:</label>
-      <select class="form-control" th:field="*{category}" required>
-        <option value="">Category</option>
-        <option th:each="ctg : ${categories}" th:value="${ctg.id}" th:text="${ctg.name}">category</option>
+      <label id="countryInput">Countries:</label>
+      <select class="form-control select2" th:field="*{countries}" multiple="multiple">
+        <option th:each="cnt : ${countries}" th:value="${cnt.id}" th:text="${cnt.name}">Countries</option>
+        <div th:if="${#fields.hasErrors('countries')}" th:errors="*{countries}" class="alert alert-danger"></div>
       </select>
     </div>
+
     <br>
     <br><br>
     <button type="submit" class="btn btn-primary" style="color: #ffffff; background-color: #0a0aff;">
@@ -134,7 +162,13 @@
     </button>
   </form>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('.select2').select2();
+  });
 
-<script src="multiselect-dropdown.js" ></script>
+
+</script>
 </body>
 </html>

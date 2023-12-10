@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edu.pb.wi.mmm.dto.ProductDTO;
 import pl.edu.pb.wi.mmm.dto.ProductToListDTO;
+import pl.edu.pb.wi.mmm.dto.create.CreateProductRequest;
 import pl.edu.pb.wi.mmm.entity.Product;
 
 import java.util.stream.Collectors;
@@ -73,6 +74,24 @@ public class ProductMapperImpl implements ProductMapper {
                 .quantity(product.getQuantity())
                 .nutriScore(product.getNutriScore())
                 .novaGroup(product.getNovaGroup())
+                .build();
+    }
+
+    @Override
+    public Product map(CreateProductRequest createProductRequest) {
+        return Product.builder()
+                .name(createProductRequest.getName())
+                .barcode(createProductRequest.getBarcode())
+                .quantity(createProductRequest.getQuantity())
+                .nutriScore(createProductRequest.getNutriScore())
+                .novaGroup(createProductRequest.getNovaGroup())
+                .brands(createProductRequest.getBrands().stream().map(brandMapper::map).collect(Collectors.toSet()))
+                .categories(createProductRequest.getCategories().stream().map(productCategoryMapper::map).collect(Collectors.toSet()))
+                .allergens(createProductRequest.getAllergens().stream().map(allergenMapper::map).collect(Collectors.toSet()))
+                .ingredients(createProductRequest.getIngredients().stream().map(productIngredientMapper::map).collect(Collectors.toSet()))
+                .ingredientAnalysis(productIngredientAnalysisMapper.map(createProductRequest.getIngredientAnalysis()))
+                .nutriment(nutrimentMapper.map(createProductRequest.getNutriment()))
+                .countries(createProductRequest.getCountries().stream().map(countryMapper::map).collect(Collectors.toSet()))
                 .build();
     }
 

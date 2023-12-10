@@ -16,7 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
 import pl.edu.pb.wi.mmm.dto.BrandDTO;
-import pl.edu.pb.wi.mmm.dto.CreateBrandRequest;
+import pl.edu.pb.wi.mmm.dto.create.CreateBrandRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.BrandMapper;
 import pl.edu.pb.wi.mmm.entity.Brand;
 import pl.edu.pb.wi.mmm.service.BrandService;

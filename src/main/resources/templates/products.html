@@ -15,23 +15,26 @@
 </head>
 <body>
 <div class="container">
-    <div th:insert="~{navbar.html :: navbar}"></div>
     <h1 th:text="|Products|"></h1>
-    <a sec:authorize-url="/tasks/add" th:href="@{/tasks/add}" class="btn btn-success" style="color: #ffffff; background-color: #146126;">
+    <a sec:authorize-url="/products/add" th:href="@{/products/add}" class="btn btn-success" style="color: #ffffff; background-color: #146126;">
         Add Product
     </a>
     <ol class="list-group">
-        <li th:each="task : ${page}" class="list-group-item">
-            <h5 class="card-title" th:text="|Name: ${task.summary} |"></h5>
+        <li th:each="product : ${page}" class="list-group-item">
+            <h5 class="card-title" th:text="|Name: ${product.name} |"></h5>
             <p class="card-text">
-                <span th:text="|NutriScore: ${task.description} |"></span>
+                <span th:text="|Barcode: ${product.barcode} |"></span>
                 <br>
-                <span th:text="|Quantity: ${task.category.name} |"></span>
+                <span th:text="|Nutri Score: ${product.nutriScore} |"></span>
                 <br>
-                <span th:text="|Nova Group: ${task.status.name} |"></span>
+                <span th:text="|Nova Group: ${product.novaGroup} |"></span>
                 <br>
-
-            <form th:action="@{/tasks/{id}(id=${task.id})}" th:method="delete" class="d-inline"
+                <span th:text="|Quantity: ${product.quantity} |"></span>
+                <br>
+                <a th:href="@{/products/{id}/edit(id=${product.id})}" class="btn btn-primary" style="color: #ffffff; background-color: #0a0aff;">
+                    Edit
+                </a>
+            <form th:action="@{/products/{id}(id=${product.id})}" th:method="delete" class="d-inline"
                   onsubmit="return confirm('Are you sure you want to delete this item?')">
                 <button type="submit" class="btn btn-danger">Delete</button>
             </form>
@@ -41,15 +44,15 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination">
                 <li class="page-item" th:classappend="${page.number == 0} ? 'disabled'">
-                    <a class="page-link" th:href="@{/tasks(page=0, size=${page.size})}" tabindex="-1" aria-disabled="true">Previous</a>
+                    <a class="page-link" th:href="@{/products(page=0, size=${page.size})}" tabindex="-1" aria-disabled="true">Previous</a>
                 </li>
                 <li th:each="pageNumber : ${#numbers.sequence(0, page.totalPages - 1)}"
                     class="page-item"
                     th:classappend="${page.number == pageNumber} ? 'active'">
-                    <a class="page-link" th:href="@{/tasks(pageNumber=${pageNumber}, pageSize=${page.size})}" th:text="${pageNumber + 1}"></a>
+                    <a class="page-link" th:href="@{/products(pageNumber=${pageNumber}, pageSize=${page.size})}" th:text="${pageNumber + 1}"></a>
                 </li>
                 <li class="page-item" th:classappend="${page.number == page.totalPages - 1} ? 'disabled'">
-                    <a class="page-link" th:href="@{/tasks(pageNumber=${page.totalPages - 1}, pageSize=${page.size})}">Next</a>
+                    <a class="page-link" th:href="@{/products(pageNumber=${page.totalPages - 1}, pageSize=${page.size})}">Next</a>
                 </li>
             </ul>
         </nav>
