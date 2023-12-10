@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import pl.edu.pb.wi.mmm.dto.RecipeIngredientForm;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -15,9 +18,9 @@ import java.util.Collection;
 @Builder
 public class CreateRecipeRequest {
 
-    @NotBlank(message = "Name is required")
     private String name;
 
+    @NotBlank(message = "Instructions are required")
     private String instructions;
 
     private Integer servings;

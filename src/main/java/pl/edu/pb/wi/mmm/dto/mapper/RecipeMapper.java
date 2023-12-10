@@ -1,9 +1,13 @@
 package pl.edu.pb.wi.mmm.dto.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import pl.edu.pb.wi.mmm.dto.RecipeDTO;
+import pl.edu.pb.wi.mmm.dto.RecipeIngredientDTO;
+import pl.edu.pb.wi.mmm.dto.RecipeListItem;
 import pl.edu.pb.wi.mmm.dto.RecipeToListDTO;
 import pl.edu.pb.wi.mmm.entity.Recipe;
+import pl.edu.pb.wi.mmm.entity.RecipeIngredient;
 
 @Mapper(componentModel = "spring")
 public interface RecipeMapper {
@@ -13,4 +17,10 @@ public interface RecipeMapper {
     Recipe map(RecipeDTO recipeDTO);
 
     RecipeToListDTO mapListElement(Recipe recipe);
+
+    @Mapping(source = "ingredient.name", target = "name")
+    @Mapping(source = "ingredient.id", target = "id")
+    RecipeIngredientDTO map(RecipeIngredient recipeIngredient);
+
+    RecipeListItem mapToListItem(Recipe recipe);
 }

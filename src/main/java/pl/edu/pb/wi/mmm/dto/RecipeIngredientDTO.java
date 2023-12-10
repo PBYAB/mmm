@@ -1,25 +1,24 @@
 package pl.edu.pb.wi.mmm.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.With;
 import pl.edu.pb.wi.mmm.enumeration.Unit;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RecipeIngredientForm {
+@With
+public class RecipeIngredientDTO {
 
-    @NotNull(message = "Id is required")
     private Long id;
 
-    @NotNull(message = "Amount is required")
+    private String name;
+
     private Double amount;
 
-    @NotBlank(message = "Unit is required")
     private Unit unit;
 }

@@ -71,7 +71,6 @@ public class BrandController {
                 .build();
     }
 
-
     @GetMapping
     @Operation(summary = "Get all brands")
     @ApiResponses(value = {

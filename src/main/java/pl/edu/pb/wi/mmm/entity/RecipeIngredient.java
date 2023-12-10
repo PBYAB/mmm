@@ -2,6 +2,8 @@ package pl.edu.pb.wi.mmm.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,6 +15,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.edu.pb.wi.mmm.enumeration.Unit;
 
 @Entity
 @Table(name = "recipe_ingredient")
@@ -37,8 +40,9 @@ public class RecipeIngredient {
     private Ingredient ingredient;
 
     @Column(name = "quantity")
-    private Double quantity;
+    private Double amount;
 
     @Column(name = "unit")
-    private String unit;
+    @Enumerated(EnumType.STRING)
+    private Unit unit;
 }

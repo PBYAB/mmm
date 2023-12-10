@@ -120,7 +120,6 @@ public class CountryController {
                 .build();
     }
 
-
     @PutMapping("/{id}")
     @Operation(summary = "Update an existing country")
     @ApiResponses(value = {
