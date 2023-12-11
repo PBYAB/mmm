@@ -31,16 +31,19 @@ public class CreateProductRequest {
     private Integer novaGroup;
 
     @NotNull(message = "Categories is required")
-    private Set<CreateProductCategoryRequest> categories;
+    private Set<Long> categoriesId;
 
     @NotNull(message = "Brand is required")
-    private Set<CreateBrandRequest> brands;
+    private Set<Long> brandsId;
 
     @NotNull(message = "Allergens is required")
-    private Set<CreateAllergenRequest> allergens;
+    private Set<Long> allergensId;
 
     @NotNull(message = "Ingredients is required")
-    private Set<CreateProductIngredientRequest> ingredients;
+    private Set<Long> ingredientsId;
+
+    @NotNull(message = "Country is required")
+    private Set<Long> countriesId;
 
     @NotNull(message = "IngredientAnalysis is required")
     private CreateProductIngredientAnalysisRequest ingredientAnalysis;
@@ -48,6 +51,5 @@ public class CreateProductRequest {
     @NotNull(message = "Nutriment is required")
     private CreateNutrimentRequest nutriment;
 
-    @NotNull(message = "Country is required")
-    private Set<CreateCountryRequest> countries;
+
 }

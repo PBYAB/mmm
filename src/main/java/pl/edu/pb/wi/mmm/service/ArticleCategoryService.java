@@ -25,7 +25,7 @@ public class ArticleCategoryService {
             throw new EntityExistsException("Category with name: [%s] already exists".formatted(found.getName()));
         });
 
-        var category = ArticleCategory.builder()
+        ArticleCategory category = ArticleCategory.builder()
                 .name(form.getName())
                 .build();
 

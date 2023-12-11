@@ -64,11 +64,11 @@ insert into recipe (name, instructions, servings, energy_kcal_per_serving) value
 insert into recipe (name, instructions, servings, energy_kcal_per_serving) values ('Pepper', 'Add pepper to water', 1, 400);
 insert into recipe (name, instructions, servings, energy_kcal_per_serving) values ('Flour', 'Add flour to water', 1, 500);
 
-insert into recipe_ingredient (recipe_id, ingredient_id, quantity, unit) values (1, 1, 1, 'L');
-insert into recipe_ingredient (recipe_id, ingredient_id, quantity, unit) values (2, 2, 1, 'L');
-insert into recipe_ingredient (recipe_id, ingredient_id, quantity, unit) values (3, 3, 1, 'kg');
-insert into recipe_ingredient (recipe_id, ingredient_id, quantity, unit) values (4, 4, 1, 'L');
-insert into recipe_ingredient (recipe_id, ingredient_id, quantity, unit) values (5, 5, 1, 'kg');
+insert into recipe_ingredient (recipe_id, ingredient_id, quantity, unit) values (1, 1, 1, 'ML');
+insert into recipe_ingredient (recipe_id, ingredient_id, quantity, unit) values (2, 2, 1, 'ML');
+insert into recipe_ingredient (recipe_id, ingredient_id, quantity, unit) values (3, 3, 1, 'G');
+insert into recipe_ingredient (recipe_id, ingredient_id, quantity, unit) values (4, 4, 1, 'ML');
+insert into recipe_ingredient (recipe_id, ingredient_id, quantity, unit) values (5, 5, 1, 'G');
 
 insert into product (name, barcode, quantity, nutri_score, nova_group, ingredient_analysis_id, nutriment_id) values ('Water', '1234567890123', 1, 1, 1, 1, 1);
 insert into product (name, barcode, quantity, nutri_score, nova_group, ingredient_analysis_id, nutriment_id) values ('Sugar', '1234567890124', 1, 2, 2, 2, 2);

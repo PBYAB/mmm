@@ -25,7 +25,7 @@ import pl.edu.pb.wi.mmm.service.AuthenticationService;
 
 import java.io.IOException;
 
-@Tag(name = "Authentication", description = "Authentication APIs")
+@Tag(name = "1. Authentication", description = "Authentication APIs")
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor

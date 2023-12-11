@@ -12,8 +12,6 @@ import pl.edu.pb.wi.mmm.dto.mapper.*;
 import pl.edu.pb.wi.mmm.entity.Product;
 import pl.edu.pb.wi.mmm.repository.ProductRepository;
 
-import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -23,19 +21,20 @@ public class ProductService {
 
     private final ProductMapper productMapper;
 
-    private final ProductCategoryMapper productCategoryMapper;
-
-    private final BrandMapper brandMapper;
-
-    private final AllergenMapper allergenMapper;
-
-    private final ProductIngredientMapper productIngredientMapper;
-
     private final ProductIngredientAnalysisMapper productIngredientAnalysisMapper;
 
     private final NutrimentMapper nutrimentMapper;
 
-    private final CountryMapper countryMapper;
+
+    private final ProductIngredientService productIngredientService;
+
+    private final AllergenService allergenService;
+
+    private final CountryService countryService;
+
+    private final BrandService brandService;
+
+    private final ProductCategoryService productCategoryService;
 
 
     public Product findById(Long id) {
@@ -64,13 +63,13 @@ public class ProductService {
         product.setQuantity(form.getQuantity());
         product.setNutriScore(form.getNutriScore());
         product.setNovaGroup(form.getNovaGroup());
-        product.setCategories(form.getCategories().stream().map(productCategoryMapper::map).collect(Collectors.toSet()));
-        product.setBrands(form.getBrands().stream().map(brandMapper::map).collect(Collectors.toSet()));
-        product.setAllergens(form.getAllergens().stream().map(allergenMapper::map).collect(Collectors.toSet()));
-        product.setIngredients(form.getIngredients().stream().map(productIngredientMapper::map).collect(Collectors.toSet()));
+        product.setCategories(productCategoryService.findAllByIds(form.getCategoriesId()));
+        product.setBrands(brandService.findAllByIds(form.getBrandsId()));
+        product.setAllergens(allergenService.findAllByIds(form.getAllergensId()));
+        product.setIngredients(productIngredientService.findAllByIds(form.getIngredientsId()));
         product.setIngredientAnalysis(productIngredientAnalysisMapper.map(form.getIngredientAnalysis()));
         product.setNutriment(nutrimentMapper.map(form.getNutriment()));
-        product.setCountries(form.getCountries().stream().map(countryMapper::map).collect(Collectors.toSet()));
+        product.setCountries(countryService.findAllByIds(form.getCountriesId()));
     }
 
     @Transactional
@@ -80,4 +79,9 @@ public class ProductService {
         productRepository.delete(product);
     }
 
+    public Product findByBarcode(String barcode) {
+        return productRepository.findByBarcode(barcode)
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Product with barcode: [%s] not found".formatted(barcode)));
+    }
 }

@@ -11,6 +11,7 @@ import pl.edu.pb.wi.mmm.entity.Country;
 import pl.edu.pb.wi.mmm.repository.CountryRepository;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -21,7 +22,7 @@ public class CountryService {
 
     @Transactional
     public Country createCountry(CreateCountryRequest form) {
-        var country = Country.builder()
+        Country country = Country.builder()
                 .name(form.getName())
                 .build();
 
@@ -44,18 +45,22 @@ public class CountryService {
 
     @Transactional
     public void updateCountry(Long id, CreateCountryRequest form) {
-        var country = findById(id);
+        Country country = findById(id);
         country.setName(form.getName());
     }
 
     @Transactional
     public void deleteCountry(Long id) {
-        var country = findById(id);
+        Country country = findById(id);
         countryRepository.delete(country);
     }
 
     public List<Country> findAll() {
         return countryRepository.findAll();
+    }
+
+    public Set<Country> findAllByIds(Set<Long> ids) {
+        return countryRepository.findAllByIdIn(ids);
     }
 }
 

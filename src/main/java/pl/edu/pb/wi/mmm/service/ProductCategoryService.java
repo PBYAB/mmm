@@ -8,6 +8,7 @@ import pl.edu.pb.wi.mmm.entity.Category;
 import pl.edu.pb.wi.mmm.repository.ProductCategoryRepository;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -35,5 +36,9 @@ public class ProductCategoryService {
 
     public List<Category> findAll() {
         return productCategoryRepository.findAll();
+    }
+
+    public Set<Category> findAllByIds(Set<Long> ids) {
+        return productCategoryRepository.findAllByIdIn(ids);
     }
 }

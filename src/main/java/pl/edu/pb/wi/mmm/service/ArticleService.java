@@ -24,7 +24,7 @@ public class ArticleService {
 
     @Transactional
     public Article save(CreateArticleRequest form) {
-        var article = Article.builder()
+        Article article = Article.builder()
                 .category(articleCategoryService.findById(form.getCategoryId()))
                 .title(form.getTitle())
                 .content(form.getContent())

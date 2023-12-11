@@ -1,6 +1,7 @@
 package pl.edu.pb.wi.mmm.service;
 
 import jakarta.transaction.Transactional;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ import pl.edu.pb.wi.mmm.entity.Allergen;
 import pl.edu.pb.wi.mmm.repository.AllergenRepository;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -33,7 +35,7 @@ public class AllergenService {
             throw new RuntimeException("Allergen with name: [%s] already exists".formatted(found.getName()));
         });
 
-        var allergen = Allergen.builder()
+        Allergen allergen = Allergen.builder()
                 .name(form.getName())
                 .build();
 
@@ -46,13 +48,17 @@ public class AllergenService {
 
     @Transactional
     public void deleteById(Long id) {
-        var allergen = findById(id);
+        Allergen allergen = findById(id);
         allergenRepository.delete(allergen);
     }
 
     @Transactional
     public void updateById(Long id, CreateAllergenRequest form) {
-        var allergen = findById(id);
+        Allergen allergen = findById(id);
         allergen.setName(form.getName());
+    }
+
+    public Set<Allergen> findAllByIds(Set<Long> ids) {
+        return allergenRepository.findAllByIdIn(ids);
     }
 }

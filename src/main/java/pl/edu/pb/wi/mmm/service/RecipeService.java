@@ -33,7 +33,7 @@ public class RecipeService {
 
         Set<RecipeIngredient> ingredients = createRecipeRequest.getIngredients().stream()
                 .map(ingredientForm -> {
-                    var ingredient = ingredientService.findById(ingredientForm.getId());
+                    var ingredient = ingredientService.findById(ingredientForm.getIngredientId());
                     return RecipeIngredient.builder()
                             .ingredient(ingredient)
                             .amount(ingredientForm.getAmount())
@@ -67,7 +67,7 @@ public class RecipeService {
 
         Set<RecipeIngredient> ingredients = form.getIngredients().stream()
                 .map(ingredientForm -> {
-                    var ingredient = ingredientService.findById(ingredientForm.getId());
+                    var ingredient = ingredientService.findById(ingredientForm.getIngredientId());
                     return RecipeIngredient.builder()
                             .ingredient(ingredient)
                             .amount(ingredientForm.getAmount())

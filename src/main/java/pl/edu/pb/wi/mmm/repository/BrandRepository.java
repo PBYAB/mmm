@@ -10,4 +10,6 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
     Optional<Brand> findByName(String brand);
 
     Set<Brand> findAllByNameIn(Set<String> brandNames);
+
+    Set<Brand> findAllByIdIn(Set<Long> brandIds);
 }

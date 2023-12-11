@@ -19,3 +19,7 @@ logging:
     org:
       springframework:
         security: DEBUG
+springdoc:
+  swagger-ui:
+    tags-sorter: alpha
+  writer-with-order-by-keys: true

@@ -15,7 +15,7 @@ import pl.edu.pb.wi.mmm.enumeration.Unit;
 public class RecipeIngredientForm {
 
     @NotNull(message = "Id is required")
-    private Long id;
+    private Long ingredientId;
 
     @NotNull(message = "Amount is required")
     private Double amount;

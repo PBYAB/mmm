@@ -10,4 +10,6 @@ public interface AllergenRepository extends JpaRepository<Allergen,  Long> {
     Optional<Allergen> findByName(String allergenName);
 
     Set<Allergen> findAllByNameIn(Set<String> allergenNames);
+
+    Set<Allergen> findAllByIdIn(Set<Long> allergenIds);
 }

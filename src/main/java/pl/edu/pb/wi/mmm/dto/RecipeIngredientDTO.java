@@ -14,7 +14,7 @@ import pl.edu.pb.wi.mmm.enumeration.Unit;
 @With
 public class RecipeIngredientDTO {
 
-    private Long id;
+    private Long ingredientId;
 
     private String name;
 

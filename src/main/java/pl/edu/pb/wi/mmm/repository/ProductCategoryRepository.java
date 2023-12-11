@@ -10,4 +10,6 @@ public interface ProductCategoryRepository extends JpaRepository<Category, Long>
     Optional<Category> findByName(String name);
 
     Set<Category> findAllByNameIn(Set<String> collect);
+
+    Set<Category> findAllByIdIn(Set<Long> categoryIds);
 }

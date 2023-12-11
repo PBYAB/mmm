@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -42,12 +43,7 @@ public class ProductController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201",
-                    description = "Product created successfully",
-                    content = {
-                            @Content(
-                                    schema = @Schema(implementation = Product.class)
-                            )
-                    }
+                    description = "Product created successfully"
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -67,7 +63,7 @@ public class ProductController {
 
         return ResponseEntity
                 .created(URI.create(API_PRODUCTS + "/" + product.getId()))
-                .body(productMapper.map(product));
+                .build();
     }
 
     @GetMapping("/{id}")
@@ -173,4 +169,28 @@ public class ProductController {
         return ResponseEntity.ok(productsService.findAll(pageable).map(productMapper::mapToListElement));
     }
 
+    @GetMapping("/barcode/{barcode}")
+    @Operation(summary = "Get a product by barcode")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK",
+                    content = {
+                            @Content(
+                                    schema = @Schema(implementation = ProductDTO.class)
+                            )
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Product not found"
+            )
+    })
+    public ResponseEntity<ProductDTO> getProductByBarcode(
+            @PathVariable String barcode
+    ) {
+        var product = productsService.findByBarcode(barcode);
+
+        return ResponseEntity.ok(productMapper.map(product));
+    }
 }

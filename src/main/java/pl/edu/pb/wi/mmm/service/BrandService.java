@@ -11,6 +11,7 @@ import pl.edu.pb.wi.mmm.entity.Brand;
 import pl.edu.pb.wi.mmm.repository.BrandRepository;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -25,7 +26,7 @@ public class BrandService {
 
     @Transactional
     public Brand createBrand(CreateBrandRequest form) {
-        var brand = Brand.builder()
+        Brand brand = Brand.builder()
                 .name(form.getName())
                 .build();
 
@@ -43,14 +44,18 @@ public class BrandService {
 
     @Transactional
     public void deleteBrandById(Long id) {
-        var brand = findById(id);
+        Brand brand = findById(id);
 
         brandRepository.delete(brand);
     }
 
     @Transactional
     public void updateBrandById(Long id, CreateBrandRequest form) {
-        var brand = findById(id);
+        Brand brand = findById(id);
         brand.setName(form.getName());
+    }
+
+    public Set<Brand> findAllByIds(Set<Long> ids) {
+        return brandRepository.findAllByIdIn(ids);
     }
 }
