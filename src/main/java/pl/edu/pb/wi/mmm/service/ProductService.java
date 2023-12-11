@@ -21,6 +21,14 @@ public class ProductService {
 
     private final ProductMapper productMapper;
 
+    private final CategoryMapper categoryMapper;
+
+    private final BrandMapper brandMapper;
+
+    private final AllergenMapper allergenMapper;
+
+    private final ProductIngredientMapper productIngredientMapper;
+
     private final ProductIngredientAnalysisMapper productIngredientAnalysisMapper;
 
     private final NutrimentMapper nutrimentMapper;
@@ -34,7 +42,7 @@ public class ProductService {
 
     private final BrandService brandService;
 
-    private final ProductCategoryService productCategoryService;
+    private final CategoryService categoryService;
 
 
     public Product findById(Long id) {
@@ -63,7 +71,7 @@ public class ProductService {
         product.setQuantity(form.getQuantity());
         product.setNutriScore(form.getNutriScore());
         product.setNovaGroup(form.getNovaGroup());
-        product.setCategories(productCategoryService.findAllByIds(form.getCategoriesId()));
+        product.setCategories(categoryService.findAllByIdIn(form.getCategoriesId()));
         product.setBrands(brandService.findAllByIds(form.getBrandsId()));
         product.setAllergens(allergenService.findAllByIds(form.getAllergensId()));
         product.setIngredients(productIngredientService.findAllByIds(form.getIngredientsId()));

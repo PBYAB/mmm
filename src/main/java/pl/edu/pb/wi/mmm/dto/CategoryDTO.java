@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @With
-public class ProductCategoryDTO {
+public class CategoryDTO {
 
     private Long id;
 

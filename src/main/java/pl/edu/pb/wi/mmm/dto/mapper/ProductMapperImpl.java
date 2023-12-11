@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Component
 public class ProductMapperImpl implements ProductMapper {
 
-    private final ProductCategoryMapper productCategoryMapper;
+    private final CategoryMapper categoryMapper;
 
     private final AllergenMapper allergenMapper;
 
@@ -34,7 +34,7 @@ public class ProductMapperImpl implements ProductMapper {
 
     private final BrandService brandService;
 
-    private final ProductCategoryService productCategoryService;
+    private final CategoryService categoryService;
 
     private final ProductIngredientService productIngredientService;
 
@@ -48,7 +48,7 @@ public class ProductMapperImpl implements ProductMapper {
                 .nutriScore(product.getNutriScore())
                 .novaGroup(product.getNovaGroup())
                 .brands(product.getBrands().stream().map(brandMapper::map).collect(Collectors.toSet()))
-                .categories(product.getCategories().stream().map(productCategoryMapper::map).collect(Collectors.toSet()))
+                .categories(product.getCategories().stream().map(categoryMapper::map).collect(Collectors.toSet()))
                 .allergens(product.getAllergens().stream().map(allergenMapper::map).collect(Collectors.toSet()))
                 .ingredients(product.getIngredients().stream().map(productIngredientMapper::map).collect(Collectors.toSet()))
                 .ingredientAnalysis(productIngredientAnalysisMapper.map(product.getIngredientAnalysis()))
@@ -67,7 +67,7 @@ public class ProductMapperImpl implements ProductMapper {
                 .nutriScore(productDTO.getNutriScore())
                 .novaGroup(productDTO.getNovaGroup())
                 .brands(productDTO.getBrands().stream().map(brandMapper::map).collect(Collectors.toSet()))
-                .categories(productDTO.getCategories().stream().map(productCategoryMapper::map).collect(Collectors.toSet()))
+                .categories(productDTO.getCategories().stream().map(categoryMapper::map).collect(Collectors.toSet()))
                 .allergens(productDTO.getAllergens().stream().map(allergenMapper::map).collect(Collectors.toSet()))
                 .ingredients(productDTO.getIngredients().stream().map(productIngredientMapper::map).collect(Collectors.toSet()))
                 .ingredientAnalysis(productIngredientAnalysisMapper.map(productDTO.getIngredientAnalysis()))
@@ -97,7 +97,7 @@ public class ProductMapperImpl implements ProductMapper {
                 .nutriScore(createProductRequest.getNutriScore())
                 .novaGroup(createProductRequest.getNovaGroup())
                 .brands(brandService.findAllByIds(createProductRequest.getBrandsId()))
-                .categories(productCategoryService.findAllByIds(createProductRequest.getCategoriesId()))
+                .categories(categoryService.findAllByIdIn(createProductRequest.getCategoriesId()))
                 .allergens(allergenService.findAllByIds(createProductRequest.getAllergensId()))
                 .ingredients(productIngredientService.findAllByIds(createProductRequest.getIngredientsId()))
                 .ingredientAnalysis(productIngredientAnalysisMapper.map(createProductRequest.getIngredientAnalysis()))
