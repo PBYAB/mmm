@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edu.pb.wi.mmm.dto.create.CreateRecipeRequest;
+import pl.edu.pb.wi.mmm.entity.Ingredient;
 import pl.edu.pb.wi.mmm.entity.Recipe;
 import pl.edu.pb.wi.mmm.entity.RecipeIngredient;
 import pl.edu.pb.wi.mmm.repository.RecipeRepository;
@@ -33,7 +34,7 @@ public class RecipeService {
 
         Set<RecipeIngredient> ingredients = createRecipeRequest.getIngredients().stream()
                 .map(ingredientForm -> {
-                    var ingredient = ingredientService.findById(ingredientForm.getIngredientId());
+                    Ingredient ingredient = ingredientService.findById(ingredientForm.getIngredientId());
                     return RecipeIngredient.builder()
                             .ingredient(ingredient)
                             .amount(ingredientForm.getAmount())
@@ -67,7 +68,7 @@ public class RecipeService {
 
         Set<RecipeIngredient> ingredients = form.getIngredients().stream()
                 .map(ingredientForm -> {
-                    var ingredient = ingredientService.findById(ingredientForm.getIngredientId());
+                    Ingredient ingredient = ingredientService.findById(ingredientForm.getIngredientId());
                     return RecipeIngredient.builder()
                             .ingredient(ingredient)
                             .amount(ingredientForm.getAmount())

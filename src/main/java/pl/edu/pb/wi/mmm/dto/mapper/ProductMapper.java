@@ -2,7 +2,6 @@ package pl.edu.pb.wi.mmm.dto.mapper;
 
 import pl.edu.pb.wi.mmm.dto.ProductDTO;
 import pl.edu.pb.wi.mmm.dto.ProductToListDTO;
-import pl.edu.pb.wi.mmm.dto.create.CreateProductRequest;
 import pl.edu.pb.wi.mmm.entity.Product;
 
 public interface ProductMapper {
@@ -13,6 +12,5 @@ public interface ProductMapper {
 
     ProductToListDTO mapToListElement(Product product);
 
-    Product map(CreateProductRequest createProductRequest);
 
 }

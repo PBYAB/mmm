@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edu.pb.wi.mmm.dto.ProductDTO;
 import pl.edu.pb.wi.mmm.dto.ProductToListDTO;
-import pl.edu.pb.wi.mmm.dto.create.CreateProductRequest;
 import pl.edu.pb.wi.mmm.entity.Product;
-import pl.edu.pb.wi.mmm.service.*;
 
 import java.util.stream.Collectors;
 
@@ -28,15 +26,6 @@ public class ProductMapperImpl implements ProductMapper {
 
     private final ProductIngredientAnalysisMapper productIngredientAnalysisMapper;
 
-    private final AllergenService allergenService;
-
-    private final CountryService countryService;
-
-    private final BrandService brandService;
-
-    private final ProductCategoryService productCategoryService;
-
-    private final ProductIngredientService productIngredientService;
 
     @Override
     public ProductDTO map(Product product) {
@@ -85,24 +74,6 @@ public class ProductMapperImpl implements ProductMapper {
                 .quantity(product.getQuantity())
                 .nutriScore(product.getNutriScore())
                 .novaGroup(product.getNovaGroup())
-                .build();
-    }
-
-    @Override
-    public Product map(CreateProductRequest createProductRequest) {
-        return Product.builder()
-                .name(createProductRequest.getName())
-                .barcode(createProductRequest.getBarcode())
-                .quantity(createProductRequest.getQuantity())
-                .nutriScore(createProductRequest.getNutriScore())
-                .novaGroup(createProductRequest.getNovaGroup())
-                .brands(brandService.findAllByIds(createProductRequest.getBrandsId()))
-                .categories(productCategoryService.findAllByIds(createProductRequest.getCategoriesId()))
-                .allergens(allergenService.findAllByIds(createProductRequest.getAllergensId()))
-                .ingredients(productIngredientService.findAllByIds(createProductRequest.getIngredientsId()))
-                .ingredientAnalysis(productIngredientAnalysisMapper.map(createProductRequest.getIngredientAnalysis()))
-                .nutriment(nutrimentMapper.map(createProductRequest.getNutriment()))
-                .countries(countryService.findAllByIds(createProductRequest.getCountriesId()))
                 .build();
     }
 

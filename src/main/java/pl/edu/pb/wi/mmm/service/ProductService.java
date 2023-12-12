@@ -19,8 +19,6 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    private final ProductMapper productMapper;
-
     private final ProductIngredientAnalysisMapper productIngredientAnalysisMapper;
 
     private final NutrimentMapper nutrimentMapper;
@@ -45,7 +43,7 @@ public class ProductService {
 
     @Transactional
     public Product save(CreateProductRequest form) {
-        var product = productMapper.map(form);
+        Product product = map(form);
         
         return productRepository.save(product);
     }
@@ -56,7 +54,7 @@ public class ProductService {
 
     @Transactional
     public void updateProduct(Long id, CreateProductRequest form) {
-        var product = findById(id);
+        Product product = findById(id);
 
         product.setName(form.getName());
         product.setBarcode(form.getBarcode());
@@ -74,7 +72,7 @@ public class ProductService {
 
     @Transactional
     public void deleteProduct(Long id) {
-        var product = findById(id);
+        Product product = findById(id);
 
         productRepository.delete(product);
     }
@@ -83,5 +81,23 @@ public class ProductService {
         return productRepository.findByBarcode(barcode)
                 .orElseThrow(() ->
                         new EntityNotFoundException("Product with barcode: [%s] not found".formatted(barcode)));
+    }
+
+
+    public Product map(CreateProductRequest createProductRequest) {
+        return Product.builder()
+                .name(createProductRequest.getName())
+                .barcode(createProductRequest.getBarcode())
+                .quantity(createProductRequest.getQuantity())
+                .nutriScore(createProductRequest.getNutriScore())
+                .novaGroup(createProductRequest.getNovaGroup())
+                .brands(brandService.findAllByIds(createProductRequest.getBrandsId()))
+                .categories(productCategoryService.findAllByIds(createProductRequest.getCategoriesId()))
+                .allergens(allergenService.findAllByIds(createProductRequest.getAllergensId()))
+                .ingredients(productIngredientService.findAllByIds(createProductRequest.getIngredientsId()))
+                .ingredientAnalysis(productIngredientAnalysisMapper.map(createProductRequest.getIngredientAnalysis()))
+                .nutriment(nutrimentMapper.map(createProductRequest.getNutriment()))
+                .countries(countryService.findAllByIds(createProductRequest.getCountriesId()))
+                .build();
     }
 }
