@@ -4,6 +4,7 @@ package pl.edu.pb.wi.mmm.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import pl.edu.pb.wi.mmm.entity.Category;
 
 
 import java.util.Set;
@@ -33,7 +34,7 @@ public class ProductDTO {
     private Integer novaGroup;
 
     @NotNull(message = "Categories is required")
-    private Set<ProductCategoryDTO> categories;
+    private Set<CategoryDTO> categories;
 
     @NotNull(message = "Brand is required")
     private Set<BrandDTO> brands;
