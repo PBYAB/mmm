@@ -19,16 +19,6 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    private final ProductMapper productMapper;
-
-    private final CategoryMapper categoryMapper;
-
-    private final BrandMapper brandMapper;
-
-    private final AllergenMapper allergenMapper;
-
-    private final ProductIngredientMapper productIngredientMapper;
-
     private final ProductIngredientAnalysisMapper productIngredientAnalysisMapper;
 
     private final NutrimentMapper nutrimentMapper;
@@ -102,7 +92,7 @@ public class ProductService {
                 .nutriScore(createProductRequest.getNutriScore())
                 .novaGroup(createProductRequest.getNovaGroup())
                 .brands(brandService.findAllByIds(createProductRequest.getBrandsId()))
-                .categories(productCategoryService.findAllByIds(createProductRequest.getCategoriesId()))
+                .categories(categoryService.findAllByIdIn(createProductRequest.getCategoriesId()))
                 .allergens(allergenService.findAllByIds(createProductRequest.getAllergensId()))
                 .ingredients(productIngredientService.findAllByIds(createProductRequest.getIngredientsId()))
                 .ingredientAnalysis(productIngredientAnalysisMapper.map(createProductRequest.getIngredientAnalysis()))
