@@ -35,6 +35,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserService userService;
 
     @Transactional
     public AuthenticationResponse register(RegisterRequest request) {
@@ -42,18 +43,9 @@ public class AuthenticationService {
             throw new EmailAlreadyExists("User with email: [%s] already exists".formatted(request.getEmail()));
         }
 
-        User user = User.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .roles(Set.of(roleRepository.findByName(Role.USER)))
-                .enabled(true)
-                .build();
-
-        User savedUser = userRepository.save(user);
-        String jwtToken = jwtService.generateToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
+        User savedUser = userService.createUser(request);
+        String jwtToken = jwtService.generateToken(savedUser);
+        String refreshToken = jwtService.generateRefreshToken(savedUser);
         saveUserToken(savedUser, jwtToken);
 
         return AuthenticationResponse.builder()
