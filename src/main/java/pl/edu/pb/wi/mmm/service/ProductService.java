@@ -9,8 +9,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.edu.pb.wi.mmm.dto.create.CreateProductRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.*;
+import pl.edu.pb.wi.mmm.entity.Allergen;
+import pl.edu.pb.wi.mmm.entity.Brand;
+import pl.edu.pb.wi.mmm.entity.Category;
+import pl.edu.pb.wi.mmm.entity.Country;
 import pl.edu.pb.wi.mmm.entity.Product;
+import pl.edu.pb.wi.mmm.entity.ProductIngredient;
 import pl.edu.pb.wi.mmm.repository.ProductRepository;
+
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +50,26 @@ public class ProductService {
 
     @Transactional
     public Product save(CreateProductRequest form) {
-        Product product = map(form);
+        Set<Brand> brands = brandService.findAllByIds(form.getBrandsId());
+        Set<Category> categories = categoryService.findAllByIdIn(form.getCategoriesId());
+        Set<Allergen> allergens = allergenService.findAllByIds(form.getAllergensId());
+        Set<ProductIngredient> productIngredients = productIngredientService.findAllByIds(form.getIngredientsId());
+        Set<Country> countries = countryService.findAllByIds(form.getCountriesId());
+
+        Product product = Product.builder()
+                .name(form.getName())
+                .barcode(form.getBarcode())
+                .quantity(form.getQuantity())
+                .nutriScore(form.getNutriScore())
+                .novaGroup(form.getNovaGroup())
+                .brands(brands)
+                .categories(categories)
+                .allergens(allergens)
+                .ingredients(productIngredients)
+                .ingredientAnalysis(productIngredientAnalysisMapper.map(form.getIngredientAnalysis()))
+                .nutriment(nutrimentMapper.map(form.getNutriment()))
+                .countries(countries)
+                .build();
         
         return productRepository.save(product);
     }
@@ -81,23 +107,5 @@ public class ProductService {
         return productRepository.findByBarcode(barcode)
                 .orElseThrow(() ->
                         new EntityNotFoundException("Product with barcode: [%s] not found".formatted(barcode)));
-    }
-
-
-    public Product map(CreateProductRequest createProductRequest) {
-        return Product.builder()
-                .name(createProductRequest.getName())
-                .barcode(createProductRequest.getBarcode())
-                .quantity(createProductRequest.getQuantity())
-                .nutriScore(createProductRequest.getNutriScore())
-                .novaGroup(createProductRequest.getNovaGroup())
-                .brands(brandService.findAllByIds(createProductRequest.getBrandsId()))
-                .categories(categoryService.findAllByIdIn(createProductRequest.getCategoriesId()))
-                .allergens(allergenService.findAllByIds(createProductRequest.getAllergensId()))
-                .ingredients(productIngredientService.findAllByIds(createProductRequest.getIngredientsId()))
-                .ingredientAnalysis(productIngredientAnalysisMapper.map(createProductRequest.getIngredientAnalysis()))
-                .nutriment(nutrimentMapper.map(createProductRequest.getNutriment()))
-                .countries(countryService.findAllByIds(createProductRequest.getCountriesId()))
-                .build();
     }
 }
