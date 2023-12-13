@@ -7,9 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edu.pb.wi.mmm.dto.create.CreateRecipeRequest;
+import pl.edu.pb.wi.mmm.dto.create.CreateRecipeReviewRequest;
 import pl.edu.pb.wi.mmm.entity.Ingredient;
 import pl.edu.pb.wi.mmm.entity.Recipe;
 import pl.edu.pb.wi.mmm.entity.RecipeIngredient;
+import pl.edu.pb.wi.mmm.entity.RecipeReview;
 import pl.edu.pb.wi.mmm.repository.RecipeRepository;
 
 import java.util.Set;
@@ -79,6 +81,20 @@ public class RecipeService {
                 .collect(Collectors.toSet());
 
         recipe.setIngredients(ingredients); // FIXME: nie usuwają się obecne składniki, tylko dodają nowe. Ale bardziej poczytać o tym niż pisać jakieś obejście
+    }
+
+    public void addRecipeReview(Long recipeId,Long userId, CreateRecipeReviewRequest form) {
+        Recipe recipe = findById(recipeId);
+        RecipeReview review = new RecipeReview();
+        review.setRating(form.getRating());
+        review.setComment(form.getComment());
+        review.setRecipe(recipe);
+        review.setUserId(userId);
+        Set<RecipeReview>recipeReviews = recipe.getReviews();
+        recipeReviews.add(review);
+
+        recipe.setReviews(recipeReviews);
+        recipeRepository.save(recipe);
     }
 
     public void deleteById(Long id) {

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +26,10 @@ import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
 import pl.edu.pb.wi.mmm.dto.RecipeListItem;
 import pl.edu.pb.wi.mmm.dto.create.CreateRecipeRequest;
 import pl.edu.pb.wi.mmm.dto.RecipeDTO;
+import pl.edu.pb.wi.mmm.dto.create.CreateRecipeReviewRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.RecipeMapper;
 import pl.edu.pb.wi.mmm.entity.Recipe;
+import pl.edu.pb.wi.mmm.entity.User;
 import pl.edu.pb.wi.mmm.service.RecipeService;
 
 import java.net.URI;
@@ -135,6 +138,33 @@ public class RecipeController {
         validationHandler.validateAndHandleErrors(bindingResult);
 
         recipeService.updateRecipe(id, form);
+        return ResponseEntity.ok().build();
+    }
+    @PostMapping("/{id}/review")
+    @Operation(summary = "Add review to recipe")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Review created successfully"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Bad Request - Invalid input data or validation errors"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Forbidden - User is not allowed to create a review"
+            )
+    })
+    public ResponseEntity<?> addReview(
+            @PathVariable Long id,
+            @AuthenticationPrincipal User user,
+            @Valid @RequestBody CreateRecipeReviewRequest form,
+            BindingResult bindingResult
+    ) {
+        validationHandler.validateAndHandleErrors(bindingResult);
+
+        recipeService.addRecipeReview(id, user.getId(), form);
         return ResponseEntity.ok().build();
     }
 

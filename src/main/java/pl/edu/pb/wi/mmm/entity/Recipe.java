@@ -48,6 +48,9 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private Set<RecipeIngredient> ingredients;
 
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    private Set<RecipeReview> reviews;
+
     @JsonIgnore
     @ManyToMany(mappedBy = "favouriteRecipes")
     private Set<User> users;
