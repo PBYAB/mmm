@@ -46,6 +46,7 @@ public class SecurityConfiguration {
                         .requestMatchers(WHITE_LIST_URL).permitAll()
                         .requestMatchers("/**").hasAuthority(Role.ADMIN.name())
                 )
+                .cors(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
