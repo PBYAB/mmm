@@ -15,7 +15,6 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import pl.edu.pb.wi.mmm.enumeration.Role;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -54,10 +53,11 @@ public class SecurityConfiguration {
                 .cors(cors -> cors
                         .configurationSource(request -> {
                             CorsConfiguration config = new CorsConfiguration();
-                            config.setAllowedOrigins(Collections.singletonList("*")); // Zezwalaj na wszystkie źródła
-                            config.setAllowedMethods(List.of("*")); // Zezwalaj na wszystkie metody
-                            config.setAllowedHeaders(List.of("*")); // Zezwalaj na wszystkie nagłówki
-                            config.setAllowCredentials(true); // Zezwalaj na przesyłanie żetonów uwierzytelniania (jeśli są używane)
+                            config.setAllowedOriginPatterns(Collections.singletonList("*")); // Allow all origins
+                            config.setAllowedMethods(List.of("*")); // Allow all methods
+                            config.setAllowedHeaders(List.of("*")); // Allow all headers
+                            config.setExposedHeaders(List.of("Access-Control-Allow-Origin")); // Add Access-Control-Allow-Origin header to the response
+                            config.setAllowCredentials(true); // Allow sending of authentication tokens (if used)
 
                             return config;
                         })
