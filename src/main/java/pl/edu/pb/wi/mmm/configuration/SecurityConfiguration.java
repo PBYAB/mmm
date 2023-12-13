@@ -12,7 +12,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.web.cors.CorsConfiguration;
 import pl.edu.pb.wi.mmm.enumeration.Role;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -45,6 +50,17 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(WHITE_LIST_URL).permitAll()
                         .requestMatchers("/**").hasAuthority(Role.ADMIN.name())
+                )
+                .cors(cors -> cors
+                        .configurationSource(request -> {
+                            CorsConfiguration config = new CorsConfiguration();
+                            config.setAllowedOrigins(Collections.singletonList("*")); // Zezwalaj na wszystkie źródła
+                            config.setAllowedMethods(List.of("*")); // Zezwalaj na wszystkie metody
+                            config.setAllowedHeaders(List.of("*")); // Zezwalaj na wszystkie nagłówki
+                            config.setAllowCredentials(true); // Zezwalaj na przesyłanie żetonów uwierzytelniania (jeśli są używane)
+
+                            return config;
+                        })
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider)

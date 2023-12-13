@@ -18,6 +18,9 @@ spring:
     password: secret
   mvc:
     log-request-details: true
+  threads:
+    virtual:
+      enabled: true
 
 logging:
   level:
