@@ -106,7 +106,7 @@ public class RecipeController {
                     description = "Not found"
             )
     })
-    public ResponseEntity<?> updateBrandById(
+    public ResponseEntity<?> updateRecipeById(
             @PathVariable Long id,
             @Valid @org.springframework.web.bind.annotation.RequestBody CreateRecipeRequest form,
             BindingResult bindingResult

@@ -28,7 +28,7 @@ import pl.edu.pb.wi.mmm.service.ArticleCategoryService;
 
 import java.net.URI;
 
-@Tag(name = "Article", description = "Article Category APIs")
+@Tag(name = "ArticleCategory", description = "Article Category APIs")
 @RestController
 @RequestMapping(ArticleCategoryController.API_CATEGORIES)
 @RequiredArgsConstructor
