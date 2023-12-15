@@ -14,18 +14,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
 import pl.edu.pb.wi.mmm.dto.RecipeListItem;
 import pl.edu.pb.wi.mmm.dto.create.CreateRecipeRequest;
-import pl.edu.pb.wi.mmm.dto.RecipeDTO;
 import pl.edu.pb.wi.mmm.dto.create.CreateRecipeReviewRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.RecipeMapper;
 import pl.edu.pb.wi.mmm.entity.Recipe;
@@ -33,6 +25,7 @@ import pl.edu.pb.wi.mmm.entity.User;
 import pl.edu.pb.wi.mmm.service.RecipeService;
 
 import java.net.URI;
+import java.util.List;
 
 @Tag(name = "Recipe", description = "Recipe APIs")
 @RestController
@@ -77,24 +70,9 @@ public class RecipeController {
                 .build();
     }
 
+
     @GetMapping
-    @Operation(summary = "Get a list of all recipes")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK"
-            )
-    })
-    public ResponseEntity<Page<RecipeListItem>> getRecipes(
-            Pageable pageable
-    ) {
-        var page = recipeService.findAll(pageable);
-
-        return ResponseEntity.ok(page.map(recipeMapper::mapToListItem));
-    }
-
-    @GetMapping("/{id}")
-    @Operation(summary = "Get a single recipe")
+    @Operation(summary = "Get all recipes")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -104,18 +82,16 @@ public class RecipeController {
                                     schema = @Schema(implementation = Recipe.class)
                             )
                     }
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Not Found - Recipe with given ID does not exist"
             )
     })
-    public ResponseEntity<RecipeDTO> getRecipe(
-            @PathVariable Long id
+    public ResponseEntity<Page<RecipeListItem>> getRecipes(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) List<Integer> servings,
+            @RequestParam(required = false) Double minKcalPerServing, // Added minKcalPerServing
+            @RequestParam(required = false) Double maxKcalPerServing, // Added maxKcalPerServing
+            Pageable pageable
     ) {
-        var recipe = recipeService.findById(id);
-
-        return ResponseEntity.ok(recipeMapper.map(recipe));
+        return ResponseEntity.ok(recipeService.findAll(name, servings, minKcalPerServing, maxKcalPerServing, pageable).map(recipeMapper::mapToListItem));
     }
 
     @PutMapping("/{id}")

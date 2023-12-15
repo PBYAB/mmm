@@ -1,9 +1,11 @@
 package pl.edu.pb.wi.mmm.service;
 
+import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edu.pb.wi.mmm.dto.create.CreateRecipeRequest;
@@ -14,6 +16,8 @@ import pl.edu.pb.wi.mmm.entity.RecipeIngredient;
 import pl.edu.pb.wi.mmm.entity.RecipeReview;
 import pl.edu.pb.wi.mmm.repository.RecipeRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -100,5 +104,28 @@ public class RecipeService {
     public void deleteById(Long id) {
         Recipe recipe = findById(id);
         recipeRepository.delete(recipe);
+    }
+
+    public Page<Recipe> findAll(String name, List<Integer> servings, Double minKcalPerServing, Double maxKcalPerServing, Pageable pageable) {
+        Specification<Recipe> spec = (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (name != null) {
+                predicates.add(cb.like(cb.lower(root.get("name")), "%" + name.toLowerCase() + "%"));
+            }
+            if (servings != null && !servings.isEmpty()) {
+                predicates.add(root.get("servings").in(servings));
+            }
+            if (minKcalPerServing != null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get("kcalPerServing"), minKcalPerServing));
+            }
+            if (maxKcalPerServing != null) {
+                predicates.add(cb.lessThanOrEqualTo(root.get("kcalPerServing"), maxKcalPerServing));
+            }
+
+            return cb.and(predicates.toArray(new Predicate[0]));
+        };
+
+        return recipeRepository.findAll(spec, pageable);
     }
 }
