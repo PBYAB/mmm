@@ -1,11 +1,13 @@
 package pl.edu.pb.wi.mmm.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import pl.edu.pb.wi.mmm.dto.create.CreateProductRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.*;
@@ -17,7 +19,10 @@ import pl.edu.pb.wi.mmm.entity.Product;
 import pl.edu.pb.wi.mmm.entity.ProductIngredient;
 import pl.edu.pb.wi.mmm.repository.ProductRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -107,5 +112,41 @@ public class ProductService {
         return productRepository.findByBarcode(barcode)
                 .orElseThrow(() ->
                         new EntityNotFoundException("Product with barcode: [%s] not found".formatted(barcode)));
+    }
+
+    public Page<Product> findAll(String name, String quantity, List<Integer> nutriScore, List<Integer> novaGroups, List<String> category, List<String> allergens, List<String> country, Pageable pageable) {
+        Specification<Product> spec = (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (name != null) {
+                predicates.add(cb.like(cb.lower(root.get("name")), "%" + name.toLowerCase() + "%"));
+            }
+            if (quantity != null) {
+                predicates.add(cb.equal(root.get("quantity"), quantity));
+            }
+            if (nutriScore != null && !nutriScore.isEmpty()) {
+                predicates.add(root.get("nutriScore").in(nutriScore));
+            }
+            if (novaGroups != null && !novaGroups.isEmpty()) {
+                predicates.add(root.get("novaGroup").in(novaGroups));
+            }
+            if (category != null && !category.isEmpty()) {
+                predicates.add(cb.lower(root.join("categories").get("name")).in(category.stream().map(String::toLowerCase).toList()));
+            }
+            if (allergens != null && !allergens.isEmpty()) {
+                var allergenSubquery = query.subquery(Long.class);
+                var allergenRoot = allergenSubquery.from(Product.class);
+                allergenSubquery.select(allergenRoot.get("id"));
+                allergenSubquery.where(cb.lower(allergenRoot.join("allergens").get("name")).in(allergens.stream().map(String::toLowerCase).collect(Collectors.toList())));
+                predicates.add(cb.not(root.get("id").in(allergenSubquery)));
+            }
+            if (country != null && !country.isEmpty()) {
+                predicates.add(cb.lower(root.join("countries").get("name")).in(country.stream().map(String::toLowerCase).toList()));
+            }
+
+            return cb.and(predicates.toArray(new Predicate[0]));
+        };
+
+        return productRepository.findAll(spec, pageable);
     }
 }

@@ -23,6 +23,8 @@ import pl.edu.pb.wi.mmm.entity.Product;
 import pl.edu.pb.wi.mmm.service.ProductService;
 
 import java.net.URI;
+import java.util.List;
+
 
 @Tag(name = "Product", description = "Product APIs")
 @RestController
@@ -164,9 +166,16 @@ public class ProductController {
             )
     })
     public ResponseEntity<Page<ProductToListDTO>> getProducts(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String quantity,
+            @RequestParam(required = false) List<Integer> nutriScore,
+            @RequestParam(required = false) List<Integer> novaGroups,
+            @RequestParam(required = false) List<String> category,
+            @RequestParam(required = false) List<String> allergens,
+            @RequestParam(required = false) List<String> country,
             Pageable pageable
     ) {
-        return ResponseEntity.ok(productsService.findAll(pageable).map(productMapper::mapToListElement));
+        return ResponseEntity.ok(productsService.findAll(name, quantity, nutriScore, novaGroups, category, allergens, country, pageable).map(productMapper::mapToListElement));
     }
 
     @GetMapping("/barcode/{barcode}")
@@ -193,4 +202,5 @@ public class ProductController {
 
         return ResponseEntity.ok(productMapper.map(product));
     }
+
 }
