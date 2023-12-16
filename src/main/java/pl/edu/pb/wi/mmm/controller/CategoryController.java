@@ -115,7 +115,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update an existing country")
+    @Operation(summary = "Update an existing category")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",

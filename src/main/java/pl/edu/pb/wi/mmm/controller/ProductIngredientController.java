@@ -114,11 +114,11 @@ public class ProductIngredientController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update an existing country")
+    @Operation(summary = "Update product ingredient")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Country updated successfully"
+                    description = "Product ingredient updated successfully"
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -130,7 +130,7 @@ public class ProductIngredientController {
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Country not found"
+                    description = "Product ingredient not found"
             )
     })
     public ResponseEntity<?> updateProductIngredient(
@@ -144,7 +144,7 @@ public class ProductIngredientController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete an existing category")
+    @Operation(summary = "Delete a product ingredient")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "204",
@@ -156,7 +156,7 @@ public class ProductIngredientController {
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Country not found"
+                    description = "Product ingredient not found"
             )
     })
     public ResponseEntity<?> deleteProductIngredient(
