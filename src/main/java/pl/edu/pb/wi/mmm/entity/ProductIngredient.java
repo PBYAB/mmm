@@ -33,7 +33,7 @@ public class ProductIngredient {
     @Column(name = "from_palm_oil")
     private Boolean fromPalmOil;
 
-    @ManyToMany(mappedBy = "ingredients")
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "ingredients")
     @JsonIgnore
     private Set<Product> products;
 }

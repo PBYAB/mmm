@@ -23,6 +23,6 @@ public class Allergen {
     private String name;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "allergens")
+    @ManyToMany(mappedBy = "allergens", cascade = CascadeType.ALL)
     private Set<Product> products;
 }

@@ -3,7 +3,6 @@ package pl.edu.pb.wi.mmm.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.Set;
@@ -26,7 +25,7 @@ public class Brand {
     private String name;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "brands")
+    @ManyToMany(mappedBy = "brands", cascade = CascadeType.ALL)
     private Set<Product> products;
 }
 

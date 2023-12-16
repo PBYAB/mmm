@@ -40,4 +40,16 @@ public class ArticleCategoryService {
     public Page<ArticleCategory> findAll(Pageable pageable) {
         return categoryRepository.findAll(pageable);
     }
+
+    @Transactional
+    public void deleteById(Long id) {
+        ArticleCategory category = findById(id);
+        categoryRepository.delete(category);
+    }
+
+    @Transactional
+    public void update(Long id, CreateArticleCategoryRequest form) {
+        ArticleCategory category = findById(id);
+        category.setName(form.getName());
+    }
 }

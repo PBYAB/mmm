@@ -48,7 +48,7 @@ public class Product {
     @Column(name = "nova_group")
     private Integer novaGroup;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "product_brand",
             joinColumns = @JoinColumn(name = "product_id"),
@@ -56,7 +56,7 @@ public class Product {
     )
     private Set<Brand> brands;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "product_category",
             joinColumns = @JoinColumn(name = "product_id"),
@@ -64,7 +64,7 @@ public class Product {
     )
     private Set<Category> categories;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "product_allergen",
             joinColumns = @JoinColumn(name = "product_id"),
@@ -72,7 +72,7 @@ public class Product {
     )
     private Set<Allergen> allergens;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "product_ingredient_product",
             joinColumns = @JoinColumn(name = "product_id"),
@@ -88,7 +88,7 @@ public class Product {
     @JoinColumn(name = "nutriment_id", referencedColumnName = "id")
     private Nutriment nutriment;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "product_country",
             joinColumns = @JoinColumn(name = "product_id"),

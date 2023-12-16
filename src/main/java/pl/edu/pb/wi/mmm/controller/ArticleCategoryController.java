@@ -13,12 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
 import pl.edu.pb.wi.mmm.dto.ArticleCategoryDTO;
 import pl.edu.pb.wi.mmm.dto.create.CreateArticleCategoryRequest;
@@ -116,5 +111,61 @@ public class ArticleCategoryController {
         ArticleCategory category = articleCategoryService.findById(id);
 
         return ResponseEntity.ok(articleCategoryMapper.map(category));
+    }
+
+    @PutMapping(CATEGORY)
+    @Operation(summary = "Update category")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Bad Request - Invalid input data or validation errors"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Forbidden - Access denied"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Not Found - Category with the specified ID not found"
+            )
+    })
+    public ResponseEntity<?> updateCategory(
+            @PathVariable Long id,
+            @Valid @RequestBody CreateArticleCategoryRequest form,
+            BindingResult bindingResult
+    ) {
+        validationHandler.validateAndHandleErrors(bindingResult);
+
+        articleCategoryService.update(id, form);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping(CATEGORY)
+    @Operation(summary = "Delete category")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Forbidden - Access denied"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Not Found - Category with the specified ID not found"
+            )
+    })
+    public ResponseEntity<?> deleteCategory(
+            @PathVariable Long id
+    ) {
+        articleCategoryService.deleteById(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

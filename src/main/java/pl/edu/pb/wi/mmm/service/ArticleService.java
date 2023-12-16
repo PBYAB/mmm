@@ -43,4 +43,21 @@ public class ArticleService {
     public Page<Article> findAll(Pageable pageable) {
         return articleRepository.findAll(pageable);
     }
+
+    @Transactional
+    public void update(Long id, CreateArticleRequest form) {
+        Article article = findById(id);
+
+        article.setCategory(articleCategoryService.findById(form.getCategoryId()));
+        article.setTitle(form.getTitle());
+        article.setContent(form.getContent());
+        article.setStatus(form.getStatus());
+        article.setCreatedAt(OffsetDateTime.now());
+    }
+
+    @Transactional
+    public void deleteById(Long id) {
+        Article article = findById(id);
+        articleRepository.delete(article);
+    }
 }

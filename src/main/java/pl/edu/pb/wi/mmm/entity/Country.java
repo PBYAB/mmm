@@ -1,13 +1,7 @@
 package pl.edu.pb.wi.mmm.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,7 +28,7 @@ public class Country {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "countries")
+    @ManyToMany(mappedBy = "countries", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Product> products;
 }
