@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
+import pl.edu.pb.wi.mmm.dto.RecipeDTO;
 import pl.edu.pb.wi.mmm.dto.RecipeListItem;
 import pl.edu.pb.wi.mmm.dto.create.CreateRecipeRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.RecipeMapper;
@@ -132,10 +133,12 @@ public class RecipeController {
                     description = "Not found"
             )
     })
-    public ResponseEntity<Recipe> getById(
+    public ResponseEntity<RecipeDTO> getById(
             @PathVariable Long id
     ) {
-        return ResponseEntity.ok(recipeService.findById(id));
+        var recipe = recipeService.findById(id);
+
+        return ResponseEntity.ok(recipeMapper.map(recipe));
     }
 
     @DeleteMapping("/{id}")
