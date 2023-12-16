@@ -13,4 +13,5 @@ public interface RecipeReviewMapper {
     RecipeReview map(RecipeReviewDTO recipeReviewDTO);
 
     RecipeReview map(CreateRecipeReviewRequest createRecipeReviewRequest);
+
 }

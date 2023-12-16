@@ -1,9 +1,6 @@
 package pl.edu.pb.wi.mmm.dto;
 
-import jakarta.persistence.Column;
 import lombok.*;
-import pl.edu.pb.wi.mmm.enumeration.Unit;
-
 
 @Data
 @AllArgsConstructor
@@ -12,7 +9,7 @@ import pl.edu.pb.wi.mmm.enumeration.Unit;
 @With
 public class RecipeReviewDTO {
 
-    private Long recipeId;
+    private Long id;
 
     private Double rating;
 

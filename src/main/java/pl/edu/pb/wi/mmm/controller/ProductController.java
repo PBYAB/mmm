@@ -170,12 +170,15 @@ public class ProductController {
             @RequestParam(required = false) String quantity,
             @RequestParam(required = false) List<Integer> nutriScore,
             @RequestParam(required = false) List<Integer> novaGroups,
-            @RequestParam(required = false) List<String> category,
-            @RequestParam(required = false) List<String> allergens,
-            @RequestParam(required = false) List<String> country,
+            @RequestParam(required = false) List<Long> category,
+            @RequestParam(required = false) List<Long> allergens,
+            @RequestParam(required = false) List<Long> country,
             Pageable pageable
     ) {
-        return ResponseEntity.ok(productsService.findAll(name, quantity, nutriScore, novaGroups, category, allergens, country, pageable).map(productMapper::mapToListElement));
+        return ResponseEntity.ok(productsService.
+                findAll(name, quantity, nutriScore, novaGroups, category, allergens, country, pageable)
+                .map(productMapper::mapToListElement)
+        );
     }
 
     @GetMapping("/barcode/{barcode}")

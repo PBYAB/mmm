@@ -22,7 +22,6 @@ import pl.edu.pb.wi.mmm.repository.ProductRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -114,7 +113,7 @@ public class ProductService {
                         new EntityNotFoundException("Product with barcode: [%s] not found".formatted(barcode)));
     }
 
-    public Page<Product> findAll(String name, String quantity, List<Integer> nutriScore, List<Integer> novaGroups, List<String> category, List<String> allergens, List<String> country, Pageable pageable) {
+    public Page<Product> findAll(String name, String quantity, List<Integer> nutriScore, List<Integer> novaGroups, List<Long> category, List<Long> allergens, List<Long> country, Pageable pageable) {
         Specification<Product> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -131,17 +130,17 @@ public class ProductService {
                 predicates.add(root.get("novaGroup").in(novaGroups));
             }
             if (category != null && !category.isEmpty()) {
-                predicates.add(cb.lower(root.join("categories").get("name")).in(category.stream().map(String::toLowerCase).toList()));
+                predicates.add(root.join("categories").get("id").in(category));
             }
             if (allergens != null && !allergens.isEmpty()) {
                 var allergenSubquery = query.subquery(Long.class);
                 var allergenRoot = allergenSubquery.from(Product.class);
                 allergenSubquery.select(allergenRoot.get("id"));
-                allergenSubquery.where(cb.lower(allergenRoot.join("allergens").get("name")).in(allergens.stream().map(String::toLowerCase).collect(Collectors.toList())));
+                allergenSubquery.where(allergenRoot.join("allergens").get("id").in(allergens));
                 predicates.add(cb.not(root.get("id").in(allergenSubquery)));
             }
             if (country != null && !country.isEmpty()) {
-                predicates.add(cb.lower(root.join("countries").get("name")).in(country.stream().map(String::toLowerCase).toList()));
+                predicates.add(root.join("countries").get("id").in(country));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

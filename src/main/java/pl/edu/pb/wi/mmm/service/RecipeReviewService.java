@@ -2,6 +2,7 @@ package pl.edu.pb.wi.mmm.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -11,14 +12,19 @@ import pl.edu.pb.wi.mmm.repository.RecipeReviewRepository;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RecipeReviewService {
 
-    RecipeReviewRepository recipeReviewRepository;
+    private final RecipeReviewRepository recipeReviewRepository;
+
+    private final RecipeService recipeService;
 
     @Transactional
-    public RecipeReview createRecipeReview(CreateRecipeReviewRequest form) {
+    public RecipeReview createRecipeReview(Long id, CreateRecipeReviewRequest form, Long userId) {
         RecipeReview recipeReview = RecipeReview.builder()
                 .rating(form.getRating())
+                .recipe(recipeService.findById(id))
+                .userId(userId)
                 .comment(form.getComment())
                 .build();
         return recipeReviewRepository.save(recipeReview);
@@ -33,15 +39,32 @@ public class RecipeReviewService {
                 .orElseThrow(() -> new RuntimeException("Brand with ID: [%s] not found".formatted(id)));
     }
 
-    public void updateRecipeReview(Long id, CreateRecipeReviewRequest form) {
-        RecipeReview recipeReview = findById(id);
+    @Transactional
+    public void updateRecipeReview(Long recipeId, Long reviewId, CreateRecipeReviewRequest form, Long userId) {
+        RecipeReview recipeReview = findByRecipeIdAndReviewIdAndUserId(recipeId, reviewId, userId);
+
         recipeReview.setRating(form.getRating());
         recipeReview.setComment(form.getComment());
     }
 
-    public void deleteRecipeReview(Long id) {
-        RecipeReview recipeReview = findById(id);
+    @Transactional
+    public void deleteRecipeReview(Long recipeId, Long reviewId, Long userId) {
+        RecipeReview recipeReview = findByRecipeIdAndReviewIdAndUserId(recipeId, reviewId, userId);
 
         recipeReviewRepository.delete(recipeReview);
+    }
+
+    public Page<RecipeReview> findAllByRecipeId(Long recipeId, Pageable pageable) {
+        return recipeReviewRepository.findAllByRecipeId(recipeId, pageable);
+    }
+
+    public RecipeReview findByRecipeIdAndReviewIdAndUserId(Long recipeId, Long reviewId, Long userId) {
+        return recipeReviewRepository.findByRecipe_IdAndIdAndAndUserId(recipeId, reviewId, userId)
+                .orElseThrow(() -> new RuntimeException("RecipeReview with ID: [%s] not found".formatted(reviewId)));
+    }
+
+    public RecipeReview findByRecipeAndId(Long recipeId, Long reviewId) {
+        return recipeReviewRepository.findByRecipe_IdAndId(recipeId, reviewId)
+                .orElseThrow(() -> new RuntimeException("RecipeReview with ID: [%s] not found".formatted(reviewId)));
     }
 }

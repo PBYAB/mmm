@@ -12,6 +12,7 @@ import pl.edu.pb.wi.mmm.repository.RequestLogRepository;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.security.Principal;
 
 
 public class RequestLoggingFilter implements Filter {
@@ -27,7 +28,9 @@ public class RequestLoggingFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        String user = Optional.ofNullable(httpRequest.getUserPrincipal().getName()).orElse("anonymous");
+        String user = Optional.ofNullable(httpRequest.getUserPrincipal())
+                .map(Principal::getName)
+                .orElse("anonymous");
         String endpoint = httpRequest.getRequestURI();
         String requestData = httpRequest.getInputStream().toString();
         String responseData = httpResponse.getOutputStream().toString();

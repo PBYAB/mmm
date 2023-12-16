@@ -1,5 +1,7 @@
 package pl.edu.pb.wi.mmm.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import pl.edu.pb.wi.mmm.entity.RecipeReview;
 
@@ -13,4 +15,11 @@ public interface RecipeReviewRepository extends JpaRepository<RecipeReview, Long
 
     @Override
     List<RecipeReview> findAll();
+
+    Page<RecipeReview> findAllByRecipeId(Long recipeId, Pageable pageable);
+
+    Optional<RecipeReview> findByRecipe_IdAndId(Long recipeId, Long id);
+
+    Optional<RecipeReview> findByRecipe_IdAndIdAndAndUserId(Long recipeId, Long id, Long userId);
+
 }

@@ -12,16 +12,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
 import pl.edu.pb.wi.mmm.dto.RecipeListItem;
 import pl.edu.pb.wi.mmm.dto.create.CreateRecipeRequest;
-import pl.edu.pb.wi.mmm.dto.create.CreateRecipeReviewRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.RecipeMapper;
 import pl.edu.pb.wi.mmm.entity.Recipe;
-import pl.edu.pb.wi.mmm.entity.User;
 import pl.edu.pb.wi.mmm.service.RecipeService;
 
 import java.net.URI;
@@ -116,32 +113,29 @@ public class RecipeController {
         recipeService.updateRecipe(id, form);
         return ResponseEntity.ok().build();
     }
-    @PostMapping("/{id}/review")
-    @Operation(summary = "Add review to recipe")
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Get recipe by ID")
     @ApiResponses(value = {
             @ApiResponse(
-                    responseCode = "201",
-                    description = "Review created successfully"
+                    responseCode = "200",
+                    description = "OK",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = Recipe.class)
+                            )
+                    }
             ),
             @ApiResponse(
-                    responseCode = "400",
-                    description = "Bad Request - Invalid input data or validation errors"
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden - User is not allowed to create a review"
+                    responseCode = "404",
+                    description = "Not found"
             )
     })
-    public ResponseEntity<?> addReview(
-            @PathVariable Long id,
-            @AuthenticationPrincipal User user,
-            @Valid @RequestBody CreateRecipeReviewRequest form,
-            BindingResult bindingResult
+    public ResponseEntity<Recipe> getById(
+            @PathVariable Long id
     ) {
-        validationHandler.validateAndHandleErrors(bindingResult);
-
-        recipeService.addRecipeReview(id, user.getId(), form);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(recipeService.findById(id));
     }
 
     @DeleteMapping("/{id}")
