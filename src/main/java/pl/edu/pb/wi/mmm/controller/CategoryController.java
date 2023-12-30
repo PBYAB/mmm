@@ -18,6 +18,7 @@ import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
 import pl.edu.pb.wi.mmm.dto.CategoryDTO;
 import pl.edu.pb.wi.mmm.dto.create.CreateProductCategoryRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.CategoryMapper;
+import pl.edu.pb.wi.mmm.dto.pagescheme.CategoryPageSchema;
 import pl.edu.pb.wi.mmm.entity.Category;
 import pl.edu.pb.wi.mmm.entity.Country;
 import pl.edu.pb.wi.mmm.service.CategoryService;
@@ -45,7 +46,7 @@ public class CategoryController {
                     description = "OK",
                     content = {
                             @Content(
-                                    schema = @Schema(implementation = Category.class)
+                                    schema = @Schema(implementation = CategoryPageSchema.class)
                             )
                     }
             )

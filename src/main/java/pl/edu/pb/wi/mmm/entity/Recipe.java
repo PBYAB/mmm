@@ -1,7 +1,6 @@
 package pl.edu.pb.wi.mmm.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -45,10 +44,10 @@ public class Recipe {
     @Column(name = "energy_kcal_per_serving")
     private Double kcalPerServing;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    @OneToMany
     private Set<RecipeIngredient> ingredients;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    @OneToMany
     private Set<RecipeReview> reviews;
 
     @JsonIgnore
