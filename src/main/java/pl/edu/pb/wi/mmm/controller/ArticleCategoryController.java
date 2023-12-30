@@ -18,7 +18,6 @@ import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
 import pl.edu.pb.wi.mmm.dto.ArticleCategoryDTO;
 import pl.edu.pb.wi.mmm.dto.create.CreateArticleCategoryRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.ArticleCategoryMapper;
-import pl.edu.pb.wi.mmm.dto.pagescheme.ArticleCategoryPageSchema;
 import pl.edu.pb.wi.mmm.entity.ArticleCategory;
 import pl.edu.pb.wi.mmm.service.ArticleCategoryService;
 
@@ -77,7 +76,7 @@ public class ArticleCategoryController {
                     content = {
                             @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ArticleCategoryPageSchema.class)
+                                    schema = @Schema(implementation = Page.class)
                             )
                     })
     })

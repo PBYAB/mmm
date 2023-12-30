@@ -19,7 +19,6 @@ import pl.edu.pb.wi.mmm.dto.RecipeDTO;
 import pl.edu.pb.wi.mmm.dto.RecipeListItem;
 import pl.edu.pb.wi.mmm.dto.create.CreateRecipeRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.RecipeMapper;
-import pl.edu.pb.wi.mmm.dto.pagescheme.RecipeToListPageSchema;
 import pl.edu.pb.wi.mmm.entity.Recipe;
 import pl.edu.pb.wi.mmm.service.RecipeService;
 
@@ -78,7 +77,7 @@ public class RecipeController {
                     description = "OK",
                     content = {
                             @Content(
-                                    schema = @Schema(implementation = RecipeToListPageSchema.class)
+                                    schema = @Schema(implementation = Recipe.class)
                             )
                     }
             )

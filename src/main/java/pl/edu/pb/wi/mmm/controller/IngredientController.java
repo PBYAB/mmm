@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
+import pl.edu.pb.wi.mmm.dto.CountryDTO;
 import pl.edu.pb.wi.mmm.dto.IngredientListItem;
+import pl.edu.pb.wi.mmm.dto.create.CreateCountryRequest;
 import pl.edu.pb.wi.mmm.dto.create.CreateIngredientRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.IngredientMapper;
-import pl.edu.pb.wi.mmm.dto.pagescheme.IngredientPageSchema;
+import pl.edu.pb.wi.mmm.entity.Country;
 import pl.edu.pb.wi.mmm.entity.Ingredient;
 import pl.edu.pb.wi.mmm.service.IngredientService;
 
@@ -82,7 +85,7 @@ public class IngredientController {
                     description = "OK",
                     content = {
                             @Content(
-                                    schema = @Schema(implementation = IngredientPageSchema.class)
+                                    schema = @Schema(implementation = Page.class)
                             )
                     }
             )

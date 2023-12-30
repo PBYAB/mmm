@@ -18,7 +18,6 @@ import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
 import pl.edu.pb.wi.mmm.dto.ProductIngredientDTO;
 import pl.edu.pb.wi.mmm.dto.create.CreateProductIngredientRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.ProductIngredientMapper;
-import pl.edu.pb.wi.mmm.dto.pagescheme.ProductIngredientsPageSchema;
 import pl.edu.pb.wi.mmm.entity.ProductIngredient;
 import pl.edu.pb.wi.mmm.service.ProductIngredientService;
 
@@ -46,7 +45,7 @@ public class ProductIngredientController {
                     description = "OK",
                     content = {
                             @Content(
-                                    schema = @Schema(implementation = ProductIngredientsPageSchema.class)
+                                    schema = @Schema(implementation = ProductIngredient.class)
                             )
                     }
             )

@@ -18,7 +18,6 @@ import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
 import pl.edu.pb.wi.mmm.dto.RecipeReviewDTO;
 import pl.edu.pb.wi.mmm.dto.create.CreateRecipeReviewRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.RecipeReviewMapper;
-import pl.edu.pb.wi.mmm.dto.pagescheme.RecipeReviewPageSchema;
 import pl.edu.pb.wi.mmm.entity.RecipeReview;
 import pl.edu.pb.wi.mmm.entity.User;
 import pl.edu.pb.wi.mmm.service.RecipeReviewService;
@@ -80,7 +79,7 @@ public class RecipeReviewController {
                     content = {
                             @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = RecipeReviewPageSchema.class)
+                                    schema = @Schema(implementation = RecipeReviewDTO.class)
                             )
                     }
             ),
