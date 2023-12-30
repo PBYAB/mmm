@@ -23,6 +23,7 @@ import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
 import pl.edu.pb.wi.mmm.dto.CountryDTO;
 import pl.edu.pb.wi.mmm.dto.create.CreateCountryRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.CountryMapper;
+import pl.edu.pb.wi.mmm.dto.pagescheme.CountryPageSchema;
 import pl.edu.pb.wi.mmm.entity.Country;
 import pl.edu.pb.wi.mmm.service.CountryService;
 
@@ -51,7 +52,7 @@ public class CountryController {
                     description = "OK",
                     content = {
                             @Content(
-                                    schema = @Schema(implementation = Country.class)
+                                    schema = @Schema(implementation = CountryPageSchema.class)
                             )
                     }
             )

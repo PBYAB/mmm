@@ -19,6 +19,7 @@ import pl.edu.pb.wi.mmm.dto.ProductDTO;
 import pl.edu.pb.wi.mmm.dto.ProductToListDTO;
 import pl.edu.pb.wi.mmm.dto.create.CreateProductRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.ProductMapper;
+import pl.edu.pb.wi.mmm.dto.pagescheme.ProductToListPageSchema;
 import pl.edu.pb.wi.mmm.entity.Product;
 import pl.edu.pb.wi.mmm.service.ProductService;
 
@@ -160,7 +161,7 @@ public class ProductController {
                     description = "OK",
                     content = {
                             @Content(
-                                    schema = @Schema(implementation = Product.class)
+                                    schema = @Schema(implementation = ProductToListPageSchema.class)
                             )
                     }
             )
