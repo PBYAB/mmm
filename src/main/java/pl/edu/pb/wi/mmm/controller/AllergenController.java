@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -44,14 +45,6 @@ public class AllergenController {
             @ApiResponse(
                     responseCode = "201",
                     description = "Allergen created successfully"
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Bad Request - Invalid input data or validation errors"
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden - Access denied"
             )
     })
     public ResponseEntity<?> createAllergen(
@@ -70,18 +63,7 @@ public class AllergenController {
 
     @GetMapping
     @Operation(summary = "List all allergens with pagination")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = {
-                            @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = AllergenPageSchema.class)
-                            )
-                    })
-    })
-    public ResponseEntity<?> listAllergens(
+    public ResponseEntity<Page<AllergenDTO>> listAllergens(
             Pageable pageable
     ) {
         return ResponseEntity.ok(allergenService.findAll(pageable).map(allergenMapper::map));
@@ -90,22 +72,6 @@ public class AllergenController {
 
     @GetMapping(ALLERGEN)
     @Operation(summary = "Find a allergen by ID")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = {
-                            @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Allergen.class)
-                            )
-                    }
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Not Found - Allergen with the specified ID not found"
-            )
-    })
     public ResponseEntity<AllergenDTO> findAllergenById(
             @PathVariable Long id
     ) {
@@ -116,17 +82,8 @@ public class AllergenController {
 
     @DeleteMapping(ALLERGEN)
     @Operation(summary = "Delete allergen by ID")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "204",
-                    description = "No Content - Allergen deleted successfully"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Not Found - Allergen with the specified ID not found"
-            )
-    })
-    public ResponseEntity<?> deleteAllergenById(
+    @ApiResponses(value = @ApiResponse(responseCode = "204"))
+    public ResponseEntity<Void> deleteAllergenById(
             @PathVariable Long id
     ) {
         allergenService.deleteById(id);
@@ -136,16 +93,6 @@ public class AllergenController {
 
     @PutMapping(ALLERGEN)
     @Operation(summary = "Update allergen by ID")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "204",
-                    description = "No Content - Allergen updated successfully"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Not Found - Allergen with the specified ID not found"
-            )
-    })
     public ResponseEntity<?> updateAllergenById(
             @PathVariable Long id,
             @Valid @RequestBody CreateAllergenRequest form,
