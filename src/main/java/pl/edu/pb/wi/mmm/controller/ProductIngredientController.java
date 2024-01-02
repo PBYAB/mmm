@@ -2,8 +2,6 @@ package pl.edu.pb.wi.mmm.controller;
 
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,7 +16,6 @@ import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
 import pl.edu.pb.wi.mmm.dto.ProductIngredientDTO;
 import pl.edu.pb.wi.mmm.dto.create.CreateProductIngredientRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.ProductIngredientMapper;
-import pl.edu.pb.wi.mmm.dto.pagescheme.ProductIngredientsPageSchema;
 import pl.edu.pb.wi.mmm.entity.ProductIngredient;
 import pl.edu.pb.wi.mmm.service.ProductIngredientService;
 
@@ -40,17 +37,6 @@ public class ProductIngredientController {
 
     @GetMapping
     @Operation(summary = "Get a list of all product ingredients")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = {
-                            @Content(
-                                    schema = @Schema(implementation = ProductIngredientsPageSchema.class)
-                            )
-                    }
-            )
-    })
     public ResponseEntity<Page<ProductIngredientDTO>> getProductIngredients(
             Pageable pageable
     ) {
@@ -59,21 +45,6 @@ public class ProductIngredientController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get a product ingredient by ID")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = {
-                            @Content(
-                                    schema = @Schema(implementation = ProductIngredient.class)
-                            )
-                    }
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Product ingredient not found"
-            )
-    })
     public ResponseEntity<ProductIngredientDTO> getProductIngredient(
             @PathVariable Long id
     ) {
@@ -84,25 +55,7 @@ public class ProductIngredientController {
 
     @PostMapping
     @Operation(summary = "Create a new product ingredient")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "Product ingredient created successfully",
-                    content = {
-                            @Content(
-                                    schema = @Schema(implementation = ProductIngredient.class)
-                            )
-                    }
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Bad Request - Invalid input data or validation errors"
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden - Access denied"
-            )
-    })
+    @ApiResponses(value = @ApiResponse(responseCode = "201"))
     public ResponseEntity<ProductIngredient> createProductIngredient(
             @Valid @org.springframework.web.bind.annotation.RequestBody CreateProductIngredientRequest productIngredient,
             BindingResult bindingResult
@@ -116,24 +69,6 @@ public class ProductIngredientController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update product ingredient")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Product ingredient updated successfully"
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Bad Request - Invalid input data or validation errors"
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden - Access denied"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Product ingredient not found"
-            )
-    })
     public ResponseEntity<?> updateProductIngredient(
             @PathVariable Long id,
             @Valid @org.springframework.web.bind.annotation.RequestBody CreateProductIngredientRequest form,
@@ -146,21 +81,8 @@ public class ProductIngredientController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a product ingredient")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "204",
-                    description = "Country deleted successfully"
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden - Access denied"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Product ingredient not found"
-            )
-    })
-    public ResponseEntity<?> deleteProductIngredient(
+    @ApiResponses(value = @ApiResponse(responseCode = "204"))
+    public ResponseEntity<Void> deleteProductIngredient(
             @PathVariable Long id
     ) {
         productIngredientService.deleteProductIngredient(id);

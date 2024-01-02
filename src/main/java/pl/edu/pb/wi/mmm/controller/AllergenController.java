@@ -1,8 +1,6 @@
 package pl.edu.pb.wi.mmm.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,7 +8,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +15,6 @@ import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
 import pl.edu.pb.wi.mmm.dto.AllergenDTO;
 import pl.edu.pb.wi.mmm.dto.create.CreateAllergenRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.AllergenMapper;
-import pl.edu.pb.wi.mmm.dto.pagescheme.AllergenPageSchema;
 import pl.edu.pb.wi.mmm.entity.Allergen;
 import pl.edu.pb.wi.mmm.service.AllergenService;
 
@@ -41,12 +37,7 @@ public class AllergenController {
 
     @PostMapping
     @Operation(summary = "Create a new allergen")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "Allergen created successfully"
-            )
-    })
+    @ApiResponses(value = @ApiResponse(responseCode = "201"))
     public ResponseEntity<?> createAllergen(
             @Valid @RequestBody CreateAllergenRequest form,
             BindingResult bindingResult

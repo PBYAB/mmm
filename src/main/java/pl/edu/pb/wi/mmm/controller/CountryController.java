@@ -1,8 +1,6 @@
 package pl.edu.pb.wi.mmm.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +21,6 @@ import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
 import pl.edu.pb.wi.mmm.dto.CountryDTO;
 import pl.edu.pb.wi.mmm.dto.create.CreateCountryRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.CountryMapper;
-import pl.edu.pb.wi.mmm.dto.pagescheme.CountryPageSchema;
 import pl.edu.pb.wi.mmm.entity.Country;
 import pl.edu.pb.wi.mmm.service.CountryService;
 
@@ -46,17 +43,6 @@ public class CountryController {
 
     @GetMapping
     @Operation(summary = "Get a list of all countries")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = {
-                            @Content(
-                                    schema = @Schema(implementation = CountryPageSchema.class)
-                            )
-                    }
-            )
-    })
     public ResponseEntity<Page<CountryDTO>> getCountries(
             Pageable pageable
     ) {
@@ -65,21 +51,6 @@ public class CountryController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get a country by ID")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = {
-                            @Content(
-                                    schema = @Schema(implementation = Country.class)
-                            )
-                    }
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Country not found"
-            )
-    })
     public ResponseEntity<CountryDTO> getCountry(
             @PathVariable Long id
     ) {
@@ -91,25 +62,7 @@ public class CountryController {
 
     @PostMapping
     @Operation(summary = "Create a new country")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "Country created successfully",
-                    content = {
-                            @Content(
-                                    schema = @Schema(implementation = Country.class)
-                            )
-                    }
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Bad Request - Invalid input data or validation errors"
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden - Access denied"
-            )
-    })
+    @ApiResponses(value = @ApiResponse(responseCode = "201"))
     public ResponseEntity<Country> createCountry(
             @Valid @org.springframework.web.bind.annotation.RequestBody CreateCountryRequest country,
             BindingResult bindingResult
@@ -123,24 +76,6 @@ public class CountryController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update an existing country")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Country updated successfully"
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Bad Request - Invalid input data or validation errors"
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden - Access denied"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Country not found"
-            )
-    })
     public ResponseEntity<?> updateCountry(
             @PathVariable Long id,
             @Valid @org.springframework.web.bind.annotation.RequestBody CreateCountryRequest form,
@@ -153,21 +88,8 @@ public class CountryController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete an existing country")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "204",
-                    description = "Country deleted successfully"
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden - Access denied"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Country not found"
-            )
-    })
-    public ResponseEntity<?> deleteCountry(
+    @ApiResponses(value = @ApiResponse(responseCode = "204"))
+    public ResponseEntity<Void> deleteCountry(
             @PathVariable Long id
     ) {
         countryService.deleteCountry(id);

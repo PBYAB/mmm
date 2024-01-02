@@ -1,8 +1,6 @@
 package pl.edu.pb.wi.mmm.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,7 +17,6 @@ import pl.edu.pb.wi.mmm.dto.ProductDTO;
 import pl.edu.pb.wi.mmm.dto.ProductToListDTO;
 import pl.edu.pb.wi.mmm.dto.create.CreateProductRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.ProductMapper;
-import pl.edu.pb.wi.mmm.dto.pagescheme.ProductToListPageSchema;
 import pl.edu.pb.wi.mmm.entity.Product;
 import pl.edu.pb.wi.mmm.service.ProductService;
 
@@ -43,20 +40,7 @@ public class ProductController {
 
     @PostMapping()
     @Operation(summary = "Create a new product")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "Product created successfully"
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Bad Request - Invalid input data or validation errors"
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden - Access denied"
-            )
-    })
+    @ApiResponses(value = @ApiResponse(responseCode = "201"))
     public ResponseEntity<?> createProduct(
             @Valid @RequestBody CreateProductRequest form,
             BindingResult bindingResult
@@ -71,21 +55,6 @@ public class ProductController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get a product by ID")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = {
-                            @Content(
-                                    schema = @Schema(implementation = Product.class)
-                            )
-                    }
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Product not found"
-            )
-    })
     public ResponseEntity<ProductDTO> getProduct(
             @PathVariable Long id
     ) {
@@ -97,29 +66,6 @@ public class ProductController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update a product")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Product updated successfully",
-                    content = {
-                            @Content(
-                                    schema = @Schema(implementation = Product.class)
-                            )
-                    }
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Bad Request - Invalid input data or validation errors"
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden - Access denied"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Product not found"
-            )
-    })
     public ResponseEntity<?> updateProduct(
             @PathVariable Long id,
             @Valid @RequestBody CreateProductRequest form,
@@ -135,17 +81,8 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a product")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Product deleted successfully"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Product not found"
-            )
-    })
-    public ResponseEntity<?> deleteProduct(
+    @ApiResponses(value = @ApiResponse(responseCode = "204"))
+    public ResponseEntity<Void> deleteProduct(
             @PathVariable Long id
     ) {
         productsService.deleteProduct(id);
@@ -155,17 +92,6 @@ public class ProductController {
 
     @GetMapping
     @Operation(summary = "Get all products")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = {
-                            @Content(
-                                    schema = @Schema(implementation = ProductToListPageSchema.class)
-                            )
-                    }
-            )
-    })
     public ResponseEntity<Page<ProductToListDTO>> getProducts(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String quantity,
@@ -184,21 +110,6 @@ public class ProductController {
 
     @GetMapping("/barcode/{barcode}")
     @Operation(summary = "Get a product by barcode")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = {
-                            @Content(
-                                    schema = @Schema(implementation = ProductDTO.class)
-                            )
-                    }
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Product not found"
-            )
-    })
     public ResponseEntity<ProductDTO> getProductByBarcode(
             @PathVariable String barcode
     ) {

@@ -2,8 +2,6 @@ package pl.edu.pb.wi.mmm.controller;
 
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,7 +17,6 @@ import pl.edu.pb.wi.mmm.dto.RecipeDTO;
 import pl.edu.pb.wi.mmm.dto.RecipeListItem;
 import pl.edu.pb.wi.mmm.dto.create.CreateRecipeRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.RecipeMapper;
-import pl.edu.pb.wi.mmm.dto.pagescheme.RecipeToListPageSchema;
 import pl.edu.pb.wi.mmm.entity.Recipe;
 import pl.edu.pb.wi.mmm.service.RecipeService;
 
@@ -43,20 +40,7 @@ public class RecipeController {
 
     @PostMapping
     @Operation(summary = "Create a new recipe")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "Recipe created successfully"
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Bad Request - Invalid input data or validation errors"
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden - User is not allowed to create a recipe"
-            )
-    })
+    @ApiResponses(value = @ApiResponse(responseCode = "201"))
     public ResponseEntity<?> createRecipe(
             @RequestBody @Valid CreateRecipeRequest createRecipeRequest,
             BindingResult bindingResult
@@ -72,22 +56,11 @@ public class RecipeController {
 
     @GetMapping
     @Operation(summary = "Get all recipes")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = {
-                            @Content(
-                                    schema = @Schema(implementation = RecipeToListPageSchema.class)
-                            )
-                    }
-            )
-    })
     public ResponseEntity<Page<RecipeListItem>> getRecipes(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) List<Integer> servings,
-            @RequestParam(required = false) Double minKcalPerServing, // Added minKcalPerServing
-            @RequestParam(required = false) Double maxKcalPerServing, // Added maxKcalPerServing
+            @RequestParam(required = false) Double minKcalPerServing,
+            @RequestParam(required = false) Double maxKcalPerServing,
             Pageable pageable
     ) {
         return ResponseEntity.ok(recipeService.findAll(name, servings, minKcalPerServing, maxKcalPerServing, pageable).map(recipeMapper::mapToListItem));
@@ -95,16 +68,6 @@ public class RecipeController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Not found"
-            )
-    })
     public ResponseEntity<?> updateRecipeById(
             @PathVariable Long id,
             @Valid @org.springframework.web.bind.annotation.RequestBody CreateRecipeRequest form,
@@ -118,22 +81,6 @@ public class RecipeController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get recipe by ID")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = {
-                            @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = Recipe.class)
-                            )
-                    }
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Not found"
-            )
-    })
     public ResponseEntity<RecipeDTO> getById(
             @PathVariable Long id
     ) {
@@ -144,17 +91,8 @@ public class RecipeController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete recipe by ID")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "204",
-                    description = "No content - successfully deleted"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Not found"
-            )
-    })
-    public ResponseEntity<?> deleteById(
+    @ApiResponses(value = @ApiResponse(responseCode = "204"))
+    public ResponseEntity<Void> deleteById(
             @PathVariable Long id
     ) {
         recipeService.deleteById(id);

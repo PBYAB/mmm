@@ -1,8 +1,6 @@
 package pl.edu.pb.wi.mmm.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,18 +34,6 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     @Operation(summary = "Register a new user")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = {
-                            @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = AuthenticationResponse.class)
-                            )
-                    }),
-            @ApiResponse(responseCode = "400", description = "Validation Error", content = @Content)
-    })
     public ResponseEntity<AuthenticationResponse> register(
             @Valid @RequestBody RegisterRequest request,
             BindingResult bindingResult
@@ -59,22 +44,6 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate")
     @Operation(summary = "Authenticate a user")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = {
-                            @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = AuthenticationResponse.class)
-                            )
-                    }),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Authentication Error",
-                    content = @Content
-            )
-    })
     public ResponseEntity<AuthenticationResponse> authenticate(
             @Valid @RequestBody AuthenticationRequest request,
             BindingResult bindingResult
@@ -89,11 +58,6 @@ public class AuthenticationController {
             @ApiResponse(
                     responseCode = "204",
                     description = "Token Refreshed"
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Refresh Error",
-                    content = @Content
             )
     })
     public void refreshToken(

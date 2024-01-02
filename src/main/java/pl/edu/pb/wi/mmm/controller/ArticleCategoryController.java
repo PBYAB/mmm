@@ -1,8 +1,6 @@
 package pl.edu.pb.wi.mmm.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,7 +8,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +15,6 @@ import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
 import pl.edu.pb.wi.mmm.dto.ArticleCategoryDTO;
 import pl.edu.pb.wi.mmm.dto.create.CreateArticleCategoryRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.ArticleCategoryMapper;
-import pl.edu.pb.wi.mmm.dto.pagescheme.ArticleCategoryPageSchema;
 import pl.edu.pb.wi.mmm.entity.ArticleCategory;
 import pl.edu.pb.wi.mmm.service.ArticleCategoryService;
 
@@ -41,20 +37,7 @@ public class ArticleCategoryController {
 
     @PostMapping
     @Operation(summary = "Create a new category")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "Category created successfully"
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Bad Request - Invalid input data or validation errors"
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden - Access denied"
-            )
-    })
+    @ApiResponses(value = @ApiResponse(responseCode = "201"))
     public ResponseEntity<?> createCategory(
             @Valid @RequestBody CreateArticleCategoryRequest form,
             BindingResult bindingResult
@@ -70,42 +53,15 @@ public class ArticleCategoryController {
 
     @GetMapping
     @Operation(summary = "List all categories with pagination")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = {
-                            @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ArticleCategoryPageSchema.class)
-                            )
-                    })
-    })
-    public Page<ArticleCategoryDTO> listCategories(
+    public ResponseEntity<Page<ArticleCategoryDTO>> listCategories(
             Pageable pageable
     ) {
-        return articleCategoryService.findAll(pageable)
-                .map(articleCategoryMapper::map);
+        return ResponseEntity.ok(articleCategoryService.findAll(pageable)
+                .map(articleCategoryMapper::map));
     }
 
     @GetMapping(CATEGORY)
     @Operation(summary = "Find a category by ID")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = {
-                            @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ArticleCategoryDTO.class)
-                            )
-                    }
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Not Found - Category with the specified ID not found"
-            )
-    })
     public ResponseEntity<ArticleCategoryDTO> findCategoryById(
             @PathVariable Long id
     ) {
@@ -116,24 +72,6 @@ public class ArticleCategoryController {
 
     @PutMapping(CATEGORY)
     @Operation(summary = "Update category")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK"
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Bad Request - Invalid input data or validation errors"
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden - Access denied"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Not Found - Category with the specified ID not found"
-            )
-    })
     public ResponseEntity<?> updateCategory(
             @PathVariable Long id,
             @Valid @RequestBody CreateArticleCategoryRequest form,
@@ -148,21 +86,8 @@ public class ArticleCategoryController {
 
     @DeleteMapping(CATEGORY)
     @Operation(summary = "Delete category")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK"
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden - Access denied"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Not Found - Category with the specified ID not found"
-            )
-    })
-    public ResponseEntity<?> deleteCategory(
+    @ApiResponses(value = @ApiResponse(responseCode = "204"))
+    public ResponseEntity<Void> deleteCategory(
             @PathVariable Long id
     ) {
         articleCategoryService.deleteById(id);

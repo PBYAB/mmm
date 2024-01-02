@@ -1,8 +1,6 @@
 package pl.edu.pb.wi.mmm.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,7 +19,6 @@ import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
 import pl.edu.pb.wi.mmm.dto.IngredientListItem;
 import pl.edu.pb.wi.mmm.dto.create.CreateIngredientRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.IngredientMapper;
-import pl.edu.pb.wi.mmm.dto.pagescheme.IngredientPageSchema;
 import pl.edu.pb.wi.mmm.entity.Ingredient;
 import pl.edu.pb.wi.mmm.service.IngredientService;
 
@@ -43,25 +40,7 @@ public class IngredientController {
 
     @PostMapping
     @Operation(summary = "Create a new ingredient")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "Created successfully",
-                    content = {
-                            @Content(
-                                    schema = @Schema(implementation = Ingredient.class)
-                            )
-                    }
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Bad Request - Invalid input data or validation errors"
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden - Access denied"
-            )
-    })
+    @ApiResponses(value = @ApiResponse(responseCode = "201"))
     public ResponseEntity<Ingredient> createIngredient(
             @Valid @RequestBody CreateIngredientRequest form,
             BindingResult bindingResult
@@ -76,17 +55,6 @@ public class IngredientController {
 
     @GetMapping
     @Operation(summary = "List all ingredients")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = {
-                            @Content(
-                                    schema = @Schema(implementation = IngredientPageSchema.class)
-                            )
-                    }
-            )
-    })
     public ResponseEntity<Page<IngredientListItem>> findAll(
             Pageable pageable
     ) {

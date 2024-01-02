@@ -2,8 +2,6 @@ package pl.edu.pb.wi.mmm.controller;
 
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,9 +16,7 @@ import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
 import pl.edu.pb.wi.mmm.dto.CategoryDTO;
 import pl.edu.pb.wi.mmm.dto.create.CreateProductCategoryRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.CategoryMapper;
-import pl.edu.pb.wi.mmm.dto.pagescheme.CategoryPageSchema;
 import pl.edu.pb.wi.mmm.entity.Category;
-import pl.edu.pb.wi.mmm.entity.Country;
 import pl.edu.pb.wi.mmm.service.CategoryService;
 
 import java.net.URI;
@@ -40,17 +36,6 @@ public class CategoryController {
 
     @GetMapping
     @Operation(summary = "Get a list of all categories")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = {
-                            @Content(
-                                    schema = @Schema(implementation = CategoryPageSchema.class)
-                            )
-                    }
-            )
-    })
     public ResponseEntity<Page<CategoryDTO>> getCategories(
             Pageable pageable
     ) {
@@ -59,21 +44,6 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get a category by ID")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = {
-                            @Content(
-                                    schema = @Schema(implementation = Category.class)
-                            )
-                    }
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Country not found"
-            )
-    })
     public ResponseEntity<CategoryDTO> getCategory(
             @PathVariable Long id
     ) {
@@ -85,25 +55,7 @@ public class CategoryController {
 
     @PostMapping
     @Operation(summary = "Create a new category")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "Country created successfully",
-                    content = {
-                            @Content(
-                                    schema = @Schema(implementation = Country.class)
-                            )
-                    }
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Bad Request - Invalid input data or validation errors"
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden - Access denied"
-            )
-    })
+    @ApiResponses(value = @ApiResponse(responseCode = "201"))
     public ResponseEntity<Category> createCategory(
             @Valid @org.springframework.web.bind.annotation.RequestBody CreateProductCategoryRequest category,
             BindingResult bindingResult
@@ -117,24 +69,6 @@ public class CategoryController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update an existing category")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Country updated successfully"
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Bad Request - Invalid input data or validation errors"
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden - Access denied"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Country not found"
-            )
-    })
     public ResponseEntity<?> updateCategory(
             @PathVariable Long id,
             @Valid @org.springframework.web.bind.annotation.RequestBody CreateProductCategoryRequest form,
@@ -147,21 +81,8 @@ public class CategoryController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete an existing category")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "204",
-                    description = "Country deleted successfully"
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden - Access denied"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Country not found"
-            )
-    })
-    public ResponseEntity<?> deleteCategory(
+    @ApiResponses(value = @ApiResponse(responseCode = "204"))
+    public ResponseEntity<Void> deleteCategory(
             @PathVariable Long id
     ) {
         categoryService.deleteProductCategory(id);
