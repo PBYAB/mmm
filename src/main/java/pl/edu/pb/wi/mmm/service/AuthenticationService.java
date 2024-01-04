@@ -1,8 +1,6 @@
 package pl.edu.pb.wi.mmm.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,15 +14,11 @@ import pl.edu.pb.wi.mmm.dto.AuthenticationResponse;
 import pl.edu.pb.wi.mmm.dto.RegisterRequest;
 import pl.edu.pb.wi.mmm.entity.Token;
 import pl.edu.pb.wi.mmm.entity.User;
-import pl.edu.pb.wi.mmm.enumeration.Role;
 import pl.edu.pb.wi.mmm.enumeration.TokenType;
 import pl.edu.pb.wi.mmm.exception.EmailAlreadyExists;
 import pl.edu.pb.wi.mmm.repository.RoleRepository;
 import pl.edu.pb.wi.mmm.repository.TokenRepository;
 import pl.edu.pb.wi.mmm.repository.UserRepository;
-
-import java.io.IOException;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -75,15 +69,12 @@ public class AuthenticationService {
     }
 
     @Transactional
-    public void refreshToken(
-            HttpServletRequest request,
-            HttpServletResponse response
-    ) throws IOException {
+    public AuthenticationResponse refreshToken(HttpServletRequest request) {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
         final String userEmail;
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return;
+            throw new RuntimeException("Refresh token is missing");
         }
         refreshToken = authHeader.substring(7);
         userEmail = jwtService.extractUsername(refreshToken);
@@ -94,13 +85,14 @@ public class AuthenticationService {
                 var accessToken = jwtService.generateToken(user);
                 revokeAllUserTokens(user);
                 saveUserToken(user, accessToken);
-                AuthenticationResponse authResponse = AuthenticationResponse.builder()
+                return AuthenticationResponse.builder()
                         .accessToken(accessToken)
                         .refreshToken(refreshToken)
                         .build();
-                new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
+
             }
         }
+        throw new RuntimeException("Refresh token is invalid");
     }
 
     private void saveUserToken(User user, String jwtToken) {

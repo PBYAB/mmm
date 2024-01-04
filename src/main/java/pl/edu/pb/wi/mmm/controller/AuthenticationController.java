@@ -1,11 +1,8 @@
 package pl.edu.pb.wi.mmm.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +16,6 @@ import pl.edu.pb.wi.mmm.dto.AuthenticationRequest;
 import pl.edu.pb.wi.mmm.dto.AuthenticationResponse;
 import pl.edu.pb.wi.mmm.dto.RegisterRequest;
 import pl.edu.pb.wi.mmm.service.AuthenticationService;
-
-import java.io.IOException;
 
 @Tag(name = "1. Authentication", description = "Authentication APIs")
 @RestController
@@ -54,16 +49,10 @@ public class AuthenticationController {
 
     @PostMapping("/refresh-token")
     @Operation(summary = "Refresh a token")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "204",
-                    description = "Token Refreshed"
-            )
-    })
-    public void refreshToken(
-            HttpServletRequest request,
-            HttpServletResponse response
-    ) throws IOException {
-        authenticationService.refreshToken(request, response);
+    public ResponseEntity<AuthenticationResponse> refreshToken(
+            HttpServletRequest request
+    ) {
+        AuthenticationResponse response = authenticationService.refreshToken(request);
+        return ResponseEntity.ok(response);
     }
 }
