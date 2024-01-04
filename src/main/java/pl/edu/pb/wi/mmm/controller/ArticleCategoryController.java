@@ -38,7 +38,7 @@ public class ArticleCategoryController {
     @PostMapping
     @Operation(summary = "Create a new category")
     @ApiResponses(value = @ApiResponse(responseCode = "201"))
-    public ResponseEntity<?> createCategory(
+    public ResponseEntity<Void> createCategory(
             @Valid @RequestBody CreateArticleCategoryRequest form,
             BindingResult bindingResult
     ) {
@@ -72,7 +72,7 @@ public class ArticleCategoryController {
 
     @PutMapping(CATEGORY)
     @Operation(summary = "Update category")
-    public ResponseEntity<?> updateCategory(
+    public ResponseEntity<Void> updateCategory(
             @PathVariable Long id,
             @Valid @RequestBody CreateArticleCategoryRequest form,
             BindingResult bindingResult

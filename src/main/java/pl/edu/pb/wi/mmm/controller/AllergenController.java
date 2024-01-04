@@ -38,7 +38,7 @@ public class AllergenController {
     @PostMapping
     @Operation(summary = "Create a new allergen")
     @ApiResponses(value = @ApiResponse(responseCode = "201"))
-    public ResponseEntity<?> createAllergen(
+    public ResponseEntity<Void> createAllergen(
             @Valid @RequestBody CreateAllergenRequest form,
             BindingResult bindingResult
     ) {
@@ -84,7 +84,7 @@ public class AllergenController {
 
     @PutMapping(ALLERGEN)
     @Operation(summary = "Update allergen by ID")
-    public ResponseEntity<?> updateAllergenById(
+    public ResponseEntity<Void> updateAllergenById(
             @PathVariable Long id,
             @Valid @RequestBody CreateAllergenRequest form,
             BindingResult bindingResult

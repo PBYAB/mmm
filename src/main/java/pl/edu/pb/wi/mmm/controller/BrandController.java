@@ -38,7 +38,7 @@ public class BrandController {
     @PostMapping
     @Operation(summary = "Create a new brand")
     @ApiResponses(value = @ApiResponse(responseCode = "201"))
-    public ResponseEntity<?> createBrand(
+    public ResponseEntity<Void> createBrand(
             @Valid @org.springframework.web.bind.annotation.RequestBody CreateBrandRequest form,
             BindingResult bindingResult
     ) {
@@ -81,7 +81,7 @@ public class BrandController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update brand by ID")
-    public ResponseEntity<?> updateBrandById(
+    public ResponseEntity<Void> updateBrandById(
             @PathVariable Long id,
             @Valid @org.springframework.web.bind.annotation.RequestBody CreateBrandRequest form,
             BindingResult bindingResult

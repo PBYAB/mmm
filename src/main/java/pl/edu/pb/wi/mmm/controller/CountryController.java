@@ -76,7 +76,7 @@ public class CountryController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update an existing country")
-    public ResponseEntity<?> updateCountry(
+    public ResponseEntity<Void> updateCountry(
             @PathVariable Long id,
             @Valid @org.springframework.web.bind.annotation.RequestBody CreateCountryRequest form,
             BindingResult bindingResult

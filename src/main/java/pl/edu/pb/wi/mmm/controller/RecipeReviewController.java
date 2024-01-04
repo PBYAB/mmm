@@ -39,7 +39,7 @@ public class RecipeReviewController {
     @PostMapping("/{recipeId}/reviews")
     @Operation(summary = "Add review to recipe")
     @ApiResponses(value = @ApiResponse(responseCode = "201"))
-    public ResponseEntity<?> addReview(
+    public ResponseEntity<Void> addReview(
             @PathVariable Long recipeId,
             @Valid @RequestBody CreateRecipeReviewRequest form,
             BindingResult bindingResult,
@@ -68,7 +68,7 @@ public class RecipeReviewController {
 
     @PutMapping("/{recipeId}/reviews/{reviewId}")
     @Operation(summary = "Update review")
-    public ResponseEntity<?> updateReview(
+    public ResponseEntity<Void> updateReview(
             @PathVariable Long recipeId,
             @PathVariable Long reviewId,
             @Valid @RequestBody CreateRecipeReviewRequest form,
@@ -107,7 +107,7 @@ public class RecipeReviewController {
                     description = "Forbidden - User is not allowed to get review"
             )
     })
-    public ResponseEntity<?> getReview(
+    public ResponseEntity<RecipeReviewDTO> getReview(
             @PathVariable Long recipeId,
             @PathVariable Long reviewId
     ) {
