@@ -39,7 +39,7 @@ public class ArticleController {
     @PostMapping()
     @Operation(summary = "Create a new article")
     @ApiResponses(value = @ApiResponse(responseCode = "201"))
-    public ResponseEntity<?> createArticle(
+    public ResponseEntity<Void> createArticle(
             @Valid @RequestBody CreateArticleRequest form,
             BindingResult bindingResult
     ) {
@@ -73,7 +73,7 @@ public class ArticleController {
 
     @PutMapping(ARTICLE)
     @Operation(summary = "Update an article")
-    public ResponseEntity<?> updateArticleById(
+    public ResponseEntity<Void> updateArticleById(
             @PathVariable Long id,
             @Valid @RequestBody CreateArticleRequest form,
             BindingResult bindingResult

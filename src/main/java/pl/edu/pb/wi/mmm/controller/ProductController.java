@@ -41,7 +41,7 @@ public class ProductController {
     @PostMapping()
     @Operation(summary = "Create a new product")
     @ApiResponses(value = @ApiResponse(responseCode = "201"))
-    public ResponseEntity<?> createProduct(
+    public ResponseEntity<Void> createProduct(
             @Valid @RequestBody CreateProductRequest form,
             BindingResult bindingResult
     ) {
@@ -66,17 +66,15 @@ public class ProductController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update a product")
-    public ResponseEntity<?> updateProduct(
+    public ResponseEntity<Void> updateProduct(
             @PathVariable Long id,
             @Valid @RequestBody CreateProductRequest form,
             BindingResult bindingResult
     ) {
         validationHandler.validateAndHandleErrors(bindingResult);
-        Product product = productsService.findById(id);
-
         productsService.updateProduct(id, form);
 
-        return ResponseEntity.ok(productMapper.map(product));
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")

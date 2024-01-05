@@ -69,7 +69,7 @@ public class CategoryController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update an existing category")
-    public ResponseEntity<?> updateCategory(
+    public ResponseEntity<Void> updateCategory(
             @PathVariable Long id,
             @Valid @org.springframework.web.bind.annotation.RequestBody CreateProductCategoryRequest form,
             BindingResult bindingResult

@@ -69,7 +69,7 @@ public class ProductIngredientController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update product ingredient")
-    public ResponseEntity<?> updateProductIngredient(
+    public ResponseEntity<Void> updateProductIngredient(
             @PathVariable Long id,
             @Valid @org.springframework.web.bind.annotation.RequestBody CreateProductIngredientRequest form,
             BindingResult bindingResult

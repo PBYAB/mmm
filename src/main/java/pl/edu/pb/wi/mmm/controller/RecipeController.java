@@ -43,7 +43,7 @@ public class RecipeController {
     @PostMapping
     @Operation(summary = "Create a new recipe")
     @ApiResponses(value = @ApiResponse(responseCode = "201"))
-    public ResponseEntity<?> createRecipe(
+    public ResponseEntity<Void> createRecipe(
             @RequestBody @Valid CreateRecipeRequest createRecipeRequest,
             BindingResult bindingResult
     ) {
@@ -70,7 +70,7 @@ public class RecipeController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update")
-    public ResponseEntity<?> updateRecipeById(
+    public ResponseEntity<Void> updateRecipeById(
             @PathVariable Long id,
             @Valid @org.springframework.web.bind.annotation.RequestBody CreateRecipeRequest form,
             BindingResult bindingResult
