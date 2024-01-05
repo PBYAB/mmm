@@ -14,4 +14,8 @@ public class RecipeToListDTO {
     private String name;
 
     private Integer servings;
+
+    private String coverImageUrl;
+
+    private Integer totalTime;
 }

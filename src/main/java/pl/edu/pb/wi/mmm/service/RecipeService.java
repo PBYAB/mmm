@@ -128,4 +128,8 @@ public class RecipeService {
 
         return recipeRepository.findAll(spec, pageable);
     }
+
+    public Boolean existsByNameAndUrl(String name, String url) {
+        return recipeRepository.existsByNameAndCoverImageUrl(name, url);
+    }
 }

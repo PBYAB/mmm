@@ -26,4 +26,9 @@ public class RecipeDTO {
     private Double kcalPerServing;
 
     private Collection<RecipeIngredientDTO> ingredients;
+
+    private String coverImageUrl;
+
+    private Integer totalTime;
+
 }

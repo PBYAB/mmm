@@ -8,9 +8,6 @@ import lombok.NoArgsConstructor;
 import pl.edu.pb.wi.mmm.dto.RecipeIngredientForm;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -28,4 +25,8 @@ public class CreateRecipeRequest {
     private Double kcalPerServing;
 
     private Collection<RecipeIngredientForm> ingredients;
+
+    private String coverImageUrl;
+
+    private Integer totalTime;
 }

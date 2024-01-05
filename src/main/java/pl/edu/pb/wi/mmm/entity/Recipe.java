@@ -53,6 +53,12 @@ public class Recipe {
     @JsonIgnore
     @ManyToMany(mappedBy = "favouriteRecipes")
     private Set<User> users;
+
+    @Column(name = "cover_photo_image_url")
+    private String coverImageUrl;
+
+    @Column(name = "total_time")
+    private Integer totalTime;
 }
 
 

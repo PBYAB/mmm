@@ -6,5 +6,14 @@ public enum Unit {
     TSP,
     TBSP,
     CUP,
-    PIECE
+    PIECE,
+    PINCH,
+    PACKAGE,
+    HANDFUL,
+    JAR,
+    CAN,
+    BUNCH,
+    SLICE,
+
+    OTHER
 }

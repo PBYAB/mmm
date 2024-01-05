@@ -1,0 +1,1 @@
+ALTER TABLE recipe ADD COLUMN total_time NUMERIC(5,2) DEFAULT 0;

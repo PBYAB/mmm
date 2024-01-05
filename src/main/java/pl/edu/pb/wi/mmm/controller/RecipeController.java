@@ -18,8 +18,10 @@ import pl.edu.pb.wi.mmm.dto.RecipeListItem;
 import pl.edu.pb.wi.mmm.dto.create.CreateRecipeRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.RecipeMapper;
 import pl.edu.pb.wi.mmm.entity.Recipe;
+import pl.edu.pb.wi.mmm.recipe.migration.RecipeMigrationService;
 import pl.edu.pb.wi.mmm.service.RecipeService;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -98,5 +100,15 @@ public class RecipeController {
         recipeService.deleteById(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    private final RecipeMigrationService recipeMigrationService;
+
+    @GetMapping("/populate")
+    @Operation(summary = "Populate database with recipes")
+    public ResponseEntity<Void> populateDatabase() throws IOException {
+        recipeMigrationService.migrate("merged_recipes.json");
+
+        return ResponseEntity.ok().build();
     }
 }

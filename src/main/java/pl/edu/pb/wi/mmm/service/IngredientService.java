@@ -32,4 +32,8 @@ public class IngredientService {
     public Page<Ingredient> findAll(Pageable pageable) {
         return ingredientRepository.findAll(pageable);
     }
+
+    public Ingredient findByName(String name) {
+        return ingredientRepository.findByName(name);
+    }
 }

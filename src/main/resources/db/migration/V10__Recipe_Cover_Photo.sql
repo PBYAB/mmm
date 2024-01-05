@@ -1,0 +1,1 @@
+ALTER TABLE recipe ADD COLUMN cover_photo_image_url TEXT;
