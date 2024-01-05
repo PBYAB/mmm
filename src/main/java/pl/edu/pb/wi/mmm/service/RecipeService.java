@@ -36,6 +36,8 @@ public class RecipeService {
                 .instructions(createRecipeRequest.getInstructions())
                 .servings(createRecipeRequest.getServings())
                 .kcalPerServing(createRecipeRequest.getKcalPerServing())
+                .coverImageUrl(createRecipeRequest.getCoverImageUrl())
+                .totalTime(createRecipeRequest.getTotalTime())
                 .published(published)
                 .build();
 
@@ -66,26 +68,28 @@ public class RecipeService {
     }
 
     public void updateRecipe(Long id, CreateRecipeRequest form) {
-        Recipe recipe = findById(id);
-
-        recipe.setName(form.getName());
-        recipe.setInstructions(form.getInstructions());
-        recipe.setServings(form.getServings());
-        recipe.setKcalPerServing(form.getKcalPerServing());
-
-        Set<RecipeIngredient> ingredients = form.getIngredients().stream()
-                .map(ingredientForm -> {
-                    Ingredient ingredient = ingredientService.findById(ingredientForm.getIngredientId());
-                    return RecipeIngredient.builder()
-                            .ingredient(ingredient)
-                            .amount(ingredientForm.getAmount())
-                            .unit(ingredientForm.getUnit())
-                            .recipe(recipe)
-                            .build();
-                })
-                .collect(Collectors.toSet());
-
-        recipe.setIngredients(ingredients); // FIXME: nie usuwają się obecne składniki, tylko dodają nowe. Ale bardziej poczytać o tym niż pisać jakieś obejście
+//        Recipe recipe = findById(id);
+//
+//        recipe.setName(form.getName());
+//        recipe.setInstructions(form.getInstructions());
+//        recipe.setServings(form.getServings());
+//        recipe.setKcalPerServing(form.getKcalPerServing());
+//        recipe.setCoverImageUrl(form.getCoverImageUrl());
+//        recipe.setTotalTime(form.getTotalTime());
+//
+//        Set<RecipeIngredient> ingredients = form.getIngredients().stream()
+//                .map(ingredientForm -> {
+//                    Ingredient ingredient = ingredientService.findById(ingredientForm.getIngredientId());
+//                    return RecipeIngredient.builder()
+//                            .ingredient(ingredient)
+//                            .amount(ingredientForm.getAmount())
+//                            .unit(ingredientForm.getUnit())
+//                            .recipe(recipe)
+//                            .build();
+//                })
+//                .collect(Collectors.toSet());
+//
+//        recipe.setIngredients(ingredients); // FIXME: nie usuwają się obecne składniki, tylko dodają nowe. Ale bardziej poczytać o tym niż pisać jakieś obejście
     }
 
     public void addRecipeReview(Long recipeId,Long userId, CreateRecipeReviewRequest form) {

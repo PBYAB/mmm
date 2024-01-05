@@ -109,7 +109,7 @@ public class RecipeMigrationService {
                 }   else {
                     // If the ingredient does not match the pattern, assume it has no unit
                     name = ingredient;
-                    amount = amount == null ? "1" : amount;
+                    amount = "1";
                     unit = Unit.PIECE;
                 }
 
