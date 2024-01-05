@@ -8,7 +8,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -63,8 +65,17 @@ public class RecipeController {
             @RequestParam(required = false) List<Integer> servings,
             @RequestParam(required = false) Double minKcalPerServing,
             @RequestParam(required = false) Double maxKcalPerServing,
-            Pageable pageable
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "ASC") String sortDirection
     ) {
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by(org.springframework.data.domain.Sort.Direction.fromString(sortDirection), sortBy)
+        );
+
         return ResponseEntity.ok(recipeService.findAll(name, servings, minKcalPerServing, maxKcalPerServing, pageable).map(recipeMapper::mapToListItem));
     }
 

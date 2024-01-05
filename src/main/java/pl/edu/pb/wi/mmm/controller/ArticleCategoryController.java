@@ -7,7 +7,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -54,10 +56,20 @@ public class ArticleCategoryController {
     @GetMapping
     @Operation(summary = "List all categories with pagination")
     public ResponseEntity<Page<ArticleCategoryDTO>> listCategories(
-            Pageable pageable
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "ASC") String sortDirection
     ) {
-        return ResponseEntity.ok(articleCategoryService.findAll(pageable)
-                .map(articleCategoryMapper::map));
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by(Sort.Direction.fromString(sortDirection), sortBy)
+        );
+
+        Page<ArticleCategory> categories = articleCategoryService.findAll(pageable);
+
+        return ResponseEntity.ok(categories.map(articleCategoryMapper::map));
     }
 
     @GetMapping(CATEGORY)

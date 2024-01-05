@@ -20,4 +20,8 @@ public class RecipeListItem {
         private Integer servings;
 
         private Double kcalPerServing;
+
+        private String coverImageUrl;
+
+        private Integer totalTime;
 }

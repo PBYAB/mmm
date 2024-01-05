@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
@@ -59,8 +61,17 @@ public class RecipeReviewController {
     @Operation(summary = "Get all reviews for recipe")
     public ResponseEntity<Page<RecipeReviewDTO>> getReviews(
             @PathVariable Long id,
-            Pageable pageable
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "ASC") String sortDirection
     ) {
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by(Sort.Direction.fromString(sortDirection), sortBy)
+        );
+
         Page<RecipeReview> recipeReviews = recipeReviewService.findAllByRecipeId(id, pageable);
 
         return ResponseEntity.ok(recipeReviews.map(recipeReviewMapper::map));
