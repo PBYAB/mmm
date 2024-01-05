@@ -29,7 +29,6 @@ public class RecipeMigrationService {
 
     private final IngredientService ingredientService;
 
-    @Transactional
     public void migrate(String jsonFilePath) throws IOException {
         // Read JSON file
         long startTime = System.currentTimeMillis();
