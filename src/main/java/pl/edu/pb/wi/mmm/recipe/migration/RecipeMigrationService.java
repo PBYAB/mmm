@@ -34,6 +34,9 @@ public class RecipeMigrationService {
     @Transactional
     public void migrate(String jsonFilePath) throws IOException {
         // Read JSON file
+        long startTime = System.currentTimeMillis();
+
+
         InputStream in = getClass().getResourceAsStream("/" + jsonFilePath);
         byte[] jsonData = in.readAllBytes();
 
@@ -155,6 +158,12 @@ public class RecipeMigrationService {
             recipeService.createRecipe(createRecipeRequest);
 
         }
+        long endTime = System.currentTimeMillis();
+
+
+        long executionTime = endTime - startTime;
+        System.out.println("Czas wykonania migracji: " + executionTime/1000/60 + " minut");
+
     }
     private static final Pattern INGREDIENT_PATTERN = Pattern.compile("(.*)(\\s\\d+\\.?\\d*\\s.*)");
 
