@@ -30,12 +30,13 @@ public class RecipeService {
     private final IngredientService ingredientService;
 
     @Transactional
-    public Recipe createRecipe(CreateRecipeRequest createRecipeRequest) {
+    public Recipe createRecipe(CreateRecipeRequest createRecipeRequest, boolean published) {
         Recipe recipe = Recipe.builder()
                 .name(createRecipeRequest.getName())
                 .instructions(createRecipeRequest.getInstructions())
                 .servings(createRecipeRequest.getServings())
                 .kcalPerServing(createRecipeRequest.getKcalPerServing())
+                .published(published)
                 .build();
 
         Set<RecipeIngredient> ingredients = createRecipeRequest.getIngredients().stream()

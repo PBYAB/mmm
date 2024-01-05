@@ -14,8 +14,6 @@ import pl.edu.pb.wi.mmm.service.RecipeService;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -148,14 +146,14 @@ public class RecipeMigrationService {
                     .name(recipeMigration.getTitle())
                     .coverImageUrl(recipeMigration.getImageUrl())
                     .instructions(recipeMigration.getInstructions())
-                    .servings(Integer.parseInt(yield))
+                    .servings(yield != null ? Integer.parseInt(yield) : null)
                     .ingredients(recipeIngredientForms)
                     .totalTime(Integer.valueOf(recipeMigration.getTotalTime()))
                     .build();
 
             System.out.println(createRecipeRequest.toString());
             System.out.println();
-            recipeService.createRecipe(createRecipeRequest);
+            recipeService.createRecipe(createRecipeRequest, true);
 
         }
         long endTime = System.currentTimeMillis();

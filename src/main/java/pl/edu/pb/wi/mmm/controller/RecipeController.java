@@ -48,7 +48,7 @@ public class RecipeController {
             BindingResult bindingResult
     ) {
         validationHandler.validateAndHandleErrors(bindingResult);
-        Recipe recipe = recipeService.createRecipe(createRecipeRequest);
+        Recipe recipe = recipeService.createRecipe(createRecipeRequest, false);
 
         return ResponseEntity
                 .created(URI.create(API_RECIPES + "/" + recipe.getId()))
