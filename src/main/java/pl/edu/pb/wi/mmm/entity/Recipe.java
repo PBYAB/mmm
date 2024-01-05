@@ -60,6 +60,9 @@ public class Recipe {
 
     @Column(name = "total_time")
     private Integer totalTime;
+
+    @Column(name = "published")
+    private Boolean published;
 }
 
 
