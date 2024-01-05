@@ -13,6 +13,7 @@ import pl.edu.pb.wi.mmm.service.IngredientService;
 import pl.edu.pb.wi.mmm.service.RecipeService;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -33,7 +34,8 @@ public class RecipeMigrationService {
     @Transactional
     public void migrate(String jsonFilePath) throws IOException {
         // Read JSON file
-        byte[] jsonData = Files.readAllBytes(Paths.get(jsonFilePath));
+        InputStream in = getClass().getResourceAsStream("/" + jsonFilePath);
+        byte[] jsonData = in.readAllBytes();
 
         objectMapper = new ObjectMapper();
         // Convert JSON to Java objects
