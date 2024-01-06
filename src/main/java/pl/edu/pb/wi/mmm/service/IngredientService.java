@@ -17,7 +17,7 @@ public class IngredientService {
 
     public Ingredient findById(Long id) {
         return ingredientRepository.findById(id).orElseThrow(() ->
-                        new RuntimeException("Ingredient with ID: [%s] not found".formatted(id)));
+                new RuntimeException("Ingredient with ID: [%s] not found".formatted(id)));
     }
 
     @Transactional
@@ -34,6 +34,7 @@ public class IngredientService {
     }
 
     public Ingredient findByName(String name) {
-        return ingredientRepository.findByName(name);
+        return ingredientRepository.findByName(name).orElseThrow(() ->
+                new RuntimeException("Ingredient with name: [%s] not found".formatted(name)));
     }
 }

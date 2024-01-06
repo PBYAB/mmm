@@ -1,7 +1,6 @@
-package pl.edu.pb.wi.mmm.recipe.migration;
+package pl.edu.pb.wi.mmm.migration.recipe;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.pb.wi.mmm.dto.RecipeIngredientForm;

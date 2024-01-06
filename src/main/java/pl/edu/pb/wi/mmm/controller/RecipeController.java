@@ -20,7 +20,7 @@ import pl.edu.pb.wi.mmm.dto.RecipeListItem;
 import pl.edu.pb.wi.mmm.dto.create.CreateRecipeRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.RecipeMapper;
 import pl.edu.pb.wi.mmm.entity.Recipe;
-import pl.edu.pb.wi.mmm.recipe.migration.RecipeMigrationService;
+import pl.edu.pb.wi.mmm.migration.recipe.RecipeMigrationService;
 import pl.edu.pb.wi.mmm.service.RecipeService;
 
 import java.io.IOException;

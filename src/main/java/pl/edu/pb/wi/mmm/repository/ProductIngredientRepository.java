@@ -3,6 +3,7 @@ package pl.edu.pb.wi.mmm.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import pl.edu.pb.wi.mmm.entity.Category;
 import pl.edu.pb.wi.mmm.entity.Product;
 import pl.edu.pb.wi.mmm.entity.ProductIngredient;
 
@@ -15,4 +16,6 @@ public interface ProductIngredientRepository extends JpaRepository<ProductIngred
 
 
     Set<ProductIngredient> findAllByIdIn(Set<Long> productIngredientIds);
+
+    Set<ProductIngredient> findAllByNameIn(Set<String> names);
 }

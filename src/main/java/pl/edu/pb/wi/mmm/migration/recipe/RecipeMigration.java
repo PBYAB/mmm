@@ -1,4 +1,4 @@
-package pl.edu.pb.wi.mmm.recipe.migration;
+package pl.edu.pb.wi.mmm.migration.recipe;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

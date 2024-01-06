@@ -21,6 +21,14 @@ spring:
   threads:
     virtual:
       enabled: true
+  data:
+    mongodb:
+      host: localhost
+      database: database
+      port: 27017
+      username: user
+      password: password
+      authentication-database: admin
 
 logging:
   level:
