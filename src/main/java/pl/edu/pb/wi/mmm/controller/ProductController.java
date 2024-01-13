@@ -126,5 +126,4 @@ public class ProductController {
 
         return ResponseEntity.ok(productMapper.map(product));
     }
-
 }
