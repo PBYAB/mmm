@@ -9,7 +9,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PostLoad;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -63,6 +65,19 @@ public class Recipe {
 
     @Column(name = "published")
     private Boolean published;
+
+    @Transient
+    private Double averageRating;
+
+    @PostLoad
+    private void calculateAverageRating() {
+        if (reviews != null && !reviews.isEmpty()) {
+            averageRating = reviews.stream()
+                    .mapToDouble(RecipeReview::getRating)
+                    .average()
+                    .orElse(0.0);
+        }
+    }
 }
 
 

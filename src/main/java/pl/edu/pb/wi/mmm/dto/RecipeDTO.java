@@ -31,4 +31,6 @@ public class RecipeDTO {
 
     private Integer totalTime;
 
+    private Double averageRating;
+
 }

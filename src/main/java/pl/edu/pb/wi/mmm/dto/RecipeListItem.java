@@ -13,15 +13,17 @@ import lombok.With;
 @With
 public class RecipeListItem {
 
-        private Long id;
+    private Long id;
 
-        private String name;
+    private String name;
 
-        private Integer servings;
+    private Integer servings;
 
-        private Double kcalPerServing;
+    private Double kcalPerServing;
 
-        private String coverImageUrl;
+    private String coverImageUrl;
 
-        private Integer totalTime;
+    private Integer totalTime;
+
+    private Double averageRating;
 }

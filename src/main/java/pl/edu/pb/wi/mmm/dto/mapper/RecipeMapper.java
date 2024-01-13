@@ -16,8 +16,6 @@ public interface RecipeMapper {
 
     Recipe map(RecipeDTO recipeDTO);
 
-    RecipeToListDTO mapListElement(Recipe recipe);
-
     @Mapping(source = "ingredient.name", target = "name")
     @Mapping(source = "ingredient.id", target = "ingredientId")
     RecipeIngredientDTO map(RecipeIngredient recipeIngredient);
