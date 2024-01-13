@@ -60,7 +60,7 @@ public class AuthenticationService {
                 .orElseThrow();
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
-        revokeAllUserTokens(user);
+        //revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
