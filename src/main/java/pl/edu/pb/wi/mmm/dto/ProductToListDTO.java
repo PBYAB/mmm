@@ -1,6 +1,10 @@
 package pl.edu.pb.wi.mmm.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import lombok.With;
 
 @Data
 @RequiredArgsConstructor
@@ -20,4 +24,6 @@ public class ProductToListDTO {
     private Integer novaGroup;
 
     private String quantity;
+
+    private ProductImageDTO image;
 }

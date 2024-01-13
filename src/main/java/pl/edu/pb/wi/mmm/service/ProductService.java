@@ -1,6 +1,7 @@
 package pl.edu.pb.wi.mmm.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -113,7 +114,8 @@ public class ProductService {
                         new EntityNotFoundException("Product with barcode: [%s] not found".formatted(barcode)));
     }
 
-    public Page<Product> findAll(String name, String quantity, List<Integer> nutriScore, List<Integer> novaGroups, List<Long> category, List<Long> allergens, List<Long> country, Pageable pageable) {
+    public Page<Product> findAll(String name, String quantity, List<Integer> nutriScore, List<Integer> novaGroups, List<Long> category,
+                                 List<Long> allergens, List<Long> country, boolean hasPhotos, Pageable pageable) {
         Specification<Product> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -141,6 +143,10 @@ public class ProductService {
             }
             if (country != null && !country.isEmpty()) {
                 predicates.add(root.join("countries").get("id").in(country));
+            }
+
+            if(hasPhotos) {
+                predicates.add(cb.isNotEmpty(root.get("images")));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

@@ -11,6 +11,4 @@ public interface ProductMapper {
     Product map(ProductDTO productDTO);
 
     ProductToListDTO mapToListElement(Product product);
-
-
 }

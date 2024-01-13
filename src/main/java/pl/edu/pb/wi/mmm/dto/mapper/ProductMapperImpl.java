@@ -26,6 +26,7 @@ public class ProductMapperImpl implements ProductMapper {
 
     private final ProductIngredientAnalysisMapper productIngredientAnalysisMapper;
 
+    private final ProductImageMapper productImageMapper;
 
     @Override
     public ProductDTO map(Product product) {
@@ -43,6 +44,7 @@ public class ProductMapperImpl implements ProductMapper {
                 .ingredientAnalysis(productIngredientAnalysisMapper.map(product.getIngredientAnalysis()))
                 .nutriment(nutrimentMapper.map(product.getNutriment()))
                 .countries(product.getCountries().stream().map(countryMapper::map).collect(Collectors.toSet()))
+                .images(product.getImages().stream().map(productImageMapper::map).collect(Collectors.toSet()))
                 .build();
     }
 
@@ -67,7 +69,7 @@ public class ProductMapperImpl implements ProductMapper {
 
     @Override
     public ProductToListDTO mapToListElement(Product product) {
-        return ProductToListDTO.builder()
+        ProductToListDTO productToListDTO = ProductToListDTO.builder()
                 .id(product.getId())
                 .name(product.getName())
                 .barcode(product.getBarcode())
@@ -75,6 +77,11 @@ public class ProductMapperImpl implements ProductMapper {
                 .nutriScore(product.getNutriScore())
                 .novaGroup(product.getNovaGroup())
                 .build();
-    }
 
+        if (!product.getImages().isEmpty()) {
+            productToListDTO.setImage(productImageMapper.map(product.getImages().stream().findFirst().get()));
+        }
+
+        return productToListDTO;
+    }
 }

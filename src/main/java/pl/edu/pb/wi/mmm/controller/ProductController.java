@@ -100,6 +100,7 @@ public class ProductController {
             @RequestParam(required = false) List<Long> category,
             @RequestParam(required = false) List<Long> allergens,
             @RequestParam(required = false) List<Long> country,
+            @RequestParam(required = false) boolean hasPhotos,
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "10") Integer size,
             @RequestParam(defaultValue = "id") String sortBy,
@@ -111,10 +112,8 @@ public class ProductController {
                 Sort.by(Sort.Direction.fromString(sortDirection), sortBy)
         );
 
-        return ResponseEntity.ok(productsService.
-                findAll(name, quantity, nutriScore, novaGroups, category, allergens, country, pageable)
-                .map(productMapper::mapToListElement)
-        );
+        var page_ = productsService.findAll(name, quantity, nutriScore, novaGroups, category, allergens, country, hasPhotos, pageable);
+        return ResponseEntity.ok(page_.map(productMapper::mapToListElement));
     }
 
     @GetMapping("/barcode/{barcode}")
