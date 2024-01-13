@@ -10,7 +10,9 @@ import pl.edu.pb.wi.mmm.enumeration.PhotoSize;
 import pl.edu.pb.wi.mmm.repository.ProductImageRepository;
 import pl.edu.pb.wi.mmm.service.ProductService;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
@@ -32,8 +34,9 @@ public class ProductPhotoUrlMigrationService {
     private static final String AWS_BASE_PATH = "https://openfoodfacts-images.s3.eu-west-3.amazonaws.com";
 
     //@Transactional
-    public void migrate() throws IOException {
-        try (var urlz = Files.lines(Path.of("src/main/resources/data_keys.txt"))) {
+    public void migrate() {
+        try (var urlz = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/data_keys.txt"))).lines()) {
+
             var urls = urlz.collect(Collectors.toList());
             log.info("Loading urls file");
 
