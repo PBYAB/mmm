@@ -10,12 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pb.wi.mmm.entity.Product;
-import pl.edu.pb.wi.mmm.migration.ProductPhotoUrlMigrationService;
 import pl.edu.pb.wi.mmm.migration.product.repository.MigrationProductRepository;
 import pl.edu.pb.wi.mmm.migration.product.service.MigrationProductService;
-
-import java.io.IOException;
-import java.util.Arrays;
 
 @Tag(name = "Migration", description = "Migration API")
 @RestController
@@ -26,8 +22,6 @@ public class MigrationProductController {
     private final MigrationProductService migrationProductService;
 
     private final MigrationProductRepository migrationProductRepository;
-
-    private final ProductPhotoUrlMigrationService urlMigrationService;
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> findById(
@@ -55,11 +49,5 @@ public class MigrationProductController {
                         pageable
                 )
         );
-    }
-
-    @GetMapping("photo-urls")
-    public ResponseEntity<Void> getPhotoUrls() throws IOException {
-          urlMigrationService.migrate();
-        return ResponseEntity.ok().build();
     }
 }
