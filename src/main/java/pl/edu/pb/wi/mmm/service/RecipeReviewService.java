@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.edu.pb.wi.mmm.dto.create.CreateRecipeReviewRequest;
 import pl.edu.pb.wi.mmm.entity.RecipeReview;
+import pl.edu.pb.wi.mmm.entity.User;
 import pl.edu.pb.wi.mmm.repository.RecipeReviewRepository;
 
 @Service
@@ -19,14 +20,23 @@ public class RecipeReviewService {
 
     private final RecipeService recipeService;
 
+    private final UserService userService;
+
     @Transactional
     public RecipeReview createRecipeReview(Long id, CreateRecipeReviewRequest form, Long userId) {
+        if(recipeReviewRepository.findById(id).isPresent()) {
+            throw new RuntimeException("RecipeReview with ID: [%s] already exists".formatted(id));
+        }
+
+        User user = userService.findById(userId);
+
         RecipeReview recipeReview = RecipeReview.builder()
                 .rating(form.getRating())
                 .recipe(recipeService.findById(id))
-                .userId(userId)
+                .user(user)
                 .comment(form.getComment())
                 .build();
+
         return recipeReviewRepository.save(recipeReview);
     }
 

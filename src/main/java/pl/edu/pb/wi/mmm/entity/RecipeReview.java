@@ -17,12 +17,12 @@ public class RecipeReview {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne
+    private User user;
 
     @Column(name = "rating")
     private Double rating;

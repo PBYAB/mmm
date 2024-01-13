@@ -15,6 +15,7 @@ import pl.edu.pb.wi.mmm.entity.Recipe;
 import pl.edu.pb.wi.mmm.entity.RecipeIngredient;
 import pl.edu.pb.wi.mmm.entity.RecipeReview;
 import pl.edu.pb.wi.mmm.repository.RecipeRepository;
+import pl.edu.pb.wi.mmm.repository.RecipeReviewRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +26,11 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class RecipeService {
+    private final RecipeReviewRepository recipeReviewRepository;
 
     private final RecipeRepository recipeRepository;
     private final IngredientService ingredientService;
+    private final UserService userService;
 
     @Transactional
     public Recipe createRecipe(CreateRecipeRequest createRecipeRequest, boolean published) {
@@ -93,17 +96,27 @@ public class RecipeService {
     }
 
     public void addRecipeReview(Long recipeId,Long userId, CreateRecipeReviewRequest form) {
-        Recipe recipe = findById(recipeId);
-        RecipeReview review = new RecipeReview();
-        review.setRating(form.getRating());
-        review.setComment(form.getComment());
-        review.setRecipe(recipe);
-        review.setUserId(userId);
-        Set<RecipeReview>recipeReviews = recipe.getReviews();
-        recipeReviews.add(review);
+//        Recipe recipe = findById(recipeId);
+//        RecipeReview review = new RecipeReview();
+//        review.setRating(form.getRating());
+//        review.setComment(form.getComment());
+//        review.setRecipe(recipe);
+//        review.setUserId(userId);
+//        Set<RecipeReview>recipeReviews = recipe.getReviews();
+//        recipeReviews.add(review);
+//
+//        recipe.setReviews(recipeReviews);
+//        recipeRepository.save(recipe);
 
-        recipe.setReviews(recipeReviews);
-        recipeRepository.save(recipe);
+        Recipe recipe = findById(recipeId);
+        RecipeReview review = RecipeReview.builder()
+                .rating(form.getRating())
+                .recipe(recipe)
+                .user(userService.findById(userId))
+                .comment(form.getComment())
+                .build();
+
+        recipeReviewRepository.save(review);
     }
 
     public void deleteById(Long id) {

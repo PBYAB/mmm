@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.With;
 
 import java.util.Collection;
+import java.util.Set;
 
 @Data
 @RequiredArgsConstructor
@@ -33,4 +34,5 @@ public class RecipeDTO {
 
     private Double averageRating;
 
+    private Set<RecipeReviewDTO> reviews;
 }

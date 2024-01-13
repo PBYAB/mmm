@@ -1,5 +1,6 @@
 package pl.edu.pb.wi.mmm.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Data
@@ -9,10 +10,10 @@ import lombok.*;
 @With
 public class RecipeReviewDTO {
 
-    private Long id;
-
+    @NotNull
     private Double rating;
 
-    private String comment;
+    private String fullName;
 
+    private String comment;
 }

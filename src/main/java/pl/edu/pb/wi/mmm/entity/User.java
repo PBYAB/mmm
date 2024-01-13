@@ -42,6 +42,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<Token> tokens;
 
+    @OneToMany(mappedBy = "user")
+    private Set<RecipeReview> recipeReviews;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
