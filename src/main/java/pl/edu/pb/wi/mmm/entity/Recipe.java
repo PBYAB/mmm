@@ -57,6 +57,10 @@ public class Recipe {
     @ManyToMany(mappedBy = "favouriteRecipes")
     private Set<User> users;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "recipe")
+    private Set<UserRecipeOfTheDay> userRecipeOfTheDay;
+
     @Column(name = "cover_photo_image_url")
     private String coverImageUrl;
 

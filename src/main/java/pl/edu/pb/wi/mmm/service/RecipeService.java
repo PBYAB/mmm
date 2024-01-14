@@ -14,11 +14,17 @@ import pl.edu.pb.wi.mmm.entity.Ingredient;
 import pl.edu.pb.wi.mmm.entity.Recipe;
 import pl.edu.pb.wi.mmm.entity.RecipeIngredient;
 import pl.edu.pb.wi.mmm.entity.RecipeReview;
+import pl.edu.pb.wi.mmm.entity.User;
+import pl.edu.pb.wi.mmm.entity.UserRecipeOfTheDay;
 import pl.edu.pb.wi.mmm.repository.RecipeRepository;
 import pl.edu.pb.wi.mmm.repository.RecipeReviewRepository;
+import pl.edu.pb.wi.mmm.repository.UserRecipeOfTheDayRepository;
 
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,10 +32,15 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class RecipeService {
+
     private final RecipeReviewRepository recipeReviewRepository;
 
     private final RecipeRepository recipeRepository;
+
+    private final UserRecipeOfTheDayRepository userRecipeOfTheDayRepository;
+
     private final IngredientService ingredientService;
+
     private final UserService userService;
 
     @Transactional
@@ -70,6 +81,11 @@ public class RecipeService {
                 .orElseThrow(() -> new RuntimeException("Recipe with ID: [%s] not found".formatted(id)));
     }
 
+    public Recipe findRandom() {
+        return recipeRepository.findRandom()
+                .orElseThrow(() -> new RuntimeException("No recipes found"));
+    }
+
     public void updateRecipe(Long id, CreateRecipeRequest form) {
 //        Recipe recipe = findById(id);
 //
@@ -95,7 +111,7 @@ public class RecipeService {
 //        recipe.setIngredients(ingredients); // FIXME: nie usuwają się obecne składniki, tylko dodają nowe. Ale bardziej poczytać o tym niż pisać jakieś obejście
     }
 
-    public void addRecipeReview(Long recipeId,Long userId, CreateRecipeReviewRequest form) {
+    public void addRecipeReview(Long recipeId, Long userId, CreateRecipeReviewRequest form) {
 //        Recipe recipe = findById(recipeId);
 //        RecipeReview review = new RecipeReview();
 //        review.setRating(form.getRating());
@@ -149,5 +165,21 @@ public class RecipeService {
 
     public Boolean existsByNameAndUrl(String name, String url) {
         return recipeRepository.existsByNameAndCoverImageUrl(name, url);
+    }
+
+    public UserRecipeOfTheDay findUserRecipeOfTheDay(User user) {
+        Optional<UserRecipeOfTheDay> lastDrawn = userRecipeOfTheDayRepository.findFirstByUserIdOrderByDrawnAtDesc(user.getId());
+
+        if (lastDrawn.isPresent() && lastDrawn.get().getDrawnAt().toLocalDate().isEqual(LocalDate.now())) {
+            return lastDrawn.get();
+        }
+
+        UserRecipeOfTheDay userRecipeOfTheDay = UserRecipeOfTheDay.builder()
+                .user(user)
+                .recipe(findRandom())
+                .drawnAt(OffsetDateTime.now())
+                .build();
+
+        return userRecipeOfTheDayRepository.save(userRecipeOfTheDay);
     }
 }

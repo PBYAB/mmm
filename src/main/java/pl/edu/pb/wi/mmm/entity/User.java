@@ -62,6 +62,8 @@ public class User implements UserDetails {
     )
     private Set<Recipe> favouriteRecipes;
 
+    @OneToMany(mappedBy = "user")
+    private Set<UserRecipeOfTheDay> userRecipesOfTheDay;
 
     @Override
     public String getUsername() {

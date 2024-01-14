@@ -12,14 +12,24 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
 import pl.edu.pb.wi.mmm.dto.RecipeDTO;
 import pl.edu.pb.wi.mmm.dto.RecipeListItem;
 import pl.edu.pb.wi.mmm.dto.create.CreateRecipeRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.RecipeMapper;
 import pl.edu.pb.wi.mmm.entity.Recipe;
+import pl.edu.pb.wi.mmm.entity.User;
 import pl.edu.pb.wi.mmm.migration.recipe.RecipeMigrationService;
 import pl.edu.pb.wi.mmm.service.RecipeService;
 
@@ -111,6 +121,15 @@ public class RecipeController {
         recipeService.deleteById(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/user/recipe-of-the-day")
+    public ResponseEntity<RecipeDTO> getUserRecipeOfTheDay(
+            @AuthenticationPrincipal User user
+    ) {
+        var recipeOfTheDay = recipeService.findUserRecipeOfTheDay(user);
+
+        return ResponseEntity.ok(recipeMapper.map(recipeOfTheDay.getRecipe()));
     }
 
     private final RecipeMigrationService recipeMigrationService;
