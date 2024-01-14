@@ -1,5 +1,6 @@
 package pl.edu.pb.wi.mmm.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,9 @@ import lombok.With;
 @With
 public class IngredientListItem {
 
-        private Long id;
+    @NotNull
+    private Long id;
 
-        private String name;
+    @NotNull
+    private String name;
 }

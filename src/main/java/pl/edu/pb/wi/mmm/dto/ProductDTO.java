@@ -16,8 +16,10 @@ import java.util.Set;
 @NoArgsConstructor
 public class ProductDTO {
 
+    @NotNull
     private Long id;
 
+    @NotNull
     private String barcode;
 
     private String name;

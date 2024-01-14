@@ -13,6 +13,7 @@ public class RecipeReviewDTO {
     @NotNull
     private Double rating;
 
+    @NotNull
     private String fullName;
 
     private String comment;

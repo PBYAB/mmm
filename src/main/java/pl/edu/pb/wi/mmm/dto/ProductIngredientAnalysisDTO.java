@@ -11,20 +11,17 @@ import lombok.*;
 @With
 public class ProductIngredientAnalysisDTO {
 
+    @NotNull
     private Long id;
 
 //    @NotNull(message = "Product is required")
 //    private ProductDTO product;
 
-    @NotNull(message = "Vegan is required")
     private Boolean vegan;
 
-    @NotEmpty(message = "Ingredients description is required")
     private String ingredientsDescription;
 
-    @NotNull(message = "Vegetarian is required")
     private Boolean vegetarian;
 
-    @NotNull(message = "From palm oil is required")
     private Boolean fromPalmOil;
 }

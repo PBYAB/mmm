@@ -1,6 +1,7 @@
 package pl.edu.pb.wi.mmm.dto;
 
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -12,17 +13,15 @@ import lombok.*;
 @With
 public class ProductIngredientDTO {
 
+    @NotNull
     private Long id;
 
-    @NotEmpty(message = "Name is required")
+    @NotBlank
     private String name;
 
-    @NotNull(message = "Vegan is required")
     private Boolean vegan;
 
-    @NotNull(message = "Vegetarian is required")
     private Boolean vegetarian;
 
-    @NotNull(message = "From Palm Oil is required")
     private Boolean fromPalmOil;
 }

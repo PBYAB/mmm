@@ -1,5 +1,6 @@
 package pl.edu.pb.wi.mmm.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,8 +15,10 @@ import pl.edu.pb.wi.mmm.enumeration.Unit;
 @With
 public class RecipeIngredientDTO {
 
-    private Long ingredientId;
+    @NotNull
+    private Long id;
 
+    @NotNull
     private String name;
 
     private Double amount;

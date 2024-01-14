@@ -1,5 +1,6 @@
 package pl.edu.pb.wi.mmm.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,8 +17,10 @@ import java.util.Set;
 @With
 public class RecipeDTO {
 
+    @NotNull
     private Long id;
 
+    @NotNull
     private String name;
 
     private String instructions;

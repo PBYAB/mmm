@@ -1,7 +1,11 @@
 package pl.edu.pb.wi.mmm.dto;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.With;
 
 @Data
 @Builder
@@ -10,26 +14,20 @@ import lombok.*;
 @With
 public class NutrimentDTO {
 
-        private Long id;
+    @NotNull
+    private Long id;
 
-        @NotNull(message = "energy_kcal_per_100g is required")
-        private Double energyKcalPer100g;
+    private Double energyKcalPer100g;
 
-        @NotNull(message = "fat_per_100g is required")
-        private Double fatPer100g;
+    private Double fatPer100g;
 
-        @NotNull(message = "fiber_per_100g is required")
-        private Double fiberPer100g;
+    private Double fiberPer100g;
 
-        @NotNull(message = "proteins_per_100g is required")
-        private Double proteinsPer100g;
+    private Double proteinsPer100g;
 
-        @NotNull(message = "salt_per_100g is required")
-        private Double saltPer100g;
+    private Double saltPer100g;
 
-        @NotNull(message = "sugars_per_100g is required")
-        private Double sugarsPer100g;
+    private Double sugarsPer100g;
 
-        @NotNull(message = "sodium_per_100g is required")
-        private Double sodiumPer100g;
+    private Double sodiumPer100g;
 }
