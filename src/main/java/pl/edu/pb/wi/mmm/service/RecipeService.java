@@ -182,4 +182,10 @@ public class RecipeService {
 
         return userRecipeOfTheDayRepository.save(userRecipeOfTheDay);
     }
+
+    public Boolean canShakeRecipe(User user) {
+        Optional<UserRecipeOfTheDay> lastDrawn = userRecipeOfTheDayRepository.findFirstByUserIdOrderByDrawnAtDesc(user.getId());
+
+        return lastDrawn.map(userRecipeOfTheDay -> !userRecipeOfTheDay.getDrawnAt().toLocalDate().isEqual(LocalDate.now())).orElse(true);
+    }
 }

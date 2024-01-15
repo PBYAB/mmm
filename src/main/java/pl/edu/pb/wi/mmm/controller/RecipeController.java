@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
+import pl.edu.pb.wi.mmm.dto.CanUserShakeRecipeDTO;
 import pl.edu.pb.wi.mmm.dto.RecipeDTO;
 import pl.edu.pb.wi.mmm.dto.RecipeListItem;
 import pl.edu.pb.wi.mmm.dto.create.CreateRecipeRequest;
@@ -132,13 +133,14 @@ public class RecipeController {
         return ResponseEntity.ok(recipeMapper.map(recipeOfTheDay.getRecipe()));
     }
 
-    private final RecipeMigrationService recipeMigrationService;
+    @GetMapping("/user/recipe-of-the-day/can-shake")
+    public ResponseEntity<CanUserShakeRecipeDTO> canShakeRecipe(
+            @AuthenticationPrincipal User user
+    ) {
+        var canShakeRecipe = recipeService.canShakeRecipe(user);
 
-    @GetMapping("/populate")
-    @Operation(summary = "Populate database with recipes")
-    public ResponseEntity<Void> populateDatabase() throws IOException {
-        recipeMigrationService.migrate("merged_recipes.json");
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(new CanUserShakeRecipeDTO(canShakeRecipe));
     }
+
+
 }
