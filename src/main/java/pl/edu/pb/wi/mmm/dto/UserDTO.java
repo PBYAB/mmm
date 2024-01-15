@@ -1,7 +1,6 @@
 package pl.edu.pb.wi.mmm.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,26 +16,14 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @With
-public class UserDto {
+public class UserDTO {
 
     @NotNull
     private Long id;
-
-    @NotNull
-    private String firstName;
-
-    @NotNull
-    private String lastName;
-
-    private Integer age;
-
-    private String login;
 
     @NotBlank
     private String email;
 
     @NotNull
-    private Boolean enabled;
-
-    private Set<Role> roles;
+    private String fullName;
 }

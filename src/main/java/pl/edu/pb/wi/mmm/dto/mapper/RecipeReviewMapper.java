@@ -10,6 +10,8 @@ import pl.edu.pb.wi.mmm.entity.RecipeReview;
 public interface RecipeReviewMapper {
 
     @Mapping(target = "fullName", expression = "java(recipeReview.getUser().getFirstName() + ' ' + recipeReview.getUser().getLastName())")
+    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "id", target = "id")
     RecipeReviewDTO map(RecipeReview recipeReview);
 
     RecipeReview map(RecipeReviewDTO recipeReviewDTO);

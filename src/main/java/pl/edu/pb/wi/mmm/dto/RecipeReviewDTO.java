@@ -11,7 +11,13 @@ import lombok.*;
 public class RecipeReviewDTO {
 
     @NotNull
+    private Long id;
+
+    @NotNull
     private Double rating;
+
+    @NotNull
+    private Long userId;
 
     @NotNull
     private String fullName;

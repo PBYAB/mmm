@@ -24,5 +24,7 @@ public interface RecipeMapper {
     RecipeListItem mapToListItem(Recipe recipe);
 
     @Mapping(target = "fullName", expression = "java(review.getUser().getFirstName() + ' ' + review.getUser().getLastName())")
+    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "id", target = "id")
     RecipeReviewDTO map(RecipeReview review);
 }

@@ -22,6 +22,7 @@ public class RecipeReview {
     private Recipe recipe;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Column(name = "rating")

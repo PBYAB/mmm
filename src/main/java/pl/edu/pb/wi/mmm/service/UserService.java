@@ -2,7 +2,6 @@ package pl.edu.pb.wi.mmm.service;
 
 
 import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -10,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.pb.wi.mmm.dto.RegisterRequest;
-import pl.edu.pb.wi.mmm.dto.UserDto;
+import pl.edu.pb.wi.mmm.dto.UserDTO;
 import pl.edu.pb.wi.mmm.dto.mapper.UserMapper;
 import pl.edu.pb.wi.mmm.entity.User;
 import pl.edu.pb.wi.mmm.enumeration.Role;
@@ -42,7 +41,7 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("User with ID: [%s] not found".formatted(id)));
     }
 
-    public Page<UserDto> getUsers(Pageable pageable) {
+    public Page<UserDTO> getUsers(Pageable pageable) {
         return userRepository.findAll(pageable)
                 .map(userMapper::map);
     }

@@ -77,4 +77,8 @@ public class RecipeReviewService {
         return recipeReviewRepository.findByRecipe_IdAndId(recipeId, reviewId)
                 .orElseThrow(() -> new RuntimeException("RecipeReview with ID: [%s] not found".formatted(reviewId)));
     }
+
+    public Boolean checkIfUserReviewed(Long recipeId, User user) {
+        return recipeReviewRepository.existsByRecipe_IdAndUser(recipeId, user);
+    }
 }

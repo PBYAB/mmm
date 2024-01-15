@@ -8,13 +8,22 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pb.wi.mmm.controller.handlers.ValidationHandler;
+import pl.edu.pb.wi.mmm.dto.CanUserCreateReviewDTO;
 import pl.edu.pb.wi.mmm.dto.RecipeReviewDTO;
 import pl.edu.pb.wi.mmm.dto.create.CreateRecipeReviewRequest;
 import pl.edu.pb.wi.mmm.dto.mapper.RecipeReviewMapper;
@@ -31,11 +40,11 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class RecipeReviewController {
 
-        private final ValidationHandler validationHandler;
+    private final ValidationHandler validationHandler;
 
-        private final RecipeReviewMapper recipeReviewMapper;
+    private final RecipeReviewMapper recipeReviewMapper;
 
-        private final RecipeReviewService recipeReviewService;
+    private final RecipeReviewService recipeReviewService;
 
 
     @PostMapping("/{recipeId}/reviews")
@@ -46,7 +55,7 @@ public class RecipeReviewController {
             @Valid @RequestBody CreateRecipeReviewRequest form,
             BindingResult bindingResult,
             @AuthenticationPrincipal User user
-            ) {
+    ) {
         validationHandler.validateAndHandleErrors(bindingResult);
 
 
@@ -127,4 +136,13 @@ public class RecipeReviewController {
         return ResponseEntity.ok(recipeReviewMapper.map(recipeReview));
     }
 
+    @GetMapping("/{recipeId}/reviews/can-review")
+    public ResponseEntity<CanUserCreateReviewDTO> checkIfUserReviewed(
+            @PathVariable Long recipeId,
+            @AuthenticationPrincipal User user
+    ) {
+        Boolean isReviewed = recipeReviewService.checkIfUserReviewed(recipeId, user);
+
+        return ResponseEntity.ok(new CanUserCreateReviewDTO(!isReviewed));
+    }
 }
