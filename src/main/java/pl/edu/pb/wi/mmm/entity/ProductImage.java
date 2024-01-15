@@ -15,8 +15,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import pl.edu.pb.wi.mmm.enumeration.PhotoSize;
+
+import java.util.Comparator;
 
 @Entity
 @Table(name = "product_image")
@@ -25,7 +28,7 @@ import pl.edu.pb.wi.mmm.enumeration.PhotoSize;
 @Getter
 @Setter
 @Builder
-public class ProductImage {
+public class ProductImage implements Comparable<ProductImage> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,5 +44,11 @@ public class ProductImage {
     @Column(name = "size")
     @Enumerated(EnumType.STRING)
     private PhotoSize size;
+
+    @Override
+    public int compareTo(@NonNull ProductImage o) {
+        return Comparator.comparing(ProductImage::getUrl)
+                .compare(this, o);
+    }
 }
 

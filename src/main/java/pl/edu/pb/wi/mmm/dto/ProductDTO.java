@@ -8,6 +8,7 @@ import pl.edu.pb.wi.mmm.entity.Category;
 
 
 import java.util.Set;
+import java.util.SortedSet;
 
 @Data
 @AllArgsConstructor
@@ -44,5 +45,5 @@ public class ProductDTO {
 
     private Set<CountryDTO> countries;
 
-    private Set<ProductImageDTO> images;
+    private SortedSet<ProductImageDTO> images;
 }

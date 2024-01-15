@@ -12,14 +12,17 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SortNatural;
 
 import java.util.Set;
+import java.util.SortedSet;
 
 @Entity
 @Table(name = "product")
@@ -99,5 +102,6 @@ public class Product {
     private Set<Country> countries;
 
     @OneToMany(mappedBy = "product")
-    private Set<ProductImage> images;
+    @SortNatural
+    private SortedSet<ProductImage> images;
 }

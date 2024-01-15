@@ -3,9 +3,12 @@ package pl.edu.pb.wi.mmm.dto.mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edu.pb.wi.mmm.dto.ProductDTO;
+import pl.edu.pb.wi.mmm.dto.ProductImageDTO;
 import pl.edu.pb.wi.mmm.dto.ProductToListDTO;
 import pl.edu.pb.wi.mmm.entity.Product;
 
+import java.util.Comparator;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -44,7 +47,7 @@ public class ProductMapperImpl implements ProductMapper {
                 .ingredientAnalysis(productIngredientAnalysisMapper.map(product.getIngredientAnalysis()))
                 .nutriment(nutrimentMapper.map(product.getNutriment()))
                 .countries(product.getCountries().stream().map(countryMapper::map).collect(Collectors.toSet()))
-                .images(product.getImages().stream().map(productImageMapper::map).collect(Collectors.toSet()))
+                .images(product.getImages().stream().map(productImageMapper::map).collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(ProductImageDTO::getUrl)))))
                 .build();
     }
 
